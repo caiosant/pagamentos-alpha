@@ -1,0 +1,25 @@
+<h2>
+Você já se cadastrou no nosso sistema, 
+mas agora precisa registrar a sua empresa! 
+Preencha os dados abaixo para podermos conhecer sua empresa:
+</h2>
+
+<%= form_for @company, :url => company_path(@company), method: :patch do |f| %>
+  <div>
+    <%= f.label :legal_name %>
+    <%= f.text_field :legal_name %>
+  </div>
+  <div>
+    <%= f.label :cnpj %>
+    <%= f.text_field :cnpj %>
+  </div>
+  <div>
+    <%= f.label :billing_address %>
+    <%= f.text_field :billing_address %>
+  </div>
+  <div>
+    <%= f.label :billing_email %>
+    <%= f.text_field :billing_email %>
+  </div>
+  <%= f.submit t('common.submit') %>
+<% end %>
