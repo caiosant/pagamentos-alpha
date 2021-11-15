@@ -54,8 +54,12 @@ rspec --format=documentation
 O sistema foi desenvolvido usando TDD(Test-driven development), com testes unitários e de integração, utilzando as gems rspec e capybara.
 Esse é o projeto final da etapa 2 da turma 7 do programa [Treinadev](https://treinadev.com.br/) da [Campuscode](https://campuscode.com.br/).
 
+Links com detalhes sobre o projeto:
+* [Diagrama de interações entre os models](https://docs.google.com/drawings/d/1JThfhFGx6O8p3lijoboJbZBGjQjlOXToAzejdqna3zs)
+
 ## Features
 
+* Primeira sprint: Cadastros e meios de pagamento (em andamento)
 - [ ] Cadastro de administradores
 - [x] Cadastro de usuários
 - [ ] Registro de empresas pelos usuários
