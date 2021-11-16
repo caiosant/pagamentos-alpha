@@ -14,7 +14,7 @@ describe 'adminstrator of system create a account' do
   it 'try to register with a personal e-mail' do
     visit new_admin_registration_path
 
-    fill_in 'Email', with: 'admin@gmail.com'
+    fill_in 'Email', with: 'admin@hotmail.com'
     fill_in 'Password', with: '123456'
     fill_in 'Password confirmation', with: '123456'
     click_on 'Sign up'
@@ -22,3 +22,8 @@ describe 'adminstrator of system create a account' do
     expect(page).to have_content('Este e-mail não é válido')
   end
 end
+
+#email vazio
+#senha vazia
+#senha com quantidade insuficiente
+#cadastro duplicado
