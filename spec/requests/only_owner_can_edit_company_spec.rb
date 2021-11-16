@@ -37,8 +37,14 @@ describe 'company can be edited' do
   end
 
   xit 'unless user is an admin' do
-    # Esse fica pra quando tiver o admin pronto
+    # TODO: Esse fica pra quando tiver o admin pronto
   end
 
-  xit 'unless is not signed in'
+  it 'unless is not signed in' do
+    owner = create(:user, owner: true)
+
+    get edit_company_path owner.company
+
+    expect(flash[:alert]).to eq('You need to sign in or sign up before continuing.')
+  end
 end
