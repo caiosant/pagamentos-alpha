@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'User registration generates empty company' do
   it 'successfully' do
-    user = create(:user)
+    user = create(:user, owner: :true)
 
     login_as user, scope: :user
     visit root_path

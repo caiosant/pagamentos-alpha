@@ -14,10 +14,12 @@ describe 'company can be edited' do
     owner = create(:user, owner: true)
     user = create(:user, owner: false, company: owner.company)
 
-    login_as owner, scope: :user
+    login_as user, scope: :user
     get edit_company_path owner.company
 
     expect(response).to redirect_to(root_path)
+    expect(flash[:alert]).to eq('Você não tem permissão para alterar os dados '\
+      'dessa empresa.')
   end
 
   it 'unless user is from another company' do
@@ -26,14 +28,17 @@ describe 'company can be edited' do
     owner2 = create(:user, owner: true)
     user = create(:user, owner: false, company: owner2.company)
 
-    login_as owner, scope: :user
+    login_as user, scope: :user
     get edit_company_path owner.company
 
     expect(response).to redirect_to(root_path)
+    expect(flash[:alert]).to eq('Você não tem permissão para alterar os dados '\
+      'dessa empresa.')
   end
 
   xit 'unless user is an admin' do
     # Esse fica pra quando tiver o admin pronto
   end
 
+  xit 'unless is not signed in'
 end

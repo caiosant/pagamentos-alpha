@@ -25,7 +25,7 @@ class User < ApplicationRecord
   def create_incomplete_company
     # TODO: ADICIONAR O ATRIBUTO SELF.OWNER NESSA CONDICIONAL QUANDO ELE EXISTIR
     # "cria uma empresa se for dono, se nao for, nao faz nada"
-    unless self.company
+    if !self.company && self.owner
       self.company = Company.create!()
       save
     end
