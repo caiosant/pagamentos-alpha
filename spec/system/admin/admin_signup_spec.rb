@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe 'adminstrator of system create a account' do
-  it 'successfuly' do
+describe 'adminstrator try to create a account' do
+  it 'and do it successfuly' do
     visit new_admin_registration_path
 
     fill_in 'Email', with: 'admin@pagapaga.com.br'
@@ -11,7 +11,7 @@ describe 'adminstrator of system create a account' do
     click_on 'Sign up'
   end
 
-  it 'try to register with a personal e-mail' do
+  it 'and try to register with a personal e-mail' do
     visit new_admin_registration_path
 
     fill_in 'Email', with: 'admin@hotmail.com'
@@ -21,9 +21,39 @@ describe 'adminstrator of system create a account' do
 
     expect(page).to have_content('Este e-mail não é válido')
   end
-end
 
-#email vazio
-#senha vazia
-#senha com quantidade insuficiente
-#cadastro duplicado
+  it 'and leave the email empty' do
+    visit new_admin_registration_path
+
+    fill_in 'Email', with: ''
+    fill_in 'Password', with: '123456'
+    fill_in 'Password confirmation', with: '123456'
+    click_on 'Sign up'
+
+    expect(page).to have_content("Email can't be blank")
+  end
+
+  it 'and the password is shorter' do
+    visit new_admin_registration_path
+
+    fill_in 'Email', with: 'admin@pagapaga.com.br'
+    fill_in 'Password', with: '123'
+    fill_in 'Password confirmation', with: '123'
+    click_on 'Sign up'
+
+    expect(page).to have_content('Password is too short (minimum is 6 characters)')
+  end
+
+  it 'and try to use a already registred email' do
+    admin = create(:admin)
+
+    visit new_admin_registration_path
+
+    fill_in 'Email', with: admin.email
+    fill_in 'Password', with: '123456'
+    fill_in 'Password confirmation', with: '123456'
+    click_on 'Sign up'
+
+    expect(page).to have_content('Email has already been taken')
+  end
+end
