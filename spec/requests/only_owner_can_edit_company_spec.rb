@@ -38,7 +38,7 @@ describe 'company can be edited' do
 
   it 'unless visitor is not signed in' do
     owner = create(:user, owner: true)
-    
+
     get edit_company_path owner.company
 
     expect(response).to redirect_to(root_path)
@@ -47,6 +47,6 @@ describe 'company can be edited' do
   end
 
   xit 'unless user is an admin' do
-    # Esse fica pra quando tiver o admin pronto
+    # TODO: Esse fica pra quando tiver o admin pronto
   end
 end
