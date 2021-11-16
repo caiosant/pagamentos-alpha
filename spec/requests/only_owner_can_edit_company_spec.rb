@@ -36,9 +36,17 @@ describe 'company can be edited' do
       'dessa empresa.')
   end
 
+  it 'unless visitor is not signed in' do
+    owner = create(:user, owner: true)
+    
+    get edit_company_path owner.company
+
+    expect(response).to redirect_to(root_path)
+    expect(flash[:alert]).to eq('Você não tem permissão para alterar os dados '\
+      'dessa empresa.')
+  end
+
   xit 'unless user is an admin' do
     # Esse fica pra quando tiver o admin pronto
   end
-
-  xit 'unless is not signed in'
 end

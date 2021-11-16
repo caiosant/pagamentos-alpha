@@ -20,6 +20,10 @@ class User < ApplicationRecord
     incomplete_company? || company.completed?
   end
 
+  def is_owner?(received_company)
+    received_company == company && owner
+  end
+
   private
 
   def create_incomplete_company
