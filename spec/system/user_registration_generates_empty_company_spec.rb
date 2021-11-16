@@ -7,7 +7,7 @@ describe 'User registration generates empty company' do
     login_as user, scope: :user
     visit root_path
 
-    expect(user.company.empty?).to be(true)
+    expect(user.company.incomplete?).to be(true)
     expect(page).to have_content('Você já se cadastrou no nosso sistema, mas '\
       'agora precisa registrar a sua empresa! Preencha os dados abaixo para '\
       'podermos conhecer sua empresa:')
