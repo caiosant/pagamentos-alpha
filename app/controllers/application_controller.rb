@@ -10,10 +10,14 @@ class ApplicationController < ActionController::Base
     end
 
     def get_company_and_authenticate_owner
-      @company = Company.find(params[:id])
+      get_company
 
       redirect_to root_path,
       alert: 'Você não tem permissão para alterar os dados '\
       'dessa empresa.' unless current_user && current_user.is_owner?(@company)
+    end
+
+    def get_company
+        @company = Company.find(params[:id])
     end
 end

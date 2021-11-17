@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'User registration generates empty company' do
+describe '(owner)User registration generates empty company' do
   it 'successfully' do
     user = create(:user, owner: :true)
 

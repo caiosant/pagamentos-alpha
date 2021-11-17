@@ -16,12 +16,8 @@ class User < ApplicationRecord
     end
   end
 
-  def pending_company?
-    incomplete_company? || company.completed?
-  end
-
   def is_owner?(received_company)
-    received_company == company && owner
+    received_company.owner == self
   end
 
   private

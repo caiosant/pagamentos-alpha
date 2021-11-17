@@ -4,6 +4,14 @@ mas agora precisa registrar a sua empresa!
 Preencha os dados abaixo para podermos conhecer sua empresa:
 </h2>
 
+<% if @company.errors.any? %>
+  <ul>
+    <% @company.errors.full_messages.each do |error| %>
+      <li><%= error %></li>
+    <% end %>
+  </ul>
+<% end %>
+
 <%= form_for @company, :url => company_path(@company), method: :patch do |f| %>
   <div>
     <%= f.label :legal_name %>
