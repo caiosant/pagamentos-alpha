@@ -9,7 +9,6 @@ class Company < ApplicationRecord
     after_update :check_if_still_incomplete
     after_create :check_if_still_incomplete
 
-    # APENAS ON UPDATE 
     validates :cnpj, :legal_name, :billing_address, :billing_email,
     presence: true, on: :update
     validates :billing_email, private_email: true, on: :update

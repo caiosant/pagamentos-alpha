@@ -28,7 +28,7 @@ class User < ApplicationRecord
 
   def create_incomplete_company
     if !self.company && self.owner
-      self.company = Company.create!()
+      self.create_company!
       save
     end
   end
