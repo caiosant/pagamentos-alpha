@@ -21,9 +21,9 @@ Yarn
 ### 🔧 Instalação
 
 - Clonar o repositório
-- Acessar a pasta freela pelo terminal
+- Acessar a pasta pagamentos-alpha pelo terminal
 ```
-cd freela
+cd pagamentos-alpha 
 ```
 - Executar:
 ```
@@ -62,7 +62,7 @@ Links com detalhes sobre o projeto:
 * Primeira sprint: Cadastros e meios de pagamento (em andamento)
 - [ ] Cadastro de administradores
 - [x] Cadastro de usuários
-- [ ] Registro de empresas pelos usuários
+- [x] Registro de empresas pelos usuários
 - [ ] Administradores podem aprovar ou rejeitar empresas
 - [ ] Administradores podem criar meios de pagamentos
 - [ ] Administradores podem desativar ou ativar meios de pagamentos
