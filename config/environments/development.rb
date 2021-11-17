@@ -30,6 +30,7 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  config.active_storage.service = :local
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
@@ -44,7 +45,7 @@ Rails.application.configure do
   config.active_support.disallowed_deprecation = :raise
 
   # Tell Active Support which deprecation messages to disallow.
-  config.active_support.disallowed_deprecation_warnings = []
+  # config.active_support.disallowed_deprecation_warnings = []
 
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
