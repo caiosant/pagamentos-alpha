@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_12_190510) do
+ActiveRecord::Schema.define(version: 2021_11_16_191755) do
 
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -29,6 +29,9 @@ ActiveRecord::Schema.define(version: 2021_11_12_190510) do
     t.string "legal_name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "status", default: 0
+    t.string "billing_email"
+    t.text "billing_address"
   end
 
   create_table "users", force: :cascade do |t|
@@ -39,8 +42,12 @@ ActiveRecord::Schema.define(version: 2021_11_12_190510) do
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "company_id"
+    t.boolean "owner"
+    t.index ["company_id"], name: "index_users_on_company_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "users", "companies"
 end
