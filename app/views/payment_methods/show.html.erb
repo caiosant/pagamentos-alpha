@@ -2,12 +2,12 @@
 
 <div>
 <% if @payment_method.icon.attached? %>
-  <image src="<%=(url_for(@payment_method.icon))%>" alt="icon" >
   <%= image_tag @payment_method.icon, alt: "icon" %>
 <% end %>
 </div>
 <% if admin_signed_in? %>
-  <h4>Nome: <%= @payment_method.name %></h4>
-  <h4>Taxa: <%= @payment_method.fee %></h4>
-  <h4>Taxa máxima: <%= @payment_method.maximum_fee %>%</h4>
+  <p>Nome: <%= @payment_method.name %></p>
+  <p>Taxa (%): <%= @payment_method.fee %></p>
+  <p>Taxa máxima (R$): <%= @payment_method.maximum_fee %></p>
+  <p>status: <%= @payment_method.status %></p>
 <% end %>

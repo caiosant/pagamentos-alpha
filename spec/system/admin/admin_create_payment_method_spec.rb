@@ -24,8 +24,8 @@ describe 'administrator creates a new payment method' do
 
     expect(page).to have_content('Método de pagamento criado com sucesso!')
     expect(page).to have_content('Nome: Cartão de Crédito Visa')
-    expect(page).to have_content('Taxa: 5.0')
-    expect(page).to have_content('Taxa máxima: 1000.0')
+    expect(page).to have_content('Taxa (%): 5.0')
+    expect(page).to have_content('Taxa máxima (R$): 1000.0')
   end
 
   it 'no successfully when fields are blank' do
@@ -39,7 +39,5 @@ describe 'administrator creates a new payment method' do
     click_on 'Salvar'
 
     expect(page).not_to have_content('Método de pagamento criado com sucesso!')
-  
-    
   end
 end
