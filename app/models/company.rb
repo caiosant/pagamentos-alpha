@@ -7,6 +7,7 @@ class Company < ApplicationRecord
     class_name: 'User'
 
     after_update :check_if_still_incomplete
+    after_create :check_if_still_incomplete
 
     # APENAS ON UPDATE 
     validates :cnpj, :legal_name, :billing_address, :billing_email,
