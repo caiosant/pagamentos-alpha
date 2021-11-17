@@ -1,3 +1,7 @@
+<% if current_user&.owns?(@company) %>
+  <%= link_to 'Editar dados', edit_company_path(@company) %>
+<% end %>
+
 <div>
     <span><%= Company.human_attribute_name('status') %>: <%= Company.human_attribute_name("status.#{@company.status}") %></span>
 </div>
