@@ -1,9 +1,15 @@
 <div>
-    <span>status:<%= @company.status %></span>
+    <span><%= Company.human_attribute_name('status') %>: <%= Company.human_attribute_name("status.#{@company.status}") %></span>
 </div>
 <div>
-    <span>nome: <%= @company.legal_name %></span>
-    <span>cnpj: <%= @company.cnpj %></span>
-    <span>email de faturamento: <%= @company.billing_email %></span>
-    <span>endereço de faturamento: <%= @company.billing_address %></span>
+    <dl>
+        <dt><%= Company.human_attribute_name('legal_name') %>: </dt>
+        <dd> <%= @company.legal_name %></dd>
+        <dt><%= Company.human_attribute_name('cnpj') %>: </dt>
+        <dd> <%= @company.cnpj %></dd>
+        <dt><%= Company.human_attribute_name('billing_email') %>: </dt>
+        <dd> <%= @company.billing_email %></dd>
+        <dt><%= Company.human_attribute_name('billing_address') %>: </dt>
+        <dd> <%= @company.billing_address %></dd>
+    </dl>
 </div>
