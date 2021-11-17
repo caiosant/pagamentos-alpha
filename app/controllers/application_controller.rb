@@ -2,8 +2,6 @@ class ApplicationController < ActionController::Base
     before_action :redirect_empty_company_users
 
     def redirect_empty_company_users
-        # Eu não sei por que, mas só ta funcionando assim, por mais que seja redundante
-        # byebug
         if current_user && current_user.incomplete_company?
             redirect_to edit_company_path current_user.company
         end
@@ -19,5 +17,13 @@ class ApplicationController < ActionController::Base
 
     def get_company
         @company = Company.find(params[:id])
+    end
+
+    def authenticate_company_user
+      get_company
+
+      redirect_to root_path,
+      alert: 'Você não tem permissão para ver os dados dessa empresa.' unless
+      current_user && current_user.is_in_company?(@company)
     end
 end

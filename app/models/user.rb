@@ -20,11 +20,13 @@ class User < ApplicationRecord
     received_company.owner == self
   end
 
+  def is_in_company?(received_company)
+    received_company == self.company
+  end
+
   private
 
   def create_incomplete_company
-    # TODO: ADICIONAR O ATRIBUTO SELF.OWNER NESSA CONDICIONAL QUANDO ELE EXISTIR
-    # "cria uma empresa se for dono, se nao for, nao faz nada"
     if !self.company && self.owner
       self.company = Company.create!()
       save
