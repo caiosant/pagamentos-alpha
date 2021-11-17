@@ -10,7 +10,7 @@ describe 'Visitor registers as user' do
     fill_in 'user_password_confirmation', with: '123456789'
     click_on 'commit'
 
-    expect(page).to have_content('Welcome! You have signed up successfully.')
+    expect(page).to have_content('Login efetuado com sucesso')
   end
 
   it 'and fails when using a public email domain' do

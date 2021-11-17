@@ -54,6 +54,6 @@ describe '(owner)User fills in company detail and sees aproval awaiting page' do
     visit root_path
     click_on 'commit'
 
-    expect(page).to have_content('can\'t be blank', count: 4)
+    expect(page).to have_content('não pode ficar em branco', count: 4)
   end
 end
