@@ -1,14 +1,12 @@
 class CompaniesController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :redirect_empty_company_users, only: %i[ edit update ] 
-  before_action :get_company_and_authenticate_owner, only: %i[ edit update ]
-  before_action :authenticate_company_user, only: %i[ show ]
+  skip_before_action :redirect_empty_company_users, only: %i[edit update]
+  before_action :find_company_and_authenticate_owner, only: %i[edit update]
+  before_action :authenticate_company_user, only: %i[show]
 
-  def show
-  end
+  def show; end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @company.update(edit_company_params)

@@ -4,8 +4,6 @@ class PrivateEmailValidator < ActiveModel::EachValidator
 
     email_domain = value.split('@')[-1]
 
-    if public_domains.include? email_domain
-      record.errors.add(attribute, 'não pode ser um email de domínio público')
-    end
+    record.errors.add(attribute, 'não pode ser um email de domínio público') if public_domains.include? email_domain
   end
 end

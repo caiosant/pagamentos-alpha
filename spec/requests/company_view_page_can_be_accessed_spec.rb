@@ -31,7 +31,7 @@ describe 'company page can be seen' do
 
     expect(response).to redirect_to(root_path)
     expect(flash[:alert]).to eq('Você não tem permissão para ver os dados '\
-      'dessa empresa.')
+                                'dessa empresa.')
   end
 
   it 'unless visitor is not signed in' do

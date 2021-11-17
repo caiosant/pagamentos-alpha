@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe '(owner)User fills in company detail and sees aproval awaiting page' do
   it 'successfully' do
-    user = create(:user, owner: :true)
+    user = create(:user, owner: true)
 
     login_as user, scope: :user
     visit root_path
@@ -18,7 +18,7 @@ describe '(owner)User fills in company detail and sees aproval awaiting page' do
   end
 
   it 'unless cnpj is invalid' do
-    user = create(:user, owner: :true)
+    user = create(:user, owner: true)
 
     login_as user, scope: :user
     visit root_path
@@ -33,7 +33,7 @@ describe '(owner)User fills in company detail and sees aproval awaiting page' do
   end
 
   it 'unless email domain is public' do
-    user = create(:user, owner: :true)
+    user = create(:user, owner: true)
 
     login_as user, scope: :user
     visit root_path
@@ -48,7 +48,7 @@ describe '(owner)User fills in company detail and sees aproval awaiting page' do
   end
 
   it 'there are blank fields' do
-    user = create(:user, owner: :true)
+    user = create(:user, owner: true)
 
     login_as user, scope: :user
     visit root_path

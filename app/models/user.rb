@@ -11,25 +11,23 @@ class User < ApplicationRecord
   after_create :create_incomplete_company
 
   def incomplete_company?
-    if company
-      company.incomplete?
-    end
+    company&.incomplete?
   end
 
-  def is_owner?(received_company)
+  def owns?(received_company)
     received_company.owner == self
   end
 
-  def is_in_company?(received_company)
-    received_company == self.company
+  def in_company?(received_company)
+    received_company == company
   end
 
   private
 
   def create_incomplete_company
-    if !self.company && self.owner
-      self.create_company!
-      save
-    end
+    return unless !company && owner
+
+    create_company!
+    save
   end
 end

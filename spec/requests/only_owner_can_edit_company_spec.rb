@@ -19,7 +19,7 @@ describe 'company can be edited' do
 
     expect(response).to redirect_to(root_path)
     expect(flash[:alert]).to eq('Você não tem permissão para alterar os dados '\
-      'dessa empresa.')
+                                'dessa empresa.')
   end
 
   it 'unless user is from another company' do
@@ -33,7 +33,7 @@ describe 'company can be edited' do
 
     expect(response).to redirect_to(root_path)
     expect(flash[:alert]).to eq('Você não tem permissão para alterar os dados '\
-      'dessa empresa.')
+                                'dessa empresa.')
   end
 
   it 'unless visitor is not signed in' do
