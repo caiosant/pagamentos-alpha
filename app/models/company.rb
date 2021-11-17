@@ -6,8 +6,7 @@ class Company < ApplicationRecord
   has_one :owner, -> { where owner: true },
           class_name: 'User', inverse_of: 'company', dependent: :destroy
 
-  after_create :check_if_still_incomplete
-  after_update :check_if_still_incomplete
+  after_save :check_if_still_incomplete
 
   validates :cnpj, :legal_name, :billing_address, :billing_email,
             presence: true, on: :update
