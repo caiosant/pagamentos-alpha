@@ -1,0 +1,18 @@
+---
+pt-BR:
+  activerecord:
+    models:
+      company: 'Empresa'
+    attributes:
+      company:
+        status: 'Estado de aprovação'
+        legal_name: 'Razão social'
+        cnpj: 'CNPJ'
+        billing_email: 'E-mail de faturamento'
+        billing_address: 'Endereço de faturamento'
+        owner: 'Dono'
+      company/status:
+        incomplete: 'incompleta'
+        pending: 'pendente'
+        aproved: 'aprovada'
+        rejected: 'rejeitada'

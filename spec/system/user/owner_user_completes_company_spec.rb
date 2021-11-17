@@ -14,7 +14,13 @@ describe '(owner)User fills in company detail and sees aproval awaiting page' do
     click_on 'commit'
 
     expect(page).to have_content('Registro feito com sucesso!')
-    expect(page).to have_content('pending')
+    expect(page).to have_content('Estado de aprovação: pendente')
+
+    expect(page).to have_content('Razão social: Empresa numero 1')
+    expect(page).to have_content('CNPJ: 12.123.123/0001-12')
+    expect(page).to have_content('Endereço de faturamento: Endereço cidade tal rua tal etc')
+    expect(page).to have_content('E-mail de faturamento: faturamento@companymail.com')
+
   end
 
   it 'unless cnpj is invalid' do
@@ -29,7 +35,7 @@ describe '(owner)User fills in company detail and sees aproval awaiting page' do
     fill_in 'company_cnpj', with: 'batatinha'
     click_on 'commit'
 
-    expect(page).to have_content('Cnpj inválido')
+    expect(page).to have_content('CNPJ inválido')
   end
 
   it 'unless email domain is public' do
@@ -44,7 +50,7 @@ describe '(owner)User fills in company detail and sees aproval awaiting page' do
     fill_in 'company_cnpj', with: '12.123.123/0001-12'
     click_on 'commit'
 
-    expect(page).to have_content('Billing email não pode ser um email de domínio público')
+    expect(page).to have_content('E-mail de faturamento não pode ser um email de domínio público')
   end
 
   it 'there are blank fields' do
