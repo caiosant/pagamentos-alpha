@@ -10,9 +10,7 @@ class ApplicationController < ActionController::Base
 
     return if current_user&.owns?(@company)
 
-    redirect_to root_path,
-                alert: 'Você não tem permissão para alterar os dados '\
-                       'dessa empresa.'
+    redirect_to root_path, alert: t('companies.edit.no_permission_alert')
   end
 
   def find_company
@@ -24,7 +22,6 @@ class ApplicationController < ActionController::Base
 
     return if current_user&.in_company?(@company)
 
-    redirect_to root_path,
-                alert: 'Você não tem permissão para ver os dados dessa empresa.'
+    redirect_to root_path, alert: t('companies.show.no_permission_alert')
   end
 end

@@ -10,7 +10,7 @@ class CompaniesController < ApplicationController
 
   def update
     if @company.update(edit_company_params)
-      redirect_to @company, notice: 'Registro feito com sucesso!'
+      redirect_to @company, notice: t('.complete_success_notice')
     else
       render :edit
     end

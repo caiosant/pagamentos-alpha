@@ -16,3 +16,11 @@ pt-BR:
         pending: 'pendente'
         aproved: 'aprovada'
         rejected: 'rejeitada'
+  companies:
+    edit:
+      no_permission_alert: 'Você não tem permissão para alterar os dados dessa empresa.'
+      ask_to_complete_company: 'Você já se cadastrou no nosso sistema, mas agora precisa registrar a sua empresa! Preencha os dados abaixo para podermos conhecer sua empresa:'
+    show:
+      no_permission_alert: 'Você não tem permissão para ver os dados dessa empresa.'
+    update:
+      complete_success_notice: 'Registro feito com sucesso!'
