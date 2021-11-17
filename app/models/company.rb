@@ -17,10 +17,7 @@ class Company < ApplicationRecord
   private
 
   def any_essential_info_blank?
-    [cnpj, legal_name, billing_address, billing_email].each do |info|
-      return true if info.blank?
-    end
-    false
+    [cnpj, legal_name, billing_address, billing_email].all?(&:blank?)
   end
 
   def check_if_still_incomplete
