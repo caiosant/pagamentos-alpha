@@ -7,6 +7,7 @@ class Company < ApplicationRecord
           class_name: 'User', inverse_of: 'company', dependent: :destroy
 
   after_save :check_if_still_incomplete
+  after_save :generate_token_if_accepted
 
   validates :cnpj, :legal_name, :billing_address, :billing_email,
             presence: true, on: :update
@@ -21,5 +22,12 @@ class Company < ApplicationRecord
 
   def check_if_still_incomplete
     pending! if !any_essential_info_blank? && incomplete?
+  end
+
+  def generate_token_if_accepted
+    if self.token.blank? && self.accepted?
+      self.token = generate_token
+      save!
+    end
   end
 end
