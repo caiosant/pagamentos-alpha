@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 describe 'company can be updated' do
-  it 'if user is the company owner' do
-    owner = create(:user, owner: true)
+  it 'if user is the company owner and company is not pending' do
+    owner = create(:user, :complete_company_owner)
+
+    owner.company.accepted!
 
     login_as owner, scope: :user
     put company_path owner.company,
@@ -14,6 +16,24 @@ describe 'company can be updated' do
                      } }
 
     expect(response).to redirect_to company_path owner.company
+  end
+
+  it 'unless user is the company owner but company is pending' do
+    owner = create(:user, :complete_company_owner)
+
+    login_as owner, scope: :user
+    put company_path owner.company,
+                     params: { company: {
+                       cnpj: '12.123.123/0001-12',
+                       legal_name: 'nome de empresa que não vai ser aceito',
+                       billing_address: 'Endereço cidade tal rua tal etceditado',
+                       billing_email: 'faturamento@companymail.comeditado'
+                     } }
+    
+    owner.company.reload
+    expect(response).to redirect_to company_path owner.company
+    expect(owner.company.legal_name).not_to eq('nome de empresa que não vai ser aceito')
+    expect(owner.company).to be_pending
   end
 
   it 'unless user is linked to the company but isnt owner' do

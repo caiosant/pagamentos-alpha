@@ -13,6 +13,12 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, alert: t('companies.edit.no_permission_alert')
   end
 
+  def redirect_if_pending_company
+    return unless @company.pending?
+
+    redirect_to @company
+  end
+
   def find_company
     @company = Company.find(params[:id])
   end
