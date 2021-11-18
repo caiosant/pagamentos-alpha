@@ -10,8 +10,8 @@ describe 'administrator creates a new payment method' do
   it 'credit card successfully' do
     admin = create(:admin)
 
-    visit root_path
     login_as admin, scope: :admin
+    visit root_path
 
     click_on 'Criar método de pagamento'
 
@@ -31,8 +31,8 @@ describe 'administrator creates a new payment method' do
   it 'no successfully when fields are blank' do
     admin = create(:admin)
 
-    visit root_path
     login_as admin, scope: :admin
+    visit root_path
 
     click_on 'Criar método de pagamento'
 
