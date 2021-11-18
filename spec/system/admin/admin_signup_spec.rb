@@ -70,6 +70,6 @@ describe 'adminstrator try to create a account' do
     expect(Devise.mailer.deliveries.count).to eq 1
     expect(mail.from.first).to eq 'confirmacao@pagapaga.com.br'
     expect(mail.to.first).to eq 'admin@pagapaga.com.br'
-    expect(mail.subject).to eq 'Instruções de confirmação'                    
+    expect(mail.subject).to eq 'Instruções de confirmação'
   end
 end
