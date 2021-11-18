@@ -20,7 +20,6 @@ describe '(owner)User fills in company detail and sees aproval awaiting page' do
     expect(page).to have_content('CNPJ: 12.123.123/0001-12')
     expect(page).to have_content('Endereço de faturamento: Endereço cidade tal rua tal etc')
     expect(page).to have_content('E-mail de faturamento: faturamento@companymail.com')
-
   end
 
   it 'unless cnpj is invalid' do
