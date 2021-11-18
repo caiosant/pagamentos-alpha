@@ -3,5 +3,6 @@ Rails.application.routes.draw do
   devise_for :admins
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
-  root to: 'home#index'
+  root 'home#index'
+  resources :companies, only: %i[edit update show]
 end
