@@ -30,7 +30,7 @@ describe 'adminstrator try to create a account' do
     fill_in 'Password confirmation', with: '123456'
     click_on 'Sign up'
 
-    expect(page).to have_content("Email can't be blank")
+    expect(page).to have_content('Email não pode ficar em branco')
   end
 
   it 'and the password is shorter' do
@@ -41,7 +41,7 @@ describe 'adminstrator try to create a account' do
     fill_in 'Password confirmation', with: '123'
     click_on 'Sign up'
 
-    expect(page).to have_content('Password is too short (minimum is 6 characters)')
+    expect(page).to have_content('Password é muito curto (mínimo: 6 caracteres)')
   end
 
   it 'and try to use a already registred email' do
@@ -54,6 +54,6 @@ describe 'adminstrator try to create a account' do
     fill_in 'Password confirmation', with: '123456'
     click_on 'Sign up'
 
-    expect(page).to have_content('Email has already been taken')
+    expect(page).to have_content("Email #{admin.email} já está em uso")
   end
 end
