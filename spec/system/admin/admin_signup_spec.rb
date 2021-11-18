@@ -56,4 +56,20 @@ describe 'adminstrator try to create a account' do
 
     expect(page).to have_content("Email #{admin.email} já está em uso")
   end
+
+  it 'and recives a confirmation email' do
+    visit new_admin_registration_path
+
+    fill_in 'Email', with: 'admin@pagapaga.com.br'
+    fill_in 'Password', with: '123456'
+    fill_in 'Password confirmation', with: '123456'
+    click_on 'Sign up'
+
+    mail = Devise.mailer.deliveries.first
+
+    expect(Devise.mailer.deliveries.count).to eq 1
+    expect(mail.from.first).to eq 'confirmacao@pagapaga.com.br'
+    expect(mail.to.first).to eq 'admin@pagapaga.com.br'
+    expect(mail.subject).to eq 'Instruções de confirmação'                    
+  end
 end
