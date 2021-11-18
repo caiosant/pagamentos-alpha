@@ -72,4 +72,16 @@ describe 'adminstrator try to create a account' do
     expect(mail.to.first).to eq 'admin@pagapaga.com.br'
     expect(mail.subject).to eq 'Instruções de confirmação'
   end
+
+  it "and can't login without confirm his email" do
+    admin = create(:admin)
+
+    visit new_admin_session_path
+
+    fill_in 'Email', with: admin.email
+    fill_in 'Password', with: admin.password
+    click_on 'Log in'
+
+    expect(page).to have_content('Antes de continuar, confirme a sua conta.')
+  end
 end
