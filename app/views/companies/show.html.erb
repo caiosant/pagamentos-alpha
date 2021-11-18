@@ -1,5 +1,8 @@
 <% if current_user&.owns?(@company) %>
   <%= link_to 'Editar dados', edit_company_path(@company) %>
+  <% if @company.pending? %>
+    <%= link_to 'Cancelar pedido de registro', company_cancel_registration_path(@company, id: @company.id), method: :put %>
+  <% end %>
 <% end %>
 
 <div>

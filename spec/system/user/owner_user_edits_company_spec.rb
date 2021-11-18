@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'Owner edits accepted company' do
-  # TODO: volta a ficar pending?
   it 'successfully' do
     owner = create(:user, :complete_company_owner)
     owner.company.accepted!
