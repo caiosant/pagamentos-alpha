@@ -57,7 +57,7 @@ describe 'Owner edits company' do
   it 'and user from company cannot view edit link' do
     owner = create(:user, :complete_company_owner)
     owner.company.accepted!
-    
+
     user = create(:user, owner: false, company: owner.company)
 
     login_as user, scope: :user

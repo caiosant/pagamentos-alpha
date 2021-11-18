@@ -29,7 +29,7 @@ describe 'company can be updated' do
                        billing_address: 'Endereço cidade tal rua tal etceditado',
                        billing_email: 'faturamento@companymail.comeditado'
                      } }
-    
+
     owner.company.reload
     expect(response).to redirect_to company_path owner.company
     expect(owner.company.legal_name).not_to eq('nome de empresa que não vai ser aceito')
