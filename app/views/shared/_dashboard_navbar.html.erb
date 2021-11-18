@@ -1,0 +1,9 @@
+<header class="text-gray-600 body-font border-b-2 border-gray-600 bg-white h-10">
+  <div class="flex justify-between items-center space-x-7">
+    <nav>
+      <% if current_admin %>
+        <%= link_to 'Criar método de pagamento', new_payment_method_path %>
+      <% end %>
+    </nav>
+  </div>
+</header>

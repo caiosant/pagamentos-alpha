@@ -12,7 +12,9 @@
 
   <body class="bg-purple-100">
     <%= render 'shared/navbar' %>
-    <%= render 'shared/dashboard_navbar' %>
+    <% if current_admin %>
+      <%= render 'shared/dashboard_navbar' %>
+    <% end %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <%= yield %>
