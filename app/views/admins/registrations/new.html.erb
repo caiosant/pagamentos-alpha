@@ -1,29 +1,36 @@
-<h2>Sign up</h2>
+<div class="form-border">
+  <h2 class="form-title">Crie sua conta</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "admins/shared/error_messages", resource: resource %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= render "users/shared/error_messages", resource: resource %>
+      <div class="form-m-w-content">
+        <div class="mb-4">
+          <%= f.label :email, class: "form-label" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-text-field" %>
+        </div>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+        <div class="mb-4">
+          <div class="flex">
+            <%= f.label :password, class: "form-label" %>
+            <% if @minimum_password_length %>
+              <span class="form-label flex ml-12">(<%= @minimum_password_length %> caracters no mínimo)</span>
+            <% end %>
+          </div>
+          <%= f.password_field :password, autocomplete: "new-password", class: "form-text-field" %>
+        </div>
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
+        <div class="mb-4">
+          <%= f.label :password_confirmation, class: "form-label" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-text-field" %>
+        </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+        <div class="actions">
+          <%= f.submit "Cadastrar", class: "form-submit-button mb-2" %>
+        </div>
+      </div>
+    <% end %>
 
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
-
-<%= render "admins/shared/links" %>
+    <div class="form-content-after-submit-button">
+      <%= render "users/shared/links" %>
+    </div>
+</div>

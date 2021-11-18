@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Visitor registers as user' do
   it 'successfully' do
     visit root_path
-    click_on 'Registrar como usuário'
+    click_on 'Cadastre-se'
 
     fill_in 'user_email', with: 'test@company.com'
     fill_in 'user_password', with: '123456789'
@@ -15,7 +15,7 @@ describe 'Visitor registers as user' do
 
   it 'and fails when using a public email domain' do
     visit root_path
-    click_on 'Registrar como usuário'
+    click_on 'Cadastre-se'
 
     fill_in 'user_email', with: 'test@gmail.com'
     fill_in 'user_password', with: '123456789'

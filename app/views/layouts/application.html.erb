@@ -6,20 +6,26 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
+  <body class="bg-purple-100">
+    <%= render 'shared/navbar' %>
+    <% if current_admin %>
+      <%= render 'shared/dashboard_navbar' %>
+    <% end %>
+    
+    <% if notice %>
+      <div class="bg-green-100 border border-green-400 text-xs text-green-700 mx-2 my-2 px-2 py-3 rounded relative">
+        <%= notice %>
+      </div>
+    <% end %>
 
-  <body>
-    <%= render 'shared/dashboard_navbar' %>
-    <nav>
-      <%= link_to 'Registrar como usuário', new_user_registration_path %>
-      <%= link_to 'Logar como usuário', new_user_session_path %>
-      <%= link_to 'Registrar como administrador', new_admin_registration_path %>
-      <%= link_to 'Logar como administrador', new_admin_session_path %>
-    </nav>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <% if alert %>
+      <div class="alert">
+        <%= alert %>
+      </div>
+    <% end %>
     <%= yield %>
   </body>
 </html>
