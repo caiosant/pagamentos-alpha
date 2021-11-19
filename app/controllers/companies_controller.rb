@@ -1,8 +1,13 @@
 class CompaniesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_admin!, only: %i[index]
+  before_action :authenticate_user!, except: %i[index]
   skip_before_action :redirect_empty_company_users, only: %i[edit update]
   before_action :find_company_and_authenticate_owner, only: %i[edit update]
   before_action :authenticate_company_user, only: %i[show]
+
+  def index
+    @companies = Company.all
+  end
 
   def show; end
 

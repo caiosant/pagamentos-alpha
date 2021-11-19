@@ -1,0 +1,33 @@
+<div>
+    <div>
+        <table>
+            <tr>
+                <td>
+                    Owner
+                </td>
+                <td>
+                    Empresa
+                </td>
+                <td>
+                    Status
+                </td>
+                <td>
+                    Ação
+                </td>
+            </tr>
+            <% @companies.each do |company| %>
+                <tr>
+                    <td>
+                        <%= company.users.where(owner: true).first.email %>
+                    </td>
+                    <td>
+                        <%= company.legal_name %>
+                    </td>
+                    <td>
+                        <%= company.legal_name %>
+                    </td>
+                </tr>
+            <% end %>
+        </table>
+    </div>
+</div>
