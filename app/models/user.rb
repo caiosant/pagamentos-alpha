@@ -8,7 +8,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  after_create :create_incomplete_company
+  after_create :check_if_create_company
 
   def incomplete_company?
     company&.incomplete?
@@ -23,8 +23,24 @@ class User < ApplicationRecord
   end
 
   private
+  def check_if_user_is_an_owner
+    email_domain_query_element = "%@#{email.split('@')[-1]}"
+    same_email_domain_users = User.where(
+      'email LIKE :email_domain AND ID != :id', 
+      email_domain: email_domain_query_element, 
+      id: self.id
+    )
+    
+    if !owner && !self.company
+      self.owner = same_email_domain_users.empty?
+      self.company = same_email_domain_users.last.company if !self.owner
+    end
+    save
+  end
 
-  def create_incomplete_company
+  def check_if_create_company
+    check_if_user_is_an_owner
+
     return unless !company && owner
 
     create_company!

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Visitor registers as user' do
+describe 'Visitor registers as (owner)user' do
   it 'successfully' do
     visit root_path
     click_on 'Cadastre-se'
@@ -11,6 +11,9 @@ describe 'Visitor registers as user' do
     click_on 'commit'
 
     expect(page).to have_content('Login efetuado com sucesso')
+    expect(page).to have_content('Você já se cadastrou no nosso sistema, mas '\
+      'agora precisa registrar a sua empresa! Preencha os dados abaixo para '\
+      'podermos conhecer sua empresa:')
   end
 
   it 'and fails when using a public email domain' do
