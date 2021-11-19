@@ -3,6 +3,7 @@
     <nav>
       <% if current_admin %>
         <%= link_to 'Criar método de pagamento', new_payment_method_path %>
+        <%= link_to 'Listar métodos de pagamentos', payment_methods_path %>
       <% end %>
     </nav>
   </div>

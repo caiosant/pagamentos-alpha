@@ -2,7 +2,7 @@
 
 <%= form_with(model: @payment_method) do |f| %>
   <div>
-    <%= f.label :name, 'Nome' %>
+    <%= f.label :name%>
     <%= f.text_field :name %> 
 
     <% @payment_method.errors.full_messages_for(:name).each do |message| %>
@@ -11,7 +11,7 @@
   </div>
 
   <div>
-    <%= f.label :fee, 'Taxa' %>
+    <%= f.label :fee %>
     <%= f.number_field :fee %>
 
     <% @payment_method.errors.full_messages_for(:fee).each do |message| %>
@@ -20,7 +20,7 @@
   </div>
 
   <div>
-    <%= f.label :maximum_fee, 'Taxa máxima' %>
+    <%= f.label :maximum_fee %>
     <%= f.number_field :maximum_fee %>
     
     <% @payment_method.errors.full_messages_for(:maximum_fee).each do |message| %>
@@ -29,7 +29,7 @@
   </div>
 
   <div>
-    <%= f.label :icon, 'Ícone' %>
+    <%= f.label :icon %>
     <%= f.file_field :icon %>
 
     <% @payment_method.errors.full_messages_for(:icon).each do |message| %>
@@ -37,5 +37,5 @@
     <% end %>
   </div>
 
-  <%= f.submit 'Salvar' %>
+  <%= f.submit t('common.submit') %>
 <% end %>

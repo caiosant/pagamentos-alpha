@@ -9,9 +9,9 @@ describe 'administrator creates a new payment method' do
 
   it 'credit card successfully' do
     admin = create(:admin)
+    login_as admin, scope: :admin
 
     visit root_path
-    login_as admin, scope: :admin
 
     click_on 'Criar método de pagamento'
 
@@ -20,7 +20,7 @@ describe 'administrator creates a new payment method' do
     fill_in 'Taxa', with: 5.0
     fill_in 'Taxa máxima', with: 1000.0
 
-    click_on 'Salvar'
+    click_on I18n.t('common.submit')
 
     expect(page).to have_content('Método de pagamento criado com sucesso!')
     expect(page).to have_content('Nome: Cartão de Crédito Visa')
@@ -30,13 +30,13 @@ describe 'administrator creates a new payment method' do
 
   it 'no successfully when fields are blank' do
     admin = create(:admin)
+    login_as admin, scope: :admin
 
     visit root_path
-    login_as admin, scope: :admin
 
     click_on 'Criar método de pagamento'
 
-    click_on 'Salvar'
+    click_on I18n.t('common.submit')
 
     expect(page).not_to have_content('Método de pagamento criado com sucesso!')
   end

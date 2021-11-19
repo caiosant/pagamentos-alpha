@@ -1,6 +1,10 @@
 class PaymentMethodsController < ApplicationController
   before_action :authenticate_users!
-  before_action :authenticate_admin!, only: %i[new create]
+  before_action :authenticate_admin!, only: %i[new create show index]
+
+  def index
+    @payment_methods = PaymentMethod.all
+  end
 
   def show
     @payment_method = PaymentMethod.find(params[:id])
@@ -20,16 +24,16 @@ class PaymentMethodsController < ApplicationController
     end
   end
 
+  def disable
+    @payment_method = PaymentMethod.find(params[:id])
+    @payment_method.disabled!
+
+    redirect_to @payment_method
+  end
+
   private
 
   def payment_method_params
-    params
-      .require(:payment_method)
-      .permit(
-        :name,
-        :fee,
-        :maximum_fee,
-        :icon
-      )
+    params.require(:payment_method).permit(:name, :fee, :maximum_fee, :icon)
   end
 end

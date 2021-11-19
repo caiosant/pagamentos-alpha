@@ -9,5 +9,11 @@
   <p>Nome: <%= @payment_method.name %></p>
   <p>Taxa (%): <%= @payment_method.fee %></p>
   <p>Taxa máxima (R$): <%= @payment_method.maximum_fee %></p>
-  <p>status: <%= @payment_method.status %></p>
+  <p>Status: <%= t @payment_method.status %></p>
+<% end %>
+
+<% if @payment_method.enabled? %>
+  <%= link_to 'Desabilitar método de pagamento', disable_payment_method_path(@payment_method.id), method: :post %>
+<% elsif %>
+<%= link_to 'Habilitar método de pagamento', enable_payment_method_path(@payment_method.id), method: :post %>
 <% end %>
