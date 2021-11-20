@@ -24,10 +24,14 @@ class Company < ApplicationRecord
     pending! if !any_essential_info_blank? && incomplete?
   end
 
+  def accepted_but_no_token?
+    token.blank? && accepted?
+  end
+
   def generate_token_if_accepted
-    if self.token.blank? && self.accepted?
-      self.token = generate_token
-      save!
-    end
+    return unless token.blank? && accepted?
+
+    self.token = generate_token
+    save!
   end
 end

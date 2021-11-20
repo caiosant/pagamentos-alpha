@@ -15,15 +15,15 @@ describe 'Visitor registers as (staff)user' do
 
     expect(page).to have_content('Login efetuado com sucesso')
     expect(page).to_not have_content('Você já se cadastrou no nosso sistema, mas '\
-      'agora precisa registrar a sua empresa! Preencha os dados abaixo para '\
-      'podermos conhecer sua empresa:')
+                                     'agora precisa registrar a sua empresa! Preencha os dados abaixo para '\
+                                     'podermos conhecer sua empresa:')
     current_user = User.last
     expect(current_user.owner).to eq(false)
     expect(current_user.company).to eq(owner.company)
   end
 
   it 'unless users company is pending' do
-    owner = create(:user, :complete_company_owner, email: 'owner@company.com')
+    create(:user, :complete_company_owner, email: 'owner@company.com')
 
     visit root_path
     click_on 'Cadastre-se'
@@ -54,7 +54,7 @@ describe 'Visitor registers as (staff)user' do
   end
 
   it 'unless users company is incomplete' do
-    owner = create(:user, email: 'owner@company.com')
+    create(:user, email: 'owner@company.com')
 
     visit root_path
     click_on 'Cadastre-se'

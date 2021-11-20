@@ -12,8 +12,8 @@ describe 'Visitor registers as (owner)user' do
 
     expect(page).to have_content('Login efetuado com sucesso')
     expect(page).to have_content('Você já se cadastrou no nosso sistema, mas '\
-      'agora precisa registrar a sua empresa! Preencha os dados abaixo para '\
-      'podermos conhecer sua empresa:')
+                                 'agora precisa registrar a sua empresa! Preencha os dados abaixo para '\
+                                 'podermos conhecer sua empresa:')
   end
 
   it 'and fails when using a public email domain' do

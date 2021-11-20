@@ -24,31 +24,31 @@ class User < ApplicationRecord
   end
 
   private
+
   def query_same_email_domain_users
-    email_domain_query_element = "%@#{self.email.split('@')[-1]}"
+    email_domain_query_element = "%@#{email.split('@')[-1]}"
 
     User.where(
-      'email LIKE :email_domain', 
+      'email LIKE :email_domain',
       email_domain: email_domain_query_element
     ).where.not(company: nil)
   end
 
   def check_ownership_and_company_unless_already_set
-    return if self.owner || self.company
+    return if owner || company
 
     same_email_domain_users = query_same_email_domain_users
-    
+
     self.owner = same_email_domain_users.empty?
-    return if self.owner
+    return if owner
 
     user_company = same_email_domain_users.first.company
-    
+
     if user_company&.accepted?
       self.company = user_company
     else
-      self.errors.add :base, 'Sua empresa ainda não foi aceita no nosso sistema'
+      errors.add :base, 'Sua empresa ainda não foi aceita no nosso sistema'
     end
-
   end
 
   def user_is_owner_without_company?

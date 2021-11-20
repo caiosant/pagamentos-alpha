@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
 
   def redirect_empty_company_users
     return if request.path == destroy_user_session_path
+
     redirect_to edit_company_path current_user.company if current_user&.incomplete_company?
   end
 
