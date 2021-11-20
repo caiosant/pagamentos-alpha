@@ -9,9 +9,10 @@ describe 'administrator creates a new payment method' do
 
   it 'credit card successfully' do
     admin = create(:admin)
+    admin.confirm
 
-    visit root_path
     login_as admin, scope: :admin
+    visit root_path
 
     click_on 'Criar método de pagamento'
 
@@ -19,6 +20,7 @@ describe 'administrator creates a new payment method' do
     attach_file 'Ícone', 'app/assets/images/icone_visa.jpg'
     fill_in 'Taxa', with: 5.0
     fill_in 'Taxa máxima', with: 1000.0
+    select 'Cartão de Crédito', from: 'payment_method_type'
 
     click_on 'Salvar'
 
@@ -30,9 +32,10 @@ describe 'administrator creates a new payment method' do
 
   it 'no successfully when fields are blank' do
     admin = create(:admin)
+    admin.confirm
 
-    visit root_path
     login_as admin, scope: :admin
+    visit root_path
 
     click_on 'Criar método de pagamento'
 

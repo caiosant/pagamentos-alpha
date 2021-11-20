@@ -18,6 +18,39 @@ describe 'Owner choose payment method' do
     expect(page).not_to have_content(payment3.name)
   end
 
+  it 'sees configured methods' do
+    owner = create(:user, :complete_company_owner)
+    company = owner.company
+    company.accepted!
+
+    payment1 = create(:payment_method, :credit_card)
+    payment2 = create(:payment_method, :pix)
+    payment3 = create(:payment_method, :boleto)
+
+    credit_card_setting = create(
+      :credit_card_setting, company:company, payment_method: payment1
+    )
+    pix_setting = create(
+      :pix_setting, company:company, payment_method: payment2
+    )
+    boleto_setting = create(
+      :boleto_setting, company:company, payment_method: payment3
+    )
+
+    login_as owner, scope: :user
+    visit company_path company
+    click_on 'Meios de pagamento configurados'
+
+    expect(page).to have_content(pix_setting.pix_key)
+    expect(page).to have_content(pix_setting.bank_code)
+    expect(page).to have_content(credit_card_setting.company_code)
+    expect(page).to have_content(boleto_setting.bank_code)
+    expect(page).to have_content(boleto_setting.agency_number)
+    expect(page).to have_content(boleto_setting.account_number)
+
+
+  end
+
   it 'as credit card successfully' do
     credit_card_method = create(:payment_method)
     owner = create(:user, :complete_company_owner)
@@ -37,6 +70,8 @@ describe 'Owner choose payment method' do
     expect(owner.company.payment_methods.first).to eq(credit_card_method)
   end
 
+  it 'and can configure more than one method'
+
   it 'as pix successfully'
 
   it 'as boleto successfully'
@@ -48,6 +83,4 @@ describe 'Owner choose payment method' do
   it 'cannot choose same method twice'
 
   it 'edit configured method'
-
-  it 'sees configured methods'
 end
