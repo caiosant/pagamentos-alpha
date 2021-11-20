@@ -1,6 +1,9 @@
 <div>
     <span><%= Company.human_attribute_name('status') %>: <%= Company.human_attribute_name("status.#{@company.status}") %></span>
 </div>
+
+<%= link_to t('.configure_payment'), company_payment_settings_path(@company) %>
+
 <div>
     <dl>
         <dt><%= Company.human_attribute_name('legal_name') %>: </dt>

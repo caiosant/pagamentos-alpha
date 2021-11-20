@@ -1,0 +1,6 @@
+<div>
+    <span><%= t('.new_payment_setting') %></span>
+    <% @enabled_payment_methods.each do |payment_method| %>
+        <span><%= link_to payment_method.name, root_path %></span>
+    <% end %>
+</div>

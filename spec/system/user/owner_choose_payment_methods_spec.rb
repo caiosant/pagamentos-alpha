@@ -9,23 +9,23 @@ describe 'Owner choose payment method' do
 
     login_as owner, scope: :user
     visit company_path owner.company
-    click_on 'Configurar meios de pagamento'
+    click_on 'Meios de pagamento configurados'
 
-    expect(current_path).to eq(payment_methods_path)
-    expect(page).to have_content('Selecione os meios de pagamento da sua empresa:')
-    expect(page).to have_link("#{payment1.name}")
-    expect(page).to have_link("#{payment2.name}")
-    expect(page).not_to have_content("#{payment3.name}")
+    expect(current_path).to eq(company_payment_settings_path owner.company)
+    expect(page).to have_content('Criar nova configuração de pagamento:')
+    expect(page).to have_link(payment1.name)
+    expect(page).to have_link(payment2.name)
+    expect(page).not_to have_content(payment3.name)
   end
 
-  it 'credit card successfully' do
+  it 'as credit card successfully' do
     credit_card_method = create(:payment_method)
     owner = create(:user, :complete_company_owner)
     owner.company.accepted!
 
     login_as owner, scope: :user
     visit company_path owner.company
-    click_on 'Configurar meios de pagamento'
+    click_on 'Meios de pagamento configurados'
     click_on credit_card_method.name
 
     fill_in 'Código da conta', with: 'Yke0hLtqZKPVurU2eAEr'
@@ -37,9 +37,9 @@ describe 'Owner choose payment method' do
     expect(owner.company.payment_methods.first).to eq(credit_card_method)
   end
 
-  it 'pix successfully'
+  it 'as pix successfully'
 
-  it 'boleto successfully'
+  it 'as boleto successfully'
 
   it 'and must be company owner'
 
@@ -48,4 +48,6 @@ describe 'Owner choose payment method' do
   it 'cannot choose same method twice'
 
   it 'edit configured method'
+
+  it 'sees configured methods'
 end

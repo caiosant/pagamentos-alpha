@@ -16,6 +16,10 @@ class CompaniesController < ApplicationController
     end
   end
 
+  def payment_settings
+    @enabled_payment_methods = PaymentMethod.query_for_enabled
+  end
+
   private
 
   def edit_company_params
