@@ -18,7 +18,8 @@ describe 'Owner choose payment method' do
     expect(page).not_to have_content(payment3.name)
   end
 
-  it 'sees configured methods' do
+  # TODO: testar com setting que não seja de owner.company
+  it 'and sees configured methods' do
     owner = create(:user, :complete_company_owner)
     company = owner.company
     company.accepted!
