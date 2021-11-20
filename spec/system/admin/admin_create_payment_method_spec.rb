@@ -9,6 +9,7 @@ describe 'administrator creates a new payment method' do
 
   it 'credit card successfully' do
     admin = create(:admin)
+    admin.confirm
     login_as admin, scope: :admin
 
     visit root_path
@@ -30,6 +31,7 @@ describe 'administrator creates a new payment method' do
 
   it 'no successfully when fields are blank' do
     admin = create(:admin)
+    admin.confirm
     login_as admin, scope: :admin
 
     visit root_path
