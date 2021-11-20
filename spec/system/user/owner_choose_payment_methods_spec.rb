@@ -23,9 +23,9 @@ describe 'Owner choose payment method' do
     company = owner.company
     company.accepted!
 
-    payment1 = create(:payment_method, :credit_card)
-    payment2 = create(:payment_method, :pix)
-    payment3 = create(:payment_method, :boleto)
+    payment1 = create(:payment_method, type_of: :credit_card)
+    payment2 = create(:payment_method, type_of: :pix)
+    payment3 = create(:payment_method, type_of: :boleto)
 
     credit_card_setting = create(
       :credit_card_setting, company:company, payment_method: payment1

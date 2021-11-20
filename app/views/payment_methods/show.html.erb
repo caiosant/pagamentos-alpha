@@ -7,6 +7,7 @@
 </div>
 <% if admin_signed_in? %>
   <p>Nome: <%= @payment_method.name %></p>
+  <p>Tipo: <%= PaymentMethod.human_type_of_name(@payment_method.name) %></p>
   <p>Taxa (%): <%= @payment_method.fee %></p>
   <p>Taxa máxima (R$): <%= @payment_method.maximum_fee %></p>
   <p>status: <%= @payment_method.status %></p>

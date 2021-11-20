@@ -29,6 +29,19 @@
   </div>
 
   <div>
+    <%= f.label :type_of %>
+
+    <%= 
+    f.select :type_of, 
+    @payment_types_dropdown
+    %>
+
+    <% @payment_method.errors.full_messages_for(:type_of).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
     <%= f.label :icon, 'Ícone' %>
     <%= f.file_field :icon %>
 
