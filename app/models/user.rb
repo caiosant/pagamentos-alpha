@@ -8,7 +8,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  after_create :check_if_create_company
+  before_validation :check_ownership_and_company_unless_already_set
+  after_validation :create_company!, if: :user_is_owner_without_company?
 
   def incomplete_company?
     company&.incomplete?
@@ -23,27 +24,34 @@ class User < ApplicationRecord
   end
 
   private
-  def check_if_user_is_an_owner
-    email_domain_query_element = "%@#{email.split('@')[-1]}"
-    same_email_domain_users = User.where(
-      'email LIKE :email_domain AND ID != :id', 
-      email_domain: email_domain_query_element, 
-      id: self.id
-    )
-    
-    if !owner && !self.company
-      self.owner = same_email_domain_users.empty?
-      self.company = same_email_domain_users.last.company if !self.owner
-    end
-    save
+  def same_email_domain_users_query
+    email_domain_query_element = "%@#{self.email.split('@')[-1]}"
+
+    User.where(
+      'email LIKE :email_domain', 
+      email_domain: email_domain_query_element
+    ).where.not(company: nil)
   end
 
-  def check_if_create_company
-    check_if_user_is_an_owner
+  def check_ownership_and_company_unless_already_set
+    return if self.owner || self.company
 
-    return unless !company && owner
+    same_email_domain_users = same_email_domain_users_query
+    
+    self.owner = same_email_domain_users.empty?
+    return if self.owner
 
-    create_company!
-    save
+    user_company = same_email_domain_users.first.company
+    
+    if user_company&.accepted?
+      self.company = user_company
+    else
+      self.errors.add :base, 'Sua empresa ainda não foi aceita no nosso sistema'
+    end
+
+  end
+
+  def user_is_owner_without_company?
+    !company && owner
   end
 end
