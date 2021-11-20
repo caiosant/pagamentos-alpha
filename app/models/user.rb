@@ -24,7 +24,7 @@ class User < ApplicationRecord
   end
 
   private
-  def same_email_domain_users_query
+  def query_same_email_domain_users
     email_domain_query_element = "%@#{self.email.split('@')[-1]}"
 
     User.where(
@@ -36,7 +36,7 @@ class User < ApplicationRecord
   def check_ownership_and_company_unless_already_set
     return if self.owner || self.company
 
-    same_email_domain_users = same_email_domain_users_query
+    same_email_domain_users = query_same_email_domain_users
     
     self.owner = same_email_domain_users.empty?
     return if self.owner
