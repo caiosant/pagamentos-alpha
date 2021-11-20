@@ -9,6 +9,7 @@ describe 'administrator disable a payment method' do
 
   it 'successfully' do
     admin = create(:admin)
+    admin.confirm
     payment_method = create(:payment_method)
     login_as admin, scope: :admin
     visit root_path

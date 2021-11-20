@@ -61,9 +61,9 @@ describe 'adminstrator try to create a account' do
     visit new_admin_registration_path
 
     fill_in 'Email', with: 'admin@pagapaga.com.br'
-    fill_in 'Password', with: '123456'
-    fill_in 'Password confirmation', with: '123456'
-    click_on 'Sign up'
+    fill_in 'Senha', with: '123456'
+    fill_in 'Confirmação da Senha', with: '123456'
+    click_on 'Cadastrar'
 
     mail = Devise.mailer.deliveries.first
 
@@ -79,8 +79,10 @@ describe 'adminstrator try to create a account' do
     visit new_admin_session_path
 
     fill_in 'Email', with: admin.email
-    fill_in 'Password', with: admin.password
-    click_on 'Log in'
+    fill_in 'Senha', with: admin.password
+    within 'form' do
+      click_on 'Entrar'
+    end
 
     expect(page).to have_content('Antes de continuar, confirme a sua conta.')
   end

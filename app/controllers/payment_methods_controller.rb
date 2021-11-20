@@ -1,6 +1,6 @@
 class PaymentMethodsController < ApplicationController
   before_action :authenticate_users!
-  before_action :authenticate_admin!, only: %i[new create show index]
+  before_action :authenticate_admin!, only: %i[new create show index disable enable]
 
   def index
     @payment_methods = PaymentMethod.all
@@ -27,6 +27,13 @@ class PaymentMethodsController < ApplicationController
   def disable
     @payment_method = PaymentMethod.find(params[:id])
     @payment_method.disabled!
+
+    redirect_to @payment_method
+  end
+
+  def enable
+    @payment_method = PaymentMethod.find(params[:id])
+    @payment_method.enabled!
 
     redirect_to @payment_method
   end
