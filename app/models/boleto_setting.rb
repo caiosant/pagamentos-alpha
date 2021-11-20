@@ -1,0 +1,2 @@
+class BoletoSetting < PaymentSetting
+end

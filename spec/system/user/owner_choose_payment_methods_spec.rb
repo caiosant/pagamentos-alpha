@@ -47,8 +47,6 @@ describe 'Owner choose payment method' do
     expect(page).to have_content(boleto_setting.bank_code)
     expect(page).to have_content(boleto_setting.agency_number)
     expect(page).to have_content(boleto_setting.account_number)
-
-
   end
 
   it 'as credit card successfully' do

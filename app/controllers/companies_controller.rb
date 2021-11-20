@@ -18,6 +18,7 @@ class CompaniesController < ApplicationController
 
   def payment_settings
     @enabled_payment_methods = PaymentMethod.query_for_enabled
+    # @pix_settings = PixSetting.all
   end
 
   private
