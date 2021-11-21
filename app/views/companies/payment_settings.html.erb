@@ -1,7 +1,9 @@
 <div>
-    <span><%= t('.new_payment_setting') %></span>
-    <% @enabled_payment_methods.each do |payment_method| %>
-        <span><%= link_to payment_method.name, root_path %></span>
+    <% PaymentMethod.human_attribute_types.each do |payment_method_type| %>
+        <span>
+        <%= t('.new_payment_setting_prefix') %>
+        <%= link_to payment_method_type.downcase, root_path %>
+        </span>
     <% end %>
 </div>
 

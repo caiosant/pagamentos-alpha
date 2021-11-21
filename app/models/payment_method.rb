@@ -18,6 +18,14 @@ class PaymentMethod < ApplicationRecord
     PaymentMethod.human_attribute_name("type_of.#{type_of_key}")
   end
 
+  def self.types
+    PaymentMethod.type_ofs.keys
+  end
+
+  def self.human_attribute_types
+    self.types.map { |payment_type| self.human_type_of_name payment_type }
+  end
+
   def self.payment_types_dropdown
     type_keys = PaymentMethod.type_ofs.keys
     dropdown_list = []
