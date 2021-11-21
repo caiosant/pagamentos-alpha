@@ -13,7 +13,7 @@
 <% end %>
 
 <% if @payment_method.enabled? %>
-  <%= link_to 'Desabilitar método de pagamento', disable_payment_method_path(@payment_method.id), method: :post %>
+  <%= link_to 'Desabilitar método de pagamento', disable_admin_payment_method_path(@payment_method.id), method: :post %>
 <% elsif %>
-<%= link_to 'Habilitar método de pagamento', enable_payment_method_path(@payment_method.id), method: :post %>
+<%= link_to 'Habilitar método de pagamento', enable_admin_payment_method_path(@payment_method.id), method: :post %>
 <% end %>

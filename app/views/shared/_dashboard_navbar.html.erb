@@ -1,10 +1,8 @@
-<header class="text-gray-600 body-font border-b-2 border-gray-600 bg-white h-10">
-  <div class="flex justify-between items-center space-x-7">
-    <nav>
+<header class="text-gray-600 body-font bg-white">
+    <nav class="flex justify-start mb-4 border-b border-gray-600">
       <% if current_admin %>
-        <%= link_to 'Criar método de pagamento', new_payment_method_path %>
-        <%= link_to 'Listar métodos de pagamentos', payment_methods_path %>
+        <%= link_to 'Criar método de pagamento', new_admin_payment_method_path, class: "mx-5 py-2" %>
+        <%= link_to 'Listar métodos de pagamentos', admin_payment_methods_path, class: "mx-5 py-2" %>
       <% end %>
     </nav>
-  </div>
 </header>

@@ -1,4 +1,4 @@
-class PaymentMethodsController < ApplicationController
+class Admin::PaymentMethodsController < ApplicationController
   before_action :authenticate_users!
   before_action :authenticate_admin!, only: %i[new create show index disable enable]
 
@@ -18,7 +18,7 @@ class PaymentMethodsController < ApplicationController
     @payment_method = PaymentMethod.new(payment_method_params)
 
     if @payment_method.save
-      redirect_to @payment_method
+      redirect_to [:admin, @payment_method]
     else
       render :new
     end
@@ -28,14 +28,14 @@ class PaymentMethodsController < ApplicationController
     @payment_method = PaymentMethod.find(params[:id])
     @payment_method.disabled!
 
-    redirect_to @payment_method
+    redirect_to [:admin, @payment_method]
   end
 
   def enable
     @payment_method = PaymentMethod.find(params[:id])
     @payment_method.enabled!
 
-    redirect_to @payment_method
+    redirect_to [:admin, @payment_method]
   end
 
   private

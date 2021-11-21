@@ -1,6 +1,6 @@
 <h3>Criar novo método de pagamento</h3>
 
-<%= form_with(model: @payment_method) do |f| %>
+<%= form_with(model: [:admin, @payment_method]) do |f| %>
   <div>
     <%= f.label :name%>
     <%= f.text_field :name %> 
