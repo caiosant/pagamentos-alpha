@@ -19,7 +19,7 @@ class CompaniesController < ApplicationController
   # TODO: autenticação de owner
   def payment_settings
     @enabled_payment_methods = PaymentMethod.query_for_enabled
-    @payment_settings = PaymentSetting.where(company: current_user.company)
+    @payment_settings = current_user.company.payment_settings
   end
 
   private

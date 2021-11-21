@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Owner creates credit card payment setting' do
-    it 'successfully' do
+    xit 'successfully' do
         credit_card_method = create(:payment_method)
         owner = create(:user, :complete_company_owner)
         owner.company.accepted!

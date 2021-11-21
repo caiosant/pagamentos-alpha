@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe 'Owner sees payment methods' do
-  it 'sucessfully' do
+describe 'Owner sees payment' do
+  xit 'methods sucessfully' do
     payment1, payment2, payment3 = create_list(:payment_methods, 3)
     payment3.disabled!
     owner = create(:user, :complete_company_owner)
@@ -19,23 +19,23 @@ describe 'Owner sees payment methods' do
   end
 
   # TODO: testar com setting que não seja de owner.company
-  xit 'and sees configured methods' do
+  it 'settings successfully' do
     owner = create(:user, :complete_company_owner)
     company = owner.company
     company.accepted!
 
-    payment1 = create(:payment_method, type_of: :credit_card)
-    payment2 = create(:payment_method, type_of: :pix)
-    payment3 = create(:payment_method, type_of: :boleto)
+    credit_card_method = create(:payment_method, :credit_card)
+    pix_method = create(:payment_method, :pix)
+    boleto_method = create(:payment_method, :boleto)
 
     credit_card_setting = create(
-      :credit_card_setting, company:company, payment_method: payment1
+      :credit_card_setting, company:company, payment_method: credit_card_method
     )
     pix_setting = create(
-      :pix_setting, company:company, payment_method: payment2
+      :pix_setting, company:company, payment_method: pix_method
     )
     boleto_setting = create(
-      :boleto_setting, company:company, payment_method: payment3
+      :boleto_setting, company:company, payment_method: boleto_method
     )
 
     login_as owner, scope: :user
@@ -50,13 +50,5 @@ describe 'Owner sees payment methods' do
     expect(page).to have_content(boleto_setting.account_number)
   end
 
-  it 'and can configure more than one method'
-
-  it 'and must be company owner'
-
-  it 'cannot choose if company is not approved'
-
-  it 'cannot choose same method twice'
-
-  it 'edit configured method'
+  it 'unless company is not approved'
 end

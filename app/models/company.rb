@@ -16,6 +16,10 @@ class Company < ApplicationRecord
   validates :billing_email, private_email: true, on: :update
   validates :cnpj, cnpj: true, on: :update
 
+  def payment_settings
+    self.pix_settings + self.credit_card_settings + self.boleto_settings
+  end
+
   private
 
   def any_essential_info_blank?
