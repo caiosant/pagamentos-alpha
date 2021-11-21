@@ -1,5 +1,8 @@
 class Company < ApplicationRecord
   has_many :users, dependent: :destroy
+  has_many :pix_settings
+  has_many :credit_card_settings
+  has_many :boleto_settings
 
   enum status: { incomplete: 0, pending: 10, accepted: 20, rejected: 30 }
 

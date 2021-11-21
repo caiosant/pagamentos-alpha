@@ -10,16 +10,16 @@ FactoryBot.define do
     payment_method
   end
 
-  factory :credit_card_setting, parent: :payment_setting do
+  factory :xcredit_card_setting, parent: :payment_setting do
     company_code { 'Yke0hLtqZKPVurU2eAEr' }
   end
 
-  factory :pix_setting, parent: :payment_setting do
+  factory :xpix_setting, parent: :payment_setting do
     pix_key { '11.111.111/1111-11' }
     bank_code { '075' }
   end
 
-  factory :boleto_setting, parent: :payment_setting do
+  factory :xboleto_setting, parent: :payment_setting do
     bank_code { '245' }
     agency_number { '229482394' }
     account_number { '3129039120' }

@@ -1,4 +1,8 @@
 class PaymentMethod < ApplicationRecord
+  has_many :pix_settings
+  has_many :credit_card_settings
+  has_many :boleto_settings
+
   has_one_attached :icon
   enum status: { enabled: 5, disabled: 10 }
   enum type_of: { pix: 0, boleto: 5, credit_card: 10 }
