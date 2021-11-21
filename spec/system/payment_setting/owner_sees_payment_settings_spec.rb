@@ -37,17 +37,20 @@ describe 'Owner sees payment' do
     boleto_setting = create(
       :boleto_setting, company:company, payment_method: boleto_method
     )
+    boleto_setting2 = create(
+      :boleto_setting, company:company, payment_method: boleto_method
+    )
 
     login_as owner, scope: :user
     visit company_path company
     click_on 'Meios de pagamento configurados'
 
-    expect(page).to have_content(pix_setting.pix_key)
-    expect(page).to have_content(pix_setting.bank_code)
-    expect(page).to have_content(credit_card_setting.company_code)
-    expect(page).to have_content(boleto_setting.bank_code)
-    expect(page).to have_content(boleto_setting.agency_number)
-    expect(page).to have_content(boleto_setting.account_number)
+    expect(page).to have_content("Chave PIX: #{pix_setting.pix_key}")
+    expect(page).to have_content("Código do banco: #{pix_setting.bank_code}")
+    expect(page).to have_content("Código do cartão: #{credit_card_setting.company_code}")
+    expect(page).to have_content("Código do banco: #{boleto_setting.bank_code}")
+    expect(page).to have_content("Número da agência: #{boleto_setting.agency_number}")
+    expect(page).to have_content("Número da agência: #{boleto_setting.account_number}")
   end
 
   it 'unless company is not approved'

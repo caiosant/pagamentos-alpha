@@ -7,21 +7,6 @@
 
 <div>
   <% @payment_settings.each do |ps| %>
-    <% if ps.class == PixSetting %>
-      <div>
-        <p>Chave pix: <%= ps.pix_key %></p>
-        <p>Código do banco: <%= ps.bank_code %></p>
-      </div>
-    <% elsif ps.class == CreditCardSetting %>
-      <div>
-        <p>Código: <%= ps.company_code %></p>
-      </div>
-    <% elsif ps.class == BoletoSetting %>
-      <div>
-        <p>Código do banco: <%= ps.bank_code %></p>
-        <p>Número da agência: <%= ps.agency_number %></p>
-        <p>Número da conta: <%= ps.account_number %></p>
-      </div>
-    <% end %>
+    <%= render partial: "payment_settings/#{ps.class}", locals: { payment_setting: ps } %>
   <% end %>
 </div>

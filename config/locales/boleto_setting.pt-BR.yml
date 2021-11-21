@@ -1,0 +1,10 @@
+---
+pt-BR:
+  activerecord:
+    models:
+      boleto_setting: 'Cartão de crédito'
+    attributes:
+      boleto_setting:
+        agency_number: 'Número da agência'
+        account_number: 'Número da conta'
+        bank_code: 'Código do banco'

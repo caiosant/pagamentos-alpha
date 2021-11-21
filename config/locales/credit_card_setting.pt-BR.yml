@@ -1,0 +1,10 @@
+---
+pt-BR:
+  activerecord:
+    models:
+      credit_card_setting: 'Cartão de crédito'
+    attributes:
+      credit_card_setting:
+        company_code: 'Código do cartão'
+
+

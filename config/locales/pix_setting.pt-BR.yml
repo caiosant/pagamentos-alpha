@@ -1,0 +1,9 @@
+---
+pt-BR:
+  activerecord:
+    models:
+      pix_setting: 'Pagamento PIX'
+    attributes:
+      pix_setting:
+        bank_code: 'Código do banco'
+        pix_key: 'Chave PIX'
