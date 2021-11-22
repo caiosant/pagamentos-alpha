@@ -41,6 +41,16 @@ describe 'Owner sees payment settings' do
     expect(page).to have_content("Número da agência: #{boleto_setting.account_number}")
   end
 
+  it 'unless company is not accepted' do
+    owner = create(:user, :complete_company_owner)
+    company = owner.company
+
+    login_as owner, scope: :user
+    visit company_path company
+    
+    expect(page).to_not have_content('Meios de pagamento configurados')
+  end
+
   it 'pix creation form successfully' do
     pix_method, pix_method2, pix_method3  = create_list(:payment_method, 3, :pix)
     pix_method3.disabled!
