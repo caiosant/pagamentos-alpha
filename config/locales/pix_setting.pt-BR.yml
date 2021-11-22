@@ -7,7 +7,7 @@ pt-BR:
       pix_setting:
         bank_code: 'Código do banco'
         pix_key: 'Chave PIX'
-        payment_method: 'Meio de pagamento'
+        payment_method_id: 'Meio de pagamento'
   pix_settings:
     new:
       register_new_message: 'Digite as informações abaixo para registrar um novo pagamento PIX:'

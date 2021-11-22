@@ -20,9 +20,9 @@
   </div>
 
   <div>
-    <%= f.label :payment_method %>
-    <%= f.select :payment_method, @payment_methods_dropdown %>
-    <% @pix_setting.errors.full_messages_for(:payment_method).each do |message| %>
+    <%= f.label :payment_method_id %>
+    <%= f.select :payment_method_id, @payment_methods_dropdown %>
+    <% @pix_setting.errors.full_messages_for(:payment_method_id).each do |message| %>
       <div><%= message %></div>
     <% end %>
   </div>
