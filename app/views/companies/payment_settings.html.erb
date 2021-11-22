@@ -1,8 +1,8 @@
 <div>
     <% PaymentMethod.human_attribute_types.each do |payment_method_type| %>
         <span>
-        <%= t('.new_payment_setting_prefix') %>
-        <%= link_to payment_method_type.downcase, root_path %>
+        <%#= t('.new_payment_setting_prefix') %>
+        <%= link_to "#{t('.new_payment_setting_prefix')} #{payment_method_type.downcase}", "/#{payment_method_type.downcase}_settings/new" %>
         </span>
     <% end %>
 </div>

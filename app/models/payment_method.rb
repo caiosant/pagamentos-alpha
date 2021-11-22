@@ -35,4 +35,14 @@ class PaymentMethod < ApplicationRecord
 
     dropdown_list
   end
+
+  def self.payment_methods_by_type_dropdown(payment_type)
+    payment_methods = PaymentMethod.where(type_of: payment_type, status: 'enabled')
+    dropdown_list = []
+    payment_methods.each do |payment_method|
+      dropdown_list << [payment_method.name, payment_method.id]
+    end
+
+    dropdown_list
+  end
 end

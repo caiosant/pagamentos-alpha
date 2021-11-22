@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   resources :companies, only: %i[edit update show] do 
     get '/payment_settings', to: 'companies#payment_settings'
   end
+
+  resources :pix_settings, only: %i[new create]
 end
