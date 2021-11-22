@@ -9,6 +9,7 @@ class PixSettingsController < ApplicationController
   def create
     @payment_methods_dropdown = PaymentMethod.payment_methods_by_type_dropdown('pix')
     @pix_setting = PixSetting.new(**pix_params, company: current_user.company)
+    @payment_methods_dropdown = PaymentMethod.payment_methods_by_type_dropdown('pix')
 
     if @pix_setting.save
       redirect_to company_payment_settings_path(current_user.company), notice: t('payment_settings.created_notice')

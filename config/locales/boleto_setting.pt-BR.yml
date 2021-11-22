@@ -2,9 +2,13 @@
 pt-BR:
   activerecord:
     models:
-      boleto_setting: 'Cartão de crédito'
+      boleto_setting: 'Pagamento por boleto'
     attributes:
       boleto_setting:
         agency_number: 'Número da agência'
         account_number: 'Número da conta'
         bank_code: 'Código do banco'
+        payment_method_id: 'Meio de pagamento'
+  boleto_settings:
+    new:
+      register_new_message: 'Digite as informações abaixo para registrar um novo pagamento por boleto:'

@@ -10,5 +10,8 @@ Rails.application.routes.draw do
   end
 
   resources :pix_settings, only: %i[new create]
+
+  resources :boleto_settings, only: %i[new create]
+
   resources :credit_card_settings, only: %i[new create]
 end
