@@ -23,8 +23,8 @@
         <%= link_to 'Logout', destroy_admin_session_path, method: :delete, class: "py-4 px-2 text-white font-medium hover:underline transition duration-300 mr-10" %>
       <% else %>
         <div class="md:flex items-center mr-10">
-          <%= link_to 'Cadastre-se', new_user_registration_path, class: "py-4 px-2 text-white font-medium hover:text-purple-800 transition duration-300" %>
-          <%= link_to 'Entrar', new_user_session_path, class: "py-4 px-2 text-white font-medium hover:text-purple-800 transition duration-300" %>
+          <%= link_to 'Cadastre-se', new_user_registration_path, class: "py-4 px-2 text-white font-medium hover:underline transition duration-300" %>
+          <%= link_to 'Entrar', new_user_session_path, class: "py-4 px-2 text-white font-medium hover:underline transition duration-300" %>
         </div>
       <% end %>
     </div>

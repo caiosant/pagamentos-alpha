@@ -7,7 +7,7 @@ describe 'Authenticated User try change status of a payment method' do
 
     login_as user, scope: :user
 
-    post "/payment_methods/#{payment_method.id}/disable"
+    post "/admin/payment_methods/#{payment_method.id}/disable"
 
     expect(response).to redirect_to(admin_session_path)
   end
@@ -17,7 +17,7 @@ describe 'Authenticated User try change status of a payment method' do
 
     login_as user, scope: :user
 
-    post "/payment_methods/#{payment_method.id}/enable"
+    post "/admin/payment_methods/#{payment_method.id}/enable"
 
     expect(response).to redirect_to(admin_session_path)
   end
