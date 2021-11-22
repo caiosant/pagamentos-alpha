@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :pix_setting do
-    pix_key { "MyString" }
-    bank_code { 1 }
-    company { nil }
-    payment_method { nil }
+    pix_key { "chave_pix2131" }
+    bank_code { 231 }
+    company
+    payment_method
   end
 end

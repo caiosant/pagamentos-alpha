@@ -24,8 +24,4 @@ describe 'Owner creates pix payment setting' do
       expect(page).to have_content('Código do banco: 245')
       expect(owner.company.payment_settings).to include(PixSetting.first)
     end
-
-    it 'but fails when entering invalid pix key(regex validation)'
-    it 'but fails when entering non existing bank code'
-    it 'but fails when leaving everything blank'
 end

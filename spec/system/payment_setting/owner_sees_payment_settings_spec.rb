@@ -47,7 +47,7 @@ describe 'Owner sees payment settings' do
 
     login_as owner, scope: :user
     visit company_path company
-    
+
     expect(page).to_not have_content('Meios de pagamento configurados')
   end
 
@@ -115,6 +115,4 @@ describe 'Owner sees payment settings' do
     expect(page).to have_content(boleto_method.name)
     expect(page).to have_content(boleto_method2.name)
   end
-
-  it 'unless company is not approved'
 end

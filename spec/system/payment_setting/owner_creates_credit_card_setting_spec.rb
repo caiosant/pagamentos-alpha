@@ -22,7 +22,4 @@ describe 'Owner creates credit card payment setting' do
     expect(page).to have_content('Código do cartão: 2456785847953874')
     expect(owner.company.payment_settings).to include(CreditCardSetting.first)
   end
-
-  it 'but fails when entering invalid code(regex validation)'
-  it 'but fails when leaving everything blank'
 end
