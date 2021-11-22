@@ -13,6 +13,16 @@ class Company < ApplicationRecord
   validates :billing_email, private_email: true, on: :update
   validates :cnpj, cnpj: true, on: :update
 
+  def blank_all_info!
+    self.cnpj = ''
+    self.legal_name = ''
+    self.billing_address = ''
+    self.billing_email = ''
+    self.status = :incomplete
+
+    save(validate: false)
+  end
+
   private
 
   def any_essential_info_blank?

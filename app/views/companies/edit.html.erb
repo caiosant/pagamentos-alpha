@@ -1,5 +1,9 @@
 <h2>
-<%= t '.ask_to_complete_company' %>
+  <% if @company.incomplete? %>
+    <%= t '.ask_to_complete_company' %>
+  <% elsif @company.accepted? %>
+    <%= t '.edit_company_message' %>
+  <% end %>
 </h2>
 
 <% if @company.errors.any? %>
