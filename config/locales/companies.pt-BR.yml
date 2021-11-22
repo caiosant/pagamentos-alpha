@@ -23,5 +23,6 @@ pt-BR:
       edit_company_message: 'Edite os dados da sua empresa nos campos abaixo'
     show:
       no_permission_alert: 'Você não tem permissão para ver os dados dessa empresa.'
+      token_explanation: 'Este token representa sua empresa na nossa API:'
     update:
       complete_success_notice: 'Registro feito com sucesso!'
