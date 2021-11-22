@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user_company_accepted
     authenticate_users!
-    redirect_to company_path(current_user.company), alert: t('.not_accepted_alert') unless current_user.accepted_company?
+    redirect_to company_path(current_user.company), alert: t('companies.not_accepted_alert') unless current_user.accepted_company?
   end
 
   def find_company_and_authenticate_owner

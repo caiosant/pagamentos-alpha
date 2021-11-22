@@ -1,5 +1,6 @@
 class PixSettingsController < ApplicationController
   before_action :authenticate_user!
+  before_action :authenticate_user_company_accepted
 
   def new
     @payment_methods_dropdown = PaymentMethod.payment_methods_by_type_dropdown('pix')
