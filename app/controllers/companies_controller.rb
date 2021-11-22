@@ -3,6 +3,7 @@ class CompaniesController < ApplicationController
   skip_before_action :redirect_empty_company_users, only: %i[edit update]
   before_action :find_company_and_authenticate_owner, only: %i[edit update]
   before_action :authenticate_company_user, only: %i[show]
+  before_action :authenticate_user_company_accepted, only: %i[payment_settings]
 
   def show; end
 
@@ -16,7 +17,6 @@ class CompaniesController < ApplicationController
     end
   end
 
-  # TODO: autenticação de company user
   def payment_settings
     @enabled_payment_methods = PaymentMethod.query_for_enabled
     @payment_settings = current_user.company.payment_settings

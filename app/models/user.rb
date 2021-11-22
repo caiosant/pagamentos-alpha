@@ -14,6 +14,10 @@ class User < ApplicationRecord
     company&.incomplete?
   end
 
+  def accepted_company?
+    company&.accepted?
+  end
+
   def owns?(received_company)
     received_company.owner == self
   end
