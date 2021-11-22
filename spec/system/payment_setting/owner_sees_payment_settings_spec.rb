@@ -63,7 +63,7 @@ describe 'Owner sees payment settings' do
     expect(page).to have_content(pix_method2.name)
   end
 
-  xit 'credit card creation form successfully' do
+  it 'credit card creation form successfully' do
     credit_card_method, credit_card_method2, credit_card_method3  = create_list(:payment_method, 3, :credit_card)
     credit_card_method3.disabled!
 
@@ -73,12 +73,11 @@ describe 'Owner sees payment settings' do
     login_as owner, scope: :user
     visit company_path owner.company
     click_on 'Meios de pagamento configurados'
-    click_on 'Configurar novo pix'
+    click_on 'Configurar novo cartão de crédito'
 
     expect(current_path).to eq(new_credit_card_setting_path)
-    expect(page).to have_content('Digite as informações abaixo para registrar um novo pagamento PIX:')
-    expect(page).to have_content('Chave PIX')
-    expect(page).to have_content('Código do banco')
+    expect(page).to have_content('Digite as informações abaixo para registrar um novo cartão de crédito:')
+    expect(page).to have_content('Código do cartão')
     expect(page).to have_content('Meio de pagamento')
     expect(page).to_not have_content(credit_card_method3.name)
     expect(page).to have_content(credit_card_method.name)

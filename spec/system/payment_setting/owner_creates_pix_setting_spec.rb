@@ -29,7 +29,3 @@ describe 'Owner creates pix payment setting' do
     it 'but fails when entering non existing bank code'
     it 'but fails when leaving everything blank'
 end
-
-# ('Chave PIX')
-#     expect(page).to have_content('Código do banco')
-#     expect(page).to have_content('Meio de pagamento')

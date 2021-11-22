@@ -7,6 +7,7 @@ class PixSettingsController < ApplicationController
   end
 
   def create
+    @payment_methods_dropdown = PaymentMethod.payment_methods_by_type_dropdown('pix')
     @pix_setting = PixSetting.new(**pix_params, company: current_user.company)
 
     if @pix_setting.save

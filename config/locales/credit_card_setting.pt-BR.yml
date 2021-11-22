@@ -6,5 +6,7 @@ pt-BR:
     attributes:
       credit_card_setting:
         company_code: 'Código do cartão'
-
-
+        payment_method_id: 'Meio de pagamento'
+  credit_card_settings:
+    new:
+      register_new_message: 'Digite as informações abaixo para registrar um novo cartão de crédito:'
