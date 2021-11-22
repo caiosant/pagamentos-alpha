@@ -1,0 +1,22 @@
+<h2><%= t('.register_new_message') %></h2>
+
+<%= form_with(model: @credit_card_setting) do |f| %>
+  <div>
+    <%= f.label :company_code %>
+    <%= f.text_field :company_code %> 
+
+    <% @credit_card_setting.errors.full_messages_for(:company_code).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :payment_method_id %>
+    <%= f.select :payment_method_id, @payment_methods_dropdown %>
+    <% @credit_card_setting.errors.full_messages_for(:payment_method_id).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <%= f.submit %>
+<% end %>
