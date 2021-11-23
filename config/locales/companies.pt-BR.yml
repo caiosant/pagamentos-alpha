@@ -14,7 +14,7 @@ pt-BR:
       company/status:
         incomplete: 'incompleta'
         pending: 'pendente'
-        aproved: 'aprovada'
+        accepted: 'aprovada'
         rejected: 'rejeitada'
   companies:
     edit:

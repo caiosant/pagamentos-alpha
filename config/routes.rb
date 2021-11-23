@@ -5,5 +5,11 @@ Rails.application.routes.draw do
   resources :payment_methods, only: %i[new create show destroy index]
 
   root 'home#index'
-  resources :companies, only: %i[index edit update show]
+  resources :companies, only: %i[index edit update show], shallow: true do
+
+    get 'pending', on: :collection
+
+    post 'accept', on: :member
+    post 'reject', on: :member
+  end
 end
