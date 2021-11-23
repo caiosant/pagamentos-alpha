@@ -1,3 +1,11 @@
+<% if current_user&.owns?(@company) %>
+  <% if @company.pending? %>
+    <%= link_to 'Cancelar pedido de registro', company_cancel_registration_path(@company, id: @company.id), method: :put %>
+  <% else %>
+    <%= link_to 'Editar dados', edit_company_path(@company) %>
+  <% end %>
+<% end %>
+
 <div>
     <span><%= Company.human_attribute_name('status') %>: <%= Company.human_attribute_name("status.#{@company.status}") %></span>
 </div>

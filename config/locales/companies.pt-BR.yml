@@ -14,13 +14,14 @@ pt-BR:
       company/status:
         incomplete: 'incompleta'
         pending: 'pendente'
-        aproved: 'aprovada'
+        accepted: 'aprovada'
         rejected: 'rejeitada'
   companies:
     not_accepted_alert: 'Esta empresa ainda não foi aprovada'
     edit:
       no_permission_alert: 'Você não tem permissão para alterar os dados dessa empresa.'
       ask_to_complete_company: 'Você já se cadastrou no nosso sistema, mas agora precisa registrar a sua empresa! Preencha os dados abaixo para podermos conhecer sua empresa:'
+      edit_company_message: 'Edite os dados da sua empresa nos campos abaixo'
     show:
       no_permission_alert: 'Você não tem permissão para ver os dados dessa empresa.'
       configure_payment: 'Meios de pagamento configurados'
