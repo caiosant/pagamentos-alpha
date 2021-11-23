@@ -11,5 +11,14 @@ RSpec.describe PixSetting, type: :model do
     it { should belong_to :payment_method }
   end
 
-  it 'but fails when entering non existing bank code'
+  it 'successfully' do
+    pix_setting = build(:pix_setting)
+    expect(pix_setting.save).to eq(true)
+  end
+
+
+  it 'but fails when entering non existing bank code' do
+    pix_setting = build(:pix_setting, bank_code: '21313213131')
+    expect(pix_setting.save).to eq(false)
+  end
 end

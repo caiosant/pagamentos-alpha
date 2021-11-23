@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe BoletoSetting, type: :model do
-  context 'validations' do
+  context 'presence' do
     it { should validate_presence_of(:agency_number) }
     it { should validate_presence_of(:account_number) }
     it { should validate_presence_of(:bank_code) }
@@ -12,9 +12,13 @@ RSpec.describe BoletoSetting, type: :model do
     it { should belong_to :payment_method }
   end
 
-  it 'but fails when entering non existing bank code'
-  
-  xit 'but fails when entering invalid agency number(regex validation)'
-  xit 'but fails when entering invalid account number(regex validation)'
-  xit 'but fails when leaving everything blank'
+  it 'successfully' do
+    boleto_setting = build(:boleto_setting)
+    expect(boleto_setting.save).to eq(true)
+  end
+
+  it 'but fails when entering non existing bank code' do
+    boleto_setting = build(:boleto_setting, bank_code: '21313213131')
+    expect(boleto_setting.save).to eq(false)
+  end
 end

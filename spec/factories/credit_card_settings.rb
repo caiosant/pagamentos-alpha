@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :credit_card_setting do
-    company_code { "MyString" }
-    company { nil }
-    payment_method { nil }
+    company_code { "1231313" }
+    company
+    payment_method
   end
 end

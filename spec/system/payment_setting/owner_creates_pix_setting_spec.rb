@@ -14,14 +14,14 @@ describe 'Owner creates pix payment setting' do
       click_on 'Configurar novo pix'
 
       fill_in 'Chave PIX', with: '317283472634723'
-      fill_in 'Código do banco', with: '245'
+      fill_in 'Código do banco', with: '001'
       select pix_method.name, from: 'Meio de pagamento'
       click_on 'Criar Pagamento PIX'
 
       expect(current_path).to eq(company_payment_settings_path owner.company)
       expect(page).to have_content('Pagamento configurado com sucesso')
       expect(page).to have_content('Chave PIX: 317283472634723')
-      expect(page).to have_content('Código do banco: 245')
+      expect(page).to have_content('Código do banco: 001')
       expect(owner.company.payment_settings).to include(PixSetting.first)
     end
 end

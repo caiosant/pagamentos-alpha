@@ -10,6 +10,8 @@ RSpec.describe CreditCardSetting, type: :model do
     it { should belong_to :payment_method }
   end
 
-  xit 'but fails when entering invalid code(regex validation)'
-  xit 'but fails when leaving everything blank'
+  it 'successfully' do
+    credit_card_setting = build(:credit_card_setting)
+    expect(credit_card_setting.save).to eq(true)
+  end
 end

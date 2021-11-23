@@ -57,9 +57,9 @@ ActiveRecord::Schema.define(version: 2021_11_22_002541) do
   end
 
   create_table "boleto_settings", force: :cascade do |t|
-    t.integer "agency_number"
-    t.integer "account_number"
-    t.integer "bank_code"
+    t.string "agency_number"
+    t.string "account_number"
+    t.string "bank_code"
     t.integer "company_id", null: false
     t.integer "payment_method_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(version: 2021_11_22_002541) do
 
   create_table "pix_settings", force: :cascade do |t|
     t.string "pix_key"
-    t.integer "bank_code"
+    t.string "bank_code"
     t.integer "company_id", null: false
     t.integer "payment_method_id", null: false
     t.datetime "created_at", precision: 6, null: false

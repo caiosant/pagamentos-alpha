@@ -15,7 +15,7 @@ describe 'Owner creates boleto payment setting' do
   
         fill_in 'Número da conta', with: '317283472634723'
         fill_in 'Número da agência', with: '21321312421412'
-        fill_in 'Código do banco', with: '245'
+        fill_in 'Código do banco', with: '001'
         select boleto_method.name, from: 'Meio de pagamento'
         click_on 'Criar Pagamento por boleto'
   
@@ -23,7 +23,7 @@ describe 'Owner creates boleto payment setting' do
         expect(page).to have_content('Pagamento configurado com sucesso')
         expect(page).to have_content('Número da conta: 317283472634723')
         expect(page).to have_content('Número da agência: 21321312421412')
-        expect(page).to have_content('Código do banco: 245')
+        expect(page).to have_content('Código do banco: 001')
         expect(owner.company.payment_settings).to include(BoletoSetting.first)
     end
 end
