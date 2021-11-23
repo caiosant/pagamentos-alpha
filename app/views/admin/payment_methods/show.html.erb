@@ -1,0 +1,33 @@
+<div class="flex border lg:w-1/2 max-w-ms mx-10 my-4 rounded-lg overflow-hidden">
+  <% if @payment_method.icon.attached? %>
+    <div class="flex items-center justify-center w-28 h-auto border-r p-1">
+      <%= image_tag "#{@payment_method.icon.filename}" %>
+    </div>
+  <% end %>
+
+  <div class="p-2">
+    <% if admin_signed_in? %>
+      <p class="px-4 text-purple-900 font-semibold hover:text-purple-800 transition duration-300"">
+        Nome: <%= @payment_method.name %>
+      </p>
+      <p class="pl-4 text-gray-700 font-medium">Taxa (%): <%= @payment_method.fee %></p>
+      <p class="pl-4 text-gray-700 font-medium">Taxa máxima: <%= number_to_currency @payment_method.maximum_fee %></p>
+      <p class="pl-4 text-gray-700 font-medium">Tipo: <%= PaymentMethod.human_type_of_name(@payment_method.name) %></p>
+      <p class="pl-4 text-gray-700 font-medium">Status: 
+        <% if @payment_method.enabled? %>
+          <span class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-md"><%= t @payment_method.status %></span>
+        <% else %>
+          <span class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-md"><%= t @payment_method.status %></span>
+        <% end %>
+      </p>
+    <% end %>
+  </div>
+<div class="mx-5 lg:ml-20 my-auto">
+<% if @payment_method.enabled? %>
+    <%= link_to 'Desabilitar', disable_admin_payment_method_path(@payment_method.id), method: :post, class: "bg-white hover:text-red-700 text-red-600 font-bold mb-2 py-2 px-4 border border-red-600 rounded focus:outline-none" %>
+<% elsif %>
+  <%= link_to 'Habilitar', enable_admin_payment_method_path(@payment_method.id), method: :post, class: "bg-white hover:text-green-700 text-green-600 font-bold mb-2 py-2 px-4 border border-green-600 rounded focus:outline-none" %>
+<% end %>
+</div>
+  
+</div>

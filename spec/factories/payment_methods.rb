@@ -21,8 +21,4 @@ FactoryBot.define do
       type_of { 'boleto' }
     end
   end
-
-  factory :payment_methods, parent: :payment_method do
-    sequence(:name) { |n| "Payment #{n}" }
-  end
 end

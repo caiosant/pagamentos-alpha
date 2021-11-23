@@ -24,5 +24,10 @@
         <dd> <%= @company.billing_email %></dd>
         <dt><%= Company.human_attribute_name('billing_address') %>: </dt>
         <dd> <%= @company.billing_address %></dd>
+        <% if @company.token %>
+          <%= t('.token_explanation') %> <br>
+          <dt><%= Company.human_attribute_name('token') %>: </dt>
+          <dd> <%= @company.token %></dd>
+        <% end %>
     </dl>
 </div>

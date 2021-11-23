@@ -2,7 +2,14 @@ Rails.application.routes.draw do
   devise_for :users
   devise_for :admins
 
-  resources :payment_methods, only: %i[new create show destroy index]
+  namespace :admin do
+    get 'dashboard', to: 'dashboard#index', as: '/dashboard'
+
+    resources :payment_methods, only: %i[new create show destroy index], shallow: true do
+      post 'enable', on: :member
+      post 'disable', on: :member
+    end
+  end
 
   root 'home#index'
   resources :companies, only: %i[edit update show] do
@@ -15,5 +22,4 @@ Rails.application.routes.draw do
   resources :boleto_settings, only: %i[new create]
 
   resources :credit_card_settings, only: %i[new create]
-  
 end

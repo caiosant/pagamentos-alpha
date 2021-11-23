@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(version: 2021_11_22_002541) do
     t.integer "status", default: 0
     t.string "billing_email"
     t.text "billing_address"
+    t.string "token", default: ""
   end
 
   create_table "credit_card_settings", force: :cascade do |t|

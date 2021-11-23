@@ -1,0 +1,59 @@
+<h3 class="block text-gray-700 text-lg font-bold ml-5 my-2">Criar novo método de pagamento</h3>
+<div class="max-w-xs m-5 text-center rounded-lg shadow-md p-4 bg-white border">
+
+<%= form_with(model: [:admin, @payment_method]) do |f| %>
+  <div class="form-m-w-content">
+  <div class="mb-4">
+    <%= f.label :name, class: "form-label"%>
+    <%= f.text_field :name, class: "form-text-field" %> 
+
+    <% @payment_method.errors.full_messages_for(:name).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :fee, class: "form-label" %>
+    <%= f.number_field :fee, class: "form-text-field" %>
+
+    <% @payment_method.errors.full_messages_for(:fee).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :maximum_fee, class: "form-label" %>
+    <%= f.number_field :maximum_fee, class: "form-text-field" %>
+    
+    <% @payment_method.errors.full_messages_for(:maximum_fee).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :type_of, class: "form-label" %>
+
+    <%= 
+    f.select :type_of, 
+    @payment_types_dropdown,
+    class: "form-text-field" 
+    %>
+
+    <% @payment_method.errors.full_messages_for(:type_of).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div class="flex flex-wrap mb-4">
+    <%= f.label :icon, class: "form-label" %>
+    <%= f.file_field :icon, class: "flex " %>
+
+    <% @payment_method.errors.full_messages_for(:icon).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <%= f.submit 'Salvar', class: "form-submit-button" %>
+  </div>
+<% end %>
+</div>
