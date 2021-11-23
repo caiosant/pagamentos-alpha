@@ -7,14 +7,14 @@ describe 'Subscription can be created' do
 
         login_as owner, scope: :user
 
-        get '/subscription/new'
+        get '/subscriptions/new'
 
         expect(response).to redirect_to(company_path(owner.company))
         expect(flash[:alert]).to eq('Esta empresa ainda não foi aprovada')
     end
 
     it 'unless user not logged in' do
-        get '/subscription/new'
+        get '/subscriptions/new'
         expect(response).to redirect_to(new_user_session_path)
     end
   end
@@ -25,14 +25,14 @@ describe 'Subscription can be created' do
 
         login_as owner, scope: :user
 
-        post '/subscription/create'
+        post '/subscriptions'
 
         expect(response).to redirect_to(company_path(owner.company))
         expect(flash[:alert]).to eq('Esta empresa ainda não foi aprovada')
     end
 
     it 'unless user not logged in' do
-        post '/subscription/create'
+        post '/subscriptions'
         expect(response).to redirect_to(new_user_session_path)
     end
   end

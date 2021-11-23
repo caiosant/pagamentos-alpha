@@ -15,7 +15,8 @@ describe 'Owner creates subscription' do
     expect(page).to have_content('Assinatura criada com sucesso')
     expect(page).to have_content('assinatura do melhor video')
     expect(page).to have_content('Estado: Habilitado')
-    expect(page).to have_content("Token: #{Subscription.last.token}")
+    expect(Subscription.last.token.length).to eq(20)
+    expect(page).to have_content("Token de integração: #{Subscription.last.token}")
   end
 
   it 'but cant see register if not approved' do
