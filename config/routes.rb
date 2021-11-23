@@ -6,7 +6,6 @@ Rails.application.routes.draw do
 
   root 'home#index'
   resources :companies, only: %i[index edit update show], shallow: true do
-
     get 'pending', on: :collection
 
     post 'accept', on: :member

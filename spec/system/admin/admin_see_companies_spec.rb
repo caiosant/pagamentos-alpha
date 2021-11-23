@@ -70,4 +70,24 @@ describe 'Admin try to see all companies' do
       expect(page).to have_content('Aprovada')
     end
   end
+
+  context 'and try to reject a company' do
+    it 'sucessfully' do
+      user1 = create(:user, :complete_company_owner)
+      admin = create(:admin)
+
+      login_as admin, scope: :admin
+      visit root_path
+      click_on 'Gerenciar Empresas'
+      click_on 'Empresas Pendentes'
+      click_on 'Rejeitar'
+
+      expect(page).to have_content('Owner')
+      expect(page).to have_content('Empresa')
+      expect(page).to have_content('Status')
+      expect(page).to have_content(user1.email)
+      expect(page).to have_content(user1.company.legal_name)
+      expect(page).to have_content('Aprovada')
+    end
+  end
 end
