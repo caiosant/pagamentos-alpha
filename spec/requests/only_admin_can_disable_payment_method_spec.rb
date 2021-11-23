@@ -9,7 +9,7 @@ describe 'Authenticated User try change status of a payment method' do
 
     post "/admin/payment_methods/#{payment_method.id}/disable"
 
-    expect(response).to redirect_to(admin_session_path)
+    expect(response).to redirect_to(edit_company_path user.company)
   end
   it 'and cannot enable' do
     user = create(:user)
@@ -19,6 +19,6 @@ describe 'Authenticated User try change status of a payment method' do
 
     post "/admin/payment_methods/#{payment_method.id}/enable"
 
-    expect(response).to redirect_to(admin_session_path)
+    expect(response).to redirect_to(edit_company_path user.company)
   end
 end
