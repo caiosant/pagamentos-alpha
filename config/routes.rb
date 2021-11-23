@@ -15,4 +15,9 @@ Rails.application.routes.draw do
   resources :companies, only: %i[edit update show] do
     put '/cancel_registration', to: 'companies#cancel_registration'
   end
+
+  resources :subscriptions, only: %i[new create show] do
+    post 'enable', on: :member
+    post 'disable', on: :member
+  end
 end

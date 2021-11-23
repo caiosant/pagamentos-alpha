@@ -1,0 +1,11 @@
+<h2><%= @subscription.name %></h2>
+<div>
+    <dl>
+        <dt><%= Subscription.human_attribute_name('token') %>: </dt>
+        <dd> <%= @subscription.name %></dd>
+        <dt><%= Subscription.human_attribute_name('name') %>: </dt>
+        <dd> <%= @subscription.name %></dd>
+        <dt><%= Subscription.human_attribute_name('status') %>: </dt>
+        <dd><%= Subscription.human_attribute_name("status.#{@subscription.status}") %></dd>
+    </dl>
+</div>

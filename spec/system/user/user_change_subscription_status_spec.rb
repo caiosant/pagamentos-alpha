@@ -30,7 +30,7 @@ describe 'Owner changes subscription status' do
     it 'only disabled' do
       owner = create(:user, :complete_company_owner)
       subscription = create(:subscription, company: owner.company)
-      subscription.accepted!
+      subscription.enabled!
   
       login_as owner, scope: :user
       visit subscription_path subscription

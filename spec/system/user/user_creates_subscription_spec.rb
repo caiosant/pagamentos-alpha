@@ -10,13 +10,12 @@ describe 'Owner creates subscription' do
     click_on 'Registrar nova assinatura'
 
     fill_in 'Nome', with: 'assinatura do melhor video'
-    click_on 'Criar'
+    click_on 'Criar Assinatura'
 
     expect(page).to have_content('Assinatura criada com sucesso')
-    expect(page).to have_content('Nome: assinatura do melhor video')
+    expect(page).to have_content('assinatura do melhor video')
     expect(page).to have_content('Estado: Habilitado')
     expect(page).to have_content("Token: #{Subscription.last.token}")
-
   end
 
   it 'but cant see register if not approved' do
