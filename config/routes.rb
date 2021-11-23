@@ -22,4 +22,6 @@ Rails.application.routes.draw do
   resources :boleto_settings, only: %i[new create]
 
   resources :credit_card_settings, only: %i[new create]
+
+  resources :products, only: %i[new creat show index]
 end
