@@ -22,4 +22,10 @@ Rails.application.routes.draw do
   resources :boleto_settings, only: %i[new create]
 
   resources :credit_card_settings, only: %i[new create]
+
+  namespace :api do
+    namespace :v1 do
+      resources :customer, only: %i[create]
+    end
+  end
 end
