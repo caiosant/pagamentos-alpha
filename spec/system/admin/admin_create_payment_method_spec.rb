@@ -21,9 +21,12 @@ describe 'administrator creates a new payment method' do
     fill_in 'Taxa', with: 5.0
     fill_in 'Taxa máxima', with: 1000.0
 
+    select 'Cartão de crédito', from: 'payment_method_type_of'
+
     click_on 'Salvar'
 
     expect(page).to have_content('Nome: Cartão de Crédito Visa')
+    expect(page).to have_content('Tipo: Cartão de crédito')
     expect(page).to have_content('Taxa (%): 5.0')
     expect(page).to have_content('Taxa máxima: R$ 1.000,00')
   end
@@ -31,8 +34,8 @@ describe 'administrator creates a new payment method' do
   it 'no successfully when fields are blank' do
     admin = create(:admin)
     admin.confirm
-    login_as admin, scope: :admin
 
+    login_as admin, scope: :admin
     visit root_path
 
     click_on 'Criar novo'

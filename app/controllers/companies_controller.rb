@@ -4,6 +4,7 @@ class CompaniesController < ApplicationController
   before_action :find_company_and_authenticate_owner, only: %i[edit update cancel_registration]
   before_action :redirect_if_pending_company, only: %i[edit update]
   before_action :authenticate_company_user, only: %i[show]
+  before_action :authenticate_user_company_accepted, only: %i[payment_settings]
 
   def show; end
 
@@ -16,6 +17,11 @@ class CompaniesController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def payment_settings
+    @enabled_payment_methods = PaymentMethod.query_for_enabled
+    @payment_settings = current_user.company.payment_settings
   end
 
   def cancel_registration

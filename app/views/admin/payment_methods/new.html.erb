@@ -30,6 +30,20 @@
     <% end %>
   </div>
 
+  <div class="mb-4">
+    <%= f.label :type_of, class: "form-label" %>
+
+    <%= 
+    f.select :type_of, 
+    @payment_types_dropdown,
+    class: "form-text-field" 
+    %>
+
+    <% @payment_method.errors.full_messages_for(:type_of).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
   <div class="flex flex-wrap mb-4">
     <%= f.label :icon, class: "form-label" %>
     <%= f.file_field :icon, class: "flex " %>

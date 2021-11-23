@@ -13,10 +13,12 @@ class Admin
 
     def new
       @payment_method = PaymentMethod.new
+      @payment_types_dropdown = PaymentMethod.payment_types_dropdown
     end
 
     def create
       @payment_method = PaymentMethod.new(payment_method_params)
+      @payment_types_dropdown = PaymentMethod.payment_types_dropdown
 
       if @payment_method.save
         redirect_to [:admin, @payment_method]

@@ -12,6 +12,7 @@
       </p>
       <p class="pl-4 text-gray-700 font-medium">Taxa (%): <%= @payment_method.fee %></p>
       <p class="pl-4 text-gray-700 font-medium">Taxa máxima: <%= number_to_currency @payment_method.maximum_fee %></p>
+      <p class="pl-4 text-gray-700 font-medium">Tipo: <%= PaymentMethod.human_type_of_name(@payment_method.name) %></p>
       <p class="pl-4 text-gray-700 font-medium">Status: 
         <% if @payment_method.enabled? %>
           <span class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-md"><%= t @payment_method.status %></span>

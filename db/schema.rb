@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_18_204305) do
+ActiveRecord::Schema.define(version: 2021_11_22_002541) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -56,6 +56,18 @@ ActiveRecord::Schema.define(version: 2021_11_18_204305) do
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
+  create_table "boleto_settings", force: :cascade do |t|
+    t.string "agency_number"
+    t.string "account_number"
+    t.string "bank_code"
+    t.integer "company_id", null: false
+    t.integer "payment_method_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_boleto_settings_on_company_id"
+    t.index ["payment_method_id"], name: "index_boleto_settings_on_payment_method_id"
+  end
+
   create_table "companies", force: :cascade do |t|
     t.string "cnpj"
     t.string "legal_name"
@@ -67,6 +79,16 @@ ActiveRecord::Schema.define(version: 2021_11_18_204305) do
     t.string "token", default: ""
   end
 
+  create_table "credit_card_settings", force: :cascade do |t|
+    t.string "company_code"
+    t.integer "company_id", null: false
+    t.integer "payment_method_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_credit_card_settings_on_company_id"
+    t.index ["payment_method_id"], name: "index_credit_card_settings_on_payment_method_id"
+  end
+
   create_table "payment_methods", force: :cascade do |t|
     t.string "name"
     t.decimal "fee"
@@ -74,6 +96,18 @@ ActiveRecord::Schema.define(version: 2021_11_18_204305) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status", default: 5
+    t.integer "type_of", default: 0
+  end
+
+  create_table "pix_settings", force: :cascade do |t|
+    t.string "pix_key"
+    t.string "bank_code"
+    t.integer "company_id", null: false
+    t.integer "payment_method_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_pix_settings_on_company_id"
+    t.index ["payment_method_id"], name: "index_pix_settings_on_payment_method_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -93,5 +127,11 @@ ActiveRecord::Schema.define(version: 2021_11_18_204305) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "boleto_settings", "companies"
+  add_foreign_key "boleto_settings", "payment_methods"
+  add_foreign_key "credit_card_settings", "companies"
+  add_foreign_key "credit_card_settings", "payment_methods"
+  add_foreign_key "pix_settings", "companies"
+  add_foreign_key "pix_settings", "payment_methods"
   add_foreign_key "users", "companies"
 end

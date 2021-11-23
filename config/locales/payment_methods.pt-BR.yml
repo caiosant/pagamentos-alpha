@@ -1,0 +1,22 @@
+---
+pt-BR:
+  enabled: 'Habilitado'
+  disabled: 'Desabilitado'
+  activerecord:
+    models:
+      payment_method: 'Método de Pagamento'
+    attributes:
+      payment_method/type_of:
+        pix: 'PIX'
+        credit_card: 'Cartão de crédito'
+        boleto: 'Boleto'
+      payment_method:
+        status: 'Estado de funcionamento'
+        name: 'Nome'
+        fee: 'Taxa'
+        maximum_fee: 'Taxa máxima'
+        icon: 'Ícone'
+  payment_methods:
+    index:
+      status_enebled_alert: 'O método de pagamento foi habilitado com sucesso!'
+      status_disabled_alert: 'O método de pagamento foi desabilitado com sucesso'

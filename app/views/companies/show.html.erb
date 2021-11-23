@@ -9,6 +9,11 @@
 <div>
     <span><%= Company.human_attribute_name('status') %>: <%= Company.human_attribute_name("status.#{@company.status}") %></span>
 </div>
+
+<% if @company.accepted? %>
+    <%= link_to t('.configure_payment'), company_payment_settings_path(@company) %>
+<% end %>
+
 <div>
     <dl>
         <dt><%= Company.human_attribute_name('legal_name') %>: </dt>

@@ -17,12 +17,16 @@ pt-BR:
         accepted: 'aprovada'
         rejected: 'rejeitada'
   companies:
+    not_accepted_alert: 'Esta empresa ainda não foi aprovada'
     edit:
       no_permission_alert: 'Você não tem permissão para alterar os dados dessa empresa.'
       ask_to_complete_company: 'Você já se cadastrou no nosso sistema, mas agora precisa registrar a sua empresa! Preencha os dados abaixo para podermos conhecer sua empresa:'
       edit_company_message: 'Edite os dados da sua empresa nos campos abaixo'
     show:
       no_permission_alert: 'Você não tem permissão para ver os dados dessa empresa.'
+      configure_payment: 'Meios de pagamento configurados'
       token_explanation: 'Este token representa sua empresa na nossa API:'
     update:
       complete_success_notice: 'Registro feito com sucesso!'
+    payment_settings:
+      new_payment_setting_prefix: 'Configurar novo'

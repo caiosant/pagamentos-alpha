@@ -1,0 +1,31 @@
+<h2><%= t('.register_new_message') %></h2>
+
+<%= form_with(model: @pix_setting) do |f| %>
+  <div>
+    <%= f.label :pix_key %>
+    <%= f.text_field :pix_key %> 
+
+    <% @pix_setting.errors.full_messages_for(:pix_key).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :bank_code %>
+    <%= f.text_field :bank_code %> 
+
+    <% @pix_setting.errors.full_messages_for(:bank_code).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :payment_method_id %>
+    <%= f.select :payment_method_id, @payment_methods_dropdown %>
+    <% @pix_setting.errors.full_messages_for(:payment_method_id).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+
+  <%= f.submit %>
+<% end %>
