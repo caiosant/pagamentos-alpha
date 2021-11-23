@@ -7,7 +7,10 @@ RSpec.describe CreditCardSetting, type: :model do
 
   context 'associations' do
     it { should belong_to :company }
-    it { should belong_to :payment_method }
+    it {
+      should belong_to(:payment_method)
+        .conditions(type_of: :credit_card)
+    }
   end
 
   it 'successfully' do

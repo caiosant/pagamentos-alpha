@@ -4,6 +4,6 @@ FactoryBot.define do
     account_number { '1' }
     bank_code { '001' }
     company
-    payment_method
+    payment_method { create :payment_method, :boleto }
   end
 end

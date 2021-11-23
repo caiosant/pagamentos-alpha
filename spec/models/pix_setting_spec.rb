@@ -8,7 +8,10 @@ RSpec.describe PixSetting, type: :model do
 
   context 'associations' do
     it { should belong_to :company }
-    it { should belong_to :payment_method }
+    it {
+      should belong_to(:payment_method)
+        .conditions(type_of: :pix)
+    }
   end
 
   it 'successfully' do
