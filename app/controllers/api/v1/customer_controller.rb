@@ -1,6 +1,5 @@
 class Api::V1::CustomerController < Api::V1::ApiController
   def create
-    byebug
-    render status: 200, json: PaymentMethod.first
+    render status: 200, json: {token: '73grr29y'}.as_json
   end
 end
