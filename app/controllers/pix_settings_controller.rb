@@ -20,6 +20,7 @@ class PixSettingsController < ApplicationController
   end
 
   private
+
   def pix_params
     params.require(:pix_setting).permit(:pix_key, :bank_code, :payment_method_id)
   end

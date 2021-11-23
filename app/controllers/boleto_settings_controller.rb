@@ -19,6 +19,7 @@ class BoletoSettingsController < ApplicationController
   end
 
   private
+
   def boleto_params
     params.require(:boleto_setting).permit(:agency_number, :account_number, :bank_code, :payment_method_id)
   end

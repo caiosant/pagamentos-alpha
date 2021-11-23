@@ -1,8 +1,8 @@
 class Company < ApplicationRecord
   has_many :users, dependent: :destroy
-  has_many :pix_settings
-  has_many :credit_card_settings
-  has_many :boleto_settings
+  has_many :pix_settings, dependent: :destroy
+  has_many :credit_card_settings, dependent: :destroy
+  has_many :boleto_settings, dependent: :destroy
 
   enum status: { incomplete: 0, pending: 10, accepted: 20, rejected: 30 }
 
@@ -17,7 +17,7 @@ class Company < ApplicationRecord
   validates :cnpj, cnpj: true, on: :update
 
   def payment_settings
-    self.pix_settings + self.credit_card_settings + self.boleto_settings
+    pix_settings + credit_card_settings + boleto_settings
   end
 
   private

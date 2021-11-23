@@ -19,6 +19,7 @@ class CreditCardSettingsController < ApplicationController
   end
 
   private
+
   def credit_card_params
     params.require(:credit_card_setting).permit(:company_code, :payment_method_id)
   end

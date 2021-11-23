@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'Owner sees payment settings' do
-
   # TODO: testar com setting que não seja de owner.company
   it 'successfully' do
     owner = create(:user, :complete_company_owner)
@@ -13,16 +12,17 @@ describe 'Owner sees payment settings' do
     boleto_method = create(:payment_method, :boleto)
 
     credit_card_setting = create(
-      :credit_card_setting, company:company, payment_method: credit_card_method
+      :credit_card_setting, company: company, payment_method: credit_card_method
     )
     pix_setting = create(
-      :pix_setting, company:company, payment_method: pix_method
+      :pix_setting, company: company, payment_method: pix_method
     )
     boleto_setting = create(
-      :boleto_setting, company:company, payment_method: boleto_method
+      :boleto_setting, company: company, payment_method: boleto_method
     )
-    boleto_setting2 = create(
-      :boleto_setting, company:company, payment_method: boleto_method
+
+    create(
+      :boleto_setting, company: company, payment_method: boleto_method
     )
 
     login_as owner, scope: :user
@@ -52,7 +52,7 @@ describe 'Owner sees payment settings' do
   end
 
   it 'pix creation form successfully' do
-    pix_method, pix_method2, pix_method3  = create_list(:payment_method, 3, :pix)
+    pix_method, pix_method2, pix_method3 = create_list(:payment_method, 3, :pix)
     pix_method3.disabled!
 
     owner = create(:user, :complete_company_owner)
@@ -74,7 +74,7 @@ describe 'Owner sees payment settings' do
   end
 
   it 'credit card creation form successfully' do
-    credit_card_method, credit_card_method2, credit_card_method3  = create_list(:payment_method, 3, :credit_card)
+    credit_card_method, credit_card_method2, credit_card_method3 = create_list(:payment_method, 3, :credit_card)
     credit_card_method3.disabled!
 
     owner = create(:user, :complete_company_owner)
@@ -93,9 +93,9 @@ describe 'Owner sees payment settings' do
     expect(page).to have_content(credit_card_method.name)
     expect(page).to have_content(credit_card_method2.name)
   end
-  
+
   it 'boleto creation form successfully' do
-    boleto_method, boleto_method2, boleto_method3  = create_list(:payment_method, 3, :boleto)
+    boleto_method, boleto_method2, boleto_method3 = create_list(:payment_method, 3, :boleto)
     boleto_method3.disabled!
 
     owner = create(:user, :complete_company_owner)

@@ -1,7 +1,7 @@
 class PaymentMethod < ApplicationRecord
-  has_many :pix_settings
-  has_many :credit_card_settings
-  has_many :boleto_settings
+  has_many :pix_settings, dependent: :destroy
+  has_many :credit_card_settings, dependent: :destroy
+  has_many :boleto_settings, dependent: :destroy
 
   has_one_attached :icon
   enum status: { enabled: 5, disabled: 10 }
