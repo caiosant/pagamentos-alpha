@@ -23,11 +23,12 @@ class ProductsController < ApplicationController
   end
 
   def disable
-    byebug
     @product.disabled!
+    redirect_to @product
   end
 
   def enable
     @product.enabled!
+    redirect_to @product
   end
 end

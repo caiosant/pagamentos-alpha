@@ -21,7 +21,7 @@
 <div class="mx-5 lg:ml-20 my-auto">
   <% if @product.enabled? %>
     <%= link_to t('common.disable'), disable_product_path(@product), method: :post, class: "bg-white hover:text-red-700 text-red-600 font-bold mb-2 py-2 px-4 border border-red-600 rounded focus:outline-none" %>
-  <% elsif %>
+  <% else %>
     <%= link_to t('common.enable'), enable_product_path(@product), method: :post, class: "bg-white hover:text-green-700 text-green-600 font-bold mb-2 py-2 px-4 border border-green-600 rounded focus:outline-none" %>
   <% end %>
 </div>
