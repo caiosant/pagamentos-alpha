@@ -2,3 +2,5 @@
 pt-BR:
   common:
     submit: 'Enviar'
+    enable: 'Habilitar'
+    disable: 'Desabilitar'
