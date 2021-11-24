@@ -26,5 +26,4 @@ describe 'Owner creates subscription' do
     visit company_path owner.company
     expect(page).to_not have_link('Registrar nova assinatura')
   end
-  
 end

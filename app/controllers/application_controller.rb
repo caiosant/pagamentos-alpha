@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_if_pending_company
-    return unless current_user&.company.pending?
+    return unless current_user&.company&.pending?
 
     redirect_to current_user.company, alert: t('companies.not_accepted_alert')
   end

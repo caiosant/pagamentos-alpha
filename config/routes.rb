@@ -17,7 +17,6 @@ Rails.application.routes.draw do
     put '/cancel_registration', to: 'companies#cancel_registration'
   end
 
-
   resources :pix_settings, only: %i[new create]
 
   resources :boleto_settings, only: %i[new create]
@@ -28,7 +27,7 @@ Rails.application.routes.draw do
     post 'enable', on: :member
     post 'disable', on: :member
   end
-    
+
   resources :subscriptions, only: %i[new create show] do
     post 'enable', on: :member
     post 'disable', on: :member

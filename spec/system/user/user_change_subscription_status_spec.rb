@@ -31,10 +31,10 @@ describe 'Owner changes subscription status' do
       owner = create(:user, :complete_company_owner)
       owner.company.accepted!
       subscription = create(:subscription, company: owner.company)
-  
+
       login_as owner, scope: :user
       visit subscription_path subscription
-      
+
       expect(page).to have_link('Desabilitar')
       expect(page).to_not have_link('Habilitar')
     end
@@ -47,7 +47,7 @@ describe 'Owner changes subscription status' do
 
       login_as owner, scope: :user
       visit subscription_path subscription
-      
+
       expect(page).to_not have_link('Desabilitar')
       expect(page).to have_link('Habilitar')
     end
