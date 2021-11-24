@@ -5,6 +5,7 @@ describe 'Admin try to see all companies' do
     user1 = create(:user, :complete_company_owner)
     user2 = create(:user, :complete_company_owner)
     admin = create(:admin)
+    admin.confirm
 
     login_as admin, scope: :admin
     visit root_path
@@ -31,6 +32,7 @@ describe 'Admin try to see all companies' do
     user1 = create(:user, :complete_company_owner)
     user2 = create(:user, :complete_company_owner)
     admin = create(:admin)
+    admin.confirm
 
     login_as admin, scope: :admin
     visit root_path
@@ -55,6 +57,7 @@ describe 'Admin try to see all companies' do
     it 'sucessfully' do
       user1 = create(:user, :complete_company_owner)
       admin = create(:admin)
+      admin.confirm
 
       login_as admin, scope: :admin
       visit root_path
@@ -76,6 +79,7 @@ describe 'Admin try to see all companies' do
     it 'and see the page' do
       user1 = create(:user, :complete_company_owner)
       admin = create(:admin)
+      admin.confirm
 
       login_as admin, scope: :admin
       visit root_path
@@ -93,6 +97,7 @@ describe 'Admin try to see all companies' do
     it 'and got sucessfully' do
       user1 = create(:user, :complete_company_owner)
       admin = create(:admin)
+      admin.confirm
 
       login_as admin, scope: :admin
       visit root_path
@@ -115,6 +120,7 @@ describe 'Admin try to see all companies' do
     it 'and didnt write a message' do
       user1 = create(:user, :complete_company_owner)
       admin = create(:admin)
+      admin.confirm
 
       login_as admin, scope: :admin
       visit root_path
@@ -130,6 +136,7 @@ describe 'Admin try to see all companies' do
     it 'and didnt write a short message' do
       user1 = create(:user, :complete_company_owner)
       admin = create(:admin)
+      admin.confirm
 
       login_as admin, scope: :admin
       visit root_path
@@ -145,6 +152,7 @@ describe 'Admin try to see all companies' do
     it 'and try to register another reason' do
       user1 = create(:user, :complete_company_owner)
       admin = create(:admin)
+      admin.confirm
       rejected_company = RejectedCompany.create!({company: user1.company, reason: 'Não se enquadra a nossas políticas'})
       user1.company.rejected!
 
