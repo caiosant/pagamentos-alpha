@@ -21,6 +21,11 @@ class Company < ApplicationRecord
     pix_settings + credit_card_settings + boleto_settings
   end
 
+  def list_payment_methods
+    pix_settings.select(&:payment_method) + credit_card_settings.select(&:payment_method) + 
+    boleto_settings.select(&:payment_method)
+  end
+
   def blank_all_info!
     self.cnpj = ''
     self.legal_name = ''
