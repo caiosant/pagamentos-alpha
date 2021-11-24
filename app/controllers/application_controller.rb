@@ -35,6 +35,14 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, alert: t('subscription.not_linked_to_company_alert')
   end
 
+  def find_product_and_authenticate_company
+    @product = Product.find(params[:id])
+    @company = @product.company
+    return if @company == current_user.company
+
+    redirect_to root_path, alert: t('product.not_linked_to_company_alert')
+  end
+
   def redirect_if_pending_company
     return unless current_user&.company.pending?
 
