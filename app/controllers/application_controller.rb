@@ -44,8 +44,4 @@ class ApplicationController < ActionController::Base
 
     redirect_to root_path, alert: t('companies.show.no_permission_alert')
   end
-
-  def authenticate_admin!
-    redirect_to root_path unless admin_signed_in?
-  end
 end

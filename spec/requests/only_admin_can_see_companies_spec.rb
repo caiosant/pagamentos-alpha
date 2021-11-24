@@ -16,13 +16,13 @@ describe 'only admin can see companies' do
     login_as owner, scope: :user
     get companies_path
 
-    expect(response).to redirect_to(root_path)
+    expect(response).to redirect_to(new_admin_session_path)
   end
 
   it 'so a visitor try to access companies' do
     get companies_path
 
-    expect(response).to redirect_to(root_path)
+    expect(response).to redirect_to(new_admin_session_path)
   end
 
   context 'and only him can do actions' do
@@ -32,7 +32,7 @@ describe 'only admin can see companies' do
       login_as owner, scope: :user
       post accept_company_path(owner.company)
 
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(new_admin_session_path)
     end
 
     it 'so a user tries to accept a random company' do
@@ -40,7 +40,7 @@ describe 'only admin can see companies' do
 
       post accept_company_path(owner.company)
 
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(new_admin_session_path)
     end
 
     it 'so a user tries to reject his own company' do
@@ -49,7 +49,7 @@ describe 'only admin can see companies' do
       login_as owner, scope: :user
       post company_rejected_companies_path(owner.company)
 
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(new_admin_session_path)
     end
 
     it 'so a user tries to reject a random company' do
@@ -57,7 +57,7 @@ describe 'only admin can see companies' do
 
       post company_rejected_companies_path(owner.company)
 
-      expect(response).to redirect_to(root_path)
+      expect(response).to redirect_to(new_admin_session_path)
     end
   end
 end

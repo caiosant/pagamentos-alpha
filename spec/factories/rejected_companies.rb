@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :rejected_company do
     company { nil }
-    reason { "MyText" }
+    reason { 'MyText' }
   end
 end

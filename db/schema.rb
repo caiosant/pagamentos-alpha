@@ -115,7 +115,7 @@ ActiveRecord::Schema.define(version: 2021_11_24_010459) do
     t.text "reason"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["company_id"], name: "index_rejected_companies_on_company_id"
+    t.index ["company_id"], name: "index_rejected_companies_on_company_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|

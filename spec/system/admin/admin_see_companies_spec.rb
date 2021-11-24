@@ -25,7 +25,7 @@ describe 'Admin try to see all companies' do
   it 'and hasnt did the login' do
     visit companies_path
 
-    expect(current_path).to eq root_path
+    expect(current_path).to eq new_admin_session_path
   end
 
   it 'and see only pending companies' do
@@ -104,7 +104,8 @@ describe 'Admin try to see all companies' do
       click_on 'Gerenciar Empresas'
       click_on 'Empresas Pendentes'
       click_on 'Rejeitar'
-      fill_in "Descreva o motivo da #{user1.company.legal_name} ser negada", with: 'O nome da empresa é claramente um nome fictício, desta forma só podemos aceitar nomes reais.'
+      fill_in "Descreva o motivo da #{user1.company.legal_name} ser negada",
+              with: 'O nome da empresa é claramente um nome fictício, desta forma só podemos aceitar nomes reais.'
       click_on 'Rejeitar Empresa'
 
       expect(page).to have_content('Owner')
@@ -114,7 +115,8 @@ describe 'Admin try to see all companies' do
       expect(page).to have_content(user1.email)
       expect(page).to have_content(user1.company.legal_name)
       expect(page).to have_content('Rejeitada')
-      expect(page).to have_content('O nome da empresa é claramente um nome fictício, desta forma só podemos aceitar nomes reais.')
+      expect(page).to have_content('O nome da empresa é claramente um nome fictício, '\
+                                   'desta forma só podemos aceitar nomes reais.')
     end
 
     it 'and didnt write a message' do
@@ -153,7 +155,8 @@ describe 'Admin try to see all companies' do
       user1 = create(:user, :complete_company_owner)
       admin = create(:admin)
       admin.confirm
-      rejected_company = RejectedCompany.create!({company: user1.company, reason: 'Não se enquadra a nossas políticas'})
+      RejectedCompany.create!({ company: user1.company,
+                                reason: 'Não se enquadra a nossas políticas' })
       user1.company.rejected!
 
       login_as admin, scope: :admin

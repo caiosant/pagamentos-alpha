@@ -10,7 +10,7 @@ describe 'administrator creates a new payment method' do
   it 'credit card successfully' do
     admin = create(:admin)
     admin.confirm
-    
+
     login_as admin, scope: :admin
     visit root_path
 
