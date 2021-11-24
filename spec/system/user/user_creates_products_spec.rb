@@ -23,7 +23,7 @@ describe 'authenticated user creates a new product' do
 
     expect(page).to have_content('Produto criado com sucesso')
     expect(page).to have_content('Nome: Playlist Minecraft')
-    expect(page).to have_content('Status: Habilitado')
+    expect(page).to have_content('Estado: Habilitado')
     expect(page).to have_content("Token de integração: #{Product.last.token}")
   end
 end
