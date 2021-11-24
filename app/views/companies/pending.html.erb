@@ -31,7 +31,7 @@
                     </td>
                     <td>
                         <%= link_to 'Aprovar', accept_company_path(company), method: :post%>
-                        <%= link_to 'Rejeitar', reject_company_path(company)%>
+                        <%= link_to 'Rejeitar', new_company_rejected_company_path(company)%>
                     </td>
                 </tr>
             <% end %>

@@ -65,6 +65,7 @@ describe 'Admin try to see all companies' do
       expect(page).to have_content('Owner')
       expect(page).to have_content('Empresa')
       expect(page).to have_content('Status')
+      expect(page).to have_content('Motivo de Rejeição')
       expect(page).to have_content(user1.email)
       expect(page).to have_content(user1.company.legal_name)
       expect(page).to have_content('Aprovada')
@@ -72,7 +73,7 @@ describe 'Admin try to see all companies' do
   end
 
   context 'and try to reject a company' do
-    it 'sucessfully' do
+    it 'and see the page' do
       user1 = create(:user, :complete_company_owner)
       admin = create(:admin)
 
@@ -82,12 +83,75 @@ describe 'Admin try to see all companies' do
       click_on 'Empresas Pendentes'
       click_on 'Rejeitar'
 
+      expect(page).to have_content(user1.company.legal_name)
+      expect(page).to have_content(user1.email)
+      expect(page).to have_content("Descreva o motivo da #{user1.company.legal_name} ser negada")
+      expect(page).to have_content(user1.email)
+      expect(page).to have_button('Rejeitar Empresa')
+    end
+
+    it 'and got sucessfully' do
+      user1 = create(:user, :complete_company_owner)
+      admin = create(:admin)
+
+      login_as admin, scope: :admin
+      visit root_path
+      click_on 'Gerenciar Empresas'
+      click_on 'Empresas Pendentes'
+      click_on 'Rejeitar'
+      fill_in "Descreva o motivo da #{user1.company.legal_name} ser negada", with: 'O nome da empresa é claramente um nome fictício, desta forma só podemos aceitar nomes reais.'
+      click_on 'Rejeitar Empresa'
+
       expect(page).to have_content('Owner')
       expect(page).to have_content('Empresa')
       expect(page).to have_content('Status')
+      expect(page).to have_content('Motivo de Rejeição')
       expect(page).to have_content(user1.email)
       expect(page).to have_content(user1.company.legal_name)
-      expect(page).to have_content('Aprovada')
+      expect(page).to have_content('Rejeitada')
+      expect(page).to have_content('O nome da empresa é claramente um nome fictício, desta forma só podemos aceitar nomes reais.')
+    end
+
+    it 'and didnt write a message' do
+      user1 = create(:user, :complete_company_owner)
+      admin = create(:admin)
+
+      login_as admin, scope: :admin
+      visit root_path
+      click_on 'Gerenciar Empresas'
+      click_on 'Empresas Pendentes'
+      click_on 'Rejeitar'
+      fill_in "Descreva o motivo da #{user1.company.legal_name} ser negada", with: ''
+      click_on 'Rejeitar Empresa'
+
+      expect(page).to have_content('Motivo não pode ficar em branco')
+    end
+
+    it 'and didnt write a short message' do
+      user1 = create(:user, :complete_company_owner)
+      admin = create(:admin)
+
+      login_as admin, scope: :admin
+      visit root_path
+      click_on 'Gerenciar Empresas'
+      click_on 'Empresas Pendentes'
+      click_on 'Rejeitar'
+      fill_in "Descreva o motivo da #{user1.company.legal_name} ser negada", with: 'Não sei'
+      click_on 'Rejeitar Empresa'
+
+      expect(page).to have_content('Motivo é muito curto (mínimo: 10 caracteres)')
+    end
+
+    it 'and try to register another reason' do
+      user1 = create(:user, :complete_company_owner)
+      admin = create(:admin)
+      rejected_company = RejectedCompany.create!({company: user1.company, reason: 'Não se enquadra a nossas políticas'})
+      user1.company.rejected!
+
+      login_as admin, scope: :admin
+      visit new_company_rejected_company_path(user1.company)
+
+      expect(page).to have_content('Empresa já rejeitada')
     end
   end
 end

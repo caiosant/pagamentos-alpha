@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_17_223758) do
+ActiveRecord::Schema.define(version: 2021_11_24_010459) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -46,10 +46,6 @@ ActiveRecord::Schema.define(version: 2021_11_17_223758) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string "unconfirmed_email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_admins_on_email", unique: true
@@ -75,6 +71,22 @@ ActiveRecord::Schema.define(version: 2021_11_17_223758) do
     t.integer "status", default: 5
   end
 
+  create_table "rejected_companies", force: :cascade do |t|
+    t.integer "company_id", null: false
+    t.text "reason"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_rejected_companies_on_company_id"
+  end
+
+  create_table "rejeted_companies", force: :cascade do |t|
+    t.integer "company_id", null: false
+    t.text "reason"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_rejeted_companies_on_company_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -92,5 +104,7 @@ ActiveRecord::Schema.define(version: 2021_11_17_223758) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "rejected_companies", "companies"
+  add_foreign_key "rejeted_companies", "companies"
   add_foreign_key "users", "companies"
 end

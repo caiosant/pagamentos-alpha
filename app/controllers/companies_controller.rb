@@ -35,7 +35,7 @@ class CompaniesController < ApplicationController
       redirect_to root_path
     end
   end
-
+  
   private
 
   def edit_company_params

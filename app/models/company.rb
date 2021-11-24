@@ -1,5 +1,6 @@
 class Company < ApplicationRecord
   has_many :users, dependent: :destroy
+  has_one :rejected_company
 
   enum status: { incomplete: 0, pending: 10, accepted: 20, rejected: 30 }
 
