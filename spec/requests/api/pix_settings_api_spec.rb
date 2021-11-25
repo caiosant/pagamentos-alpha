@@ -21,7 +21,7 @@ describe 'Pix setting API' do
       expect(parsed_body.first[:pix_key]).to eq(pix_settings.first.pix_key)
       expect(parsed_body.first[:token]).to eq(pix_settings.first.token)
       expect(parsed_body.first[:bank_code]).to eq(pix_settings.first.bank_code)
-      # expect(parsed_body.first[:payment_method]).to eq(pix_settings.first.payment_method.name# DECIDIR MELHOR
+      expect(parsed_body.first[:payment_method][:name]).to eq(pix_settings.first.payment_method.name)
       expect(parsed_body.second[:pix_key]).to eq(pix_settings.second.pix_key)
       expect(parsed_body.second[:token]).to eq(pix_settings.second.token)
       expect(parsed_body.count).to eq(2)
