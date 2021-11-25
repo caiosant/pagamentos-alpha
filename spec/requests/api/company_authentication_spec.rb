@@ -8,7 +8,7 @@ describe 'company authenticate into the system' do
             company.accepted!
       
             pix_setting = create(:pix_setting, company: company)
-            get "/api/v1/pix_settings", headers: { company_token: company.token }
+            get "/api/v1/pix_settings", headers: { companyToken: company.token }
 
             expect(response).to have_http_status(200)
         end
@@ -30,7 +30,7 @@ describe 'company authenticate into the system' do
             company.accepted!
 
             pix_setting = create(:pix_setting, company: company)
-            get "/api/v1/pix_settings", headers: { company_token: 'a'*20 }
+            get "/api/v1/pix_settings", headers: { companyToken: 'a'*20 }
 
             expect(response).to have_http_status(401)
         end

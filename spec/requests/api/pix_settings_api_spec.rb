@@ -15,7 +15,7 @@ describe 'Pix setting API' do
       pix_settings[2].payment_method.disabled!
       invisible_pix_setting = create_list(:pix_setting, 2, company: other_company)
 
-      get "/api/v1/pix_settings", headers: { company_token: company.token }
+      get "/api/v1/pix_settings", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(200)
       expect(parsed_body.first[:pix_key]).to eq(pix_settings.first.pix_key)
@@ -38,7 +38,7 @@ describe 'Pix setting API' do
 
       invisible_pix_setting = create_list(:pix_setting, 2, company: company2)
 
-      get "/api/v1/pix_settings", headers: { company_token: company.token }
+      get "/api/v1/pix_settings", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(200)
       expect(parsed_body).to be_empty
@@ -54,7 +54,7 @@ describe 'Pix setting API' do
       pix_settings = create_list(:pix_setting, 3, company: company)
       pix_settings.first.payment_method.disabled!
       
-      get "/api/v1/pix_settings/#{pix_settings.first.token}", headers: { company_token: company.token }
+      get "/api/v1/pix_settings/#{pix_settings.first.token}", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(200)
       expect(parsed_body[:pix_key]).to eq(pix_settings.first.pix_key)
@@ -69,7 +69,7 @@ describe 'Pix setting API' do
       company = owner.company
       company.accepted!
       
-      get "/api/v1/pix_settings/999", headers: { company_token: company.token }
+      get "/api/v1/pix_settings/999", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(404)
     end
@@ -85,7 +85,7 @@ describe 'Pix setting API' do
 
       other_pix_setting = create(:pix_setting, company: other_company)
 
-      get "/api/v1/pix_settings/#{other_pix_setting.token}", headers: { company_token: company.token }
+      get "/api/v1/pix_settings/#{other_pix_setting.token}", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(401)
     end
@@ -99,7 +99,7 @@ describe 'Pix setting API' do
 
       allow(PixSetting).to receive(:where).and_raise(ActiveRecord::ActiveRecordError)
 
-      get "/api/v1/pix_settings/#{pix_setting.id}", headers: { company_token: company.token }
+      get "/api/v1/pix_settings/#{pix_setting.id}", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(500)
     end
