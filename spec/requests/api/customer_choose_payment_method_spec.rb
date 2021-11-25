@@ -129,7 +129,6 @@ describe 'Customer API' do
         credit_card_setting = create(:credit_card_setting, company: owner.company, payment_method: credit_card_method)
         company_payment_method, = owner.company.list_payment_methods
 
-<<<<<<< HEAD
         customer_params = {
           company_token: owner.company.token,
           cpf: '111.111.111-11',
@@ -139,9 +138,9 @@ describe 'Customer API' do
         }
 
         post '/api/v1/customer', params: { customer: customer_params }
-=======
+      end
+      
       it 'should inform payment_method_token'
->>>>>>> cd722931204e21cb4adc9e00a9e11b86b912648d
 
         expect(response).to have_http_status(400)
         expect(response.parsed_body[:message]). to eq('Número do cartão de crédito deve ser enviado')

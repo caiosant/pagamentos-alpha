@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_25_160101) do
+ActiveRecord::Schema.define(version: 2021_11_25_201700) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -91,6 +91,23 @@ ActiveRecord::Schema.define(version: 2021_11_25_160101) do
     t.index ["payment_method_id"], name: "index_credit_card_settings_on_payment_method_id"
   end
 
+  create_table "customerpaymentmethods", force: :cascade do |t|
+    t.string "payment_method"
+    t.integer "payment_method_id", null: false
+    t.string "credit_card_name"
+    t.string "credit_card_number"
+    t.date "credit_card_expiration_date"
+    t.string "credit_card_security_code"
+    t.integer "company_id", null: false
+    t.integer "customer_id", null: false
+    t.string "customer_payment_token"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_customerpaymentmethods_on_company_id"
+    t.index ["customer_id"], name: "index_customerpaymentmethods_on_customer_id"
+    t.index ["payment_method_id"], name: "index_customerpaymentmethods_on_payment_method_id"
+  end
+
   create_table "customers", force: :cascade do |t|
     t.string "name"
     t.string "cpf"
@@ -152,6 +169,9 @@ ActiveRecord::Schema.define(version: 2021_11_25_160101) do
   add_foreign_key "boleto_settings", "payment_methods"
   add_foreign_key "credit_card_settings", "companies"
   add_foreign_key "credit_card_settings", "payment_methods"
+  add_foreign_key "customerpaymentmethods", "companies"
+  add_foreign_key "customerpaymentmethods", "customers"
+  add_foreign_key "customerpaymentmethods", "payment_methods"
   add_foreign_key "customers", "companies"
   add_foreign_key "pix_settings", "companies"
   add_foreign_key "pix_settings", "payment_methods"
