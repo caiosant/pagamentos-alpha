@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Pix setting API' do
-  context 'GET /api/v1/pix_settings/:company_token' do
+  context 'GET /api/v1/pix_settings' do
     it 'should get all settings from requesting company' do
       owner = create(:user, :complete_company_owner)
       company = owner.company
@@ -15,7 +15,7 @@ describe 'Pix setting API' do
       pix_settings[2].payment_method.disabled!
       invisible_pix_setting = create_list(:pix_setting, 2, company: other_company)
 
-      get "/api/v1/pix_settings/index/#{company.token}"
+      get "/api/v1/pix_settings", headers: { company_token: company.token }
 
       expect(response).to have_http_status(200)
       expect(parsed_body.first[:pix_key]).to eq(pix_settings.first.pix_key)
@@ -38,7 +38,7 @@ describe 'Pix setting API' do
 
       invisible_pix_setting = create_list(:pix_setting, 2, company: company2)
 
-      get "/api/v1/pix_settings/index/#{company.token}"
+      get "/api/v1/pix_settings", headers: { company_token: company.token }
 
       expect(response).to have_http_status(200)
       expect(parsed_body).to be_empty
@@ -54,7 +54,7 @@ describe 'Pix setting API' do
       pix_settings = create_list(:pix_setting, 3, company: company)
       pix_settings.first.payment_method.disabled!
       
-      get "/api/v1/pix_settings/#{pix_settings.first.token}"
+      get "/api/v1/pix_settings/#{pix_settings.first.token}", headers: { company_token: company.token }
 
       expect(response).to have_http_status(200)
       expect(parsed_body[:pix_key]).to eq(pix_settings.first.pix_key)
@@ -64,10 +64,30 @@ describe 'Pix setting API' do
       expect(parsed_body[:payment_method][:name]).to eq(pix_settings.first.payment_method.name)
     end
 
-    it 'should return 404 if property does not exist' do
-      get "/api/v1/pix_settings/999"
+    it 'should return 404 if setting does not exist' do
+      owner = create(:user, :complete_company_owner)
+      company = owner.company
+      company.accepted!
+      
+      get "/api/v1/pix_settings/999", headers: { company_token: company.token }
 
       expect(response).to have_http_status(404)
+    end
+
+    it 'should return 401 if setting is from another company' do
+      owner = create(:user, :complete_company_owner)
+      company = owner.company
+      company.accepted!
+
+      other_owner = create(:user, :complete_company_owner)
+      other_company = other_owner.company
+      other_company.accepted!
+
+      other_pix_setting = create(:pix_setting, company: other_company)
+
+      get "/api/v1/pix_settings/#{other_pix_setting.token}", headers: { company_token: company.token }
+
+      expect(response).to have_http_status(401)
     end
 
     it 'should return 500 if database is not available' do
@@ -79,7 +99,7 @@ describe 'Pix setting API' do
 
       allow(PixSetting).to receive(:where).and_raise(ActiveRecord::ActiveRecordError)
 
-      get "/api/v1/pix_settings/#{pix_setting.id}"
+      get "/api/v1/pix_settings/#{pix_setting.id}", headers: { company_token: company.token }
 
       expect(response).to have_http_status(500)
     end
