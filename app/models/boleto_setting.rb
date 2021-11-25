@@ -4,4 +4,5 @@ class BoletoSetting < ApplicationRecord
 
   validates :agency_number, :account_number, :bank_code, presence: true
   validates :bank_code, bank_code: true
+  after_create :generate_token_attribute
 end

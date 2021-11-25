@@ -1,13 +1,16 @@
 class Api::V1::CustomerController < Api::V1::ApiController
   def create
-    render status: 200, json: {token: '73grr29y'}.as_json
+    @customer = Customer.new(customer_params)
+
+    if @customer.save
+      render status: 200, json: { customer_token: @customer.token }.as_json
+    else
+      # TODO
+    end
   end
 
   private
   def customer_params
-    params.require(:customer).permit(
-      :company_token, :cpf, :payment_method_token, :credit_card_number, 
-      :credit_card_expiration_date
-    )
+    params.require(:customer).permit(:company_token, :cpf, :payment_method_token)
   end
 end
