@@ -13,7 +13,7 @@ describe 'Pix setting API' do
 
       pix_settings = create_list(:pix_setting, 3, company: company)
       pix_settings[2].payment_method.disabled!
-      invisible_pix_setting = create_list(:pix_setting, 2, company: other_company)
+      create_list(:pix_setting, 2, company: other_company)
 
       get "/api/v1/pix_settings/#{company.token}"
 
@@ -36,7 +36,7 @@ describe 'Pix setting API' do
       company2 = owner2.company
       company2.accepted!
 
-      invisible_pix_setting = create_list(:pix_setting, 2, company: company2)
+      create_list(:pix_setting, 2, company: company2)
 
       get "/api/v1/pix_settings/#{company.token}"
 
