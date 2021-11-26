@@ -14,6 +14,10 @@
     <% if current_admin %>
       <%= render 'shared/admin_navbar' %>
     <% end %>
+
+    <% if current_user %>
+      <%= render 'shared/user_navbar' %>
+    <% end %>
     
     <% if notice %>
       <div class="bg-green-100 border border-green-400 text-xs text-green-700 mx-2 my-2 px-2 py-3 rounded relative">

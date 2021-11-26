@@ -1,0 +1,19 @@
+---
+pt-BR:
+  activerecord:
+    models:
+      product: 'Produto'
+    attributes:
+      product:
+        status: 'Estado'
+        name: 'Nome'
+        token: 'Token de integração'
+      product/status:
+        enabled: 'Habilitado'
+        disabled: 'Desabilitado'
+  products:
+    new:
+      title: 'Crie um novo produto:'
+    create_success_notice: 'Produto criado com sucesso'
+  product:
+    not_linked_to_company_alert: 'Produto não pertence a esta empresa'

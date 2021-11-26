@@ -22,4 +22,14 @@ Rails.application.routes.draw do
   resources :boleto_settings, only: %i[new create]
 
   resources :credit_card_settings, only: %i[new create]
+
+  resources :products, only: %i[new create show index] do
+    post 'enable', on: :member
+    post 'disable', on: :member
+  end
+
+  resources :subscriptions, only: %i[new create show] do
+    post 'enable', on: :member
+    post 'disable', on: :member
+  end
 end
