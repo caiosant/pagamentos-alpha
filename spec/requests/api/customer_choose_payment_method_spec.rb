@@ -11,19 +11,22 @@ describe 'Customer API' do
         owner.company.accepted!
         pix_method = create(:payment_method, :pix)
         pix_setting = create(:pix_setting, company: owner.company, payment_method: pix_method)
+<<<<<<< HEAD
         company_payment_method = owner.company.list_payment_methods
+=======
+        company_payment_setting, = owner.company.payment_settings
+>>>>>>> ccd7afafdbbb867b8d1ebd8a1ac4a9fec96c9a92
 
         allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('LI5YuUJrZuJSB6uPH2jm')
 
         customer_params = {
+          name: 'João',
           cpf: '111.111.111-11',
-          payment_method_token: company_payment_method.token
+          payment_method_token: company_payment_setting.token
         }
-
         post '/api/v1/customer', params: {
-          company_token: owner.company.token,
           customer: customer_params
-        }
+        }, headers: { 'Authorization' => owner.company.token }
 
         expect(response).to have_http_status(200)
         expect(parsed_body[:customer_token]).to eq('LI5YuUJrZuJSB6uPH2jm')
@@ -138,9 +141,6 @@ describe 'Customer API' do
         }
 
         post '/api/v1/customer', params: { customer: customer_params }
-      end
-      
-      it 'should inform payment_method_token'
 
         expect(response).to have_http_status(400)
         expect(response.parsed_body[:message]). to eq('Número do cartão de crédito deve ser enviado')

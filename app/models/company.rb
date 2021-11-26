@@ -22,8 +22,8 @@ class Company < ApplicationRecord
   end
 
   def list_payment_methods
-    pix_settings.select(&:payment_method) + credit_card_settings.select(&:payment_method) + 
-    boleto_settings.select(&:payment_method)
+    pix_settings.map(&:payment_method) + credit_card_settings.map(&:payment_method) + 
+    boleto_settings.map(&:payment_method)
   end
 
   def blank_all_info!
