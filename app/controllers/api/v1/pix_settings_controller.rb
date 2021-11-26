@@ -5,8 +5,11 @@ module Api
         @pix_settings = PixSetting.includes(:payment_method).where(company: @company,
                                                                    payment_method: { status: :enabled })
 
-        render json: @pix_settings.as_json(except: %i[created_at updated_at],
-                                           include: { payment_method: { only: %i[name] } })
+        render json: @pix_settings.as_json(
+          except: %i[created_at updated_at property_type_id company_id payment_method_id],
+          include: { payment_method: { only: %i[name
+                                                id] } }
+        )
       end
 
       def show
@@ -15,9 +18,11 @@ module Api
 
         return render_not_authorized if @pix_setting.company != @company
 
-        render json: @pix_setting.as_json(except: %i[created_at updated_at],
-                                          include: { payment_method: { only: %i[name
-                                                                                status] } })
+        render json: @pix_setting.as_json(
+          except: %i[created_at updated_at property_type_id company_id payment_method_id],
+          include: { payment_method: { only: %i[name id
+                                                status] } }
+        )
       end
     end
   end
