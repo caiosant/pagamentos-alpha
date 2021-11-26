@@ -13,7 +13,7 @@ describe 'Credit Card setting API' do
 
       credit_card_settings = create_list(:credit_card_setting, 3, company: company)
       credit_card_settings[2].payment_method.disabled!
-      invisible_credit_card_setting = create_list(:credit_card_setting, 2, company: other_company)
+      create_list(:credit_card_setting, 2, company: other_company)
 
       get '/api/v1/credit_card_settings', headers: { companyToken: company.token }
 
@@ -35,7 +35,7 @@ describe 'Credit Card setting API' do
       company2 = owner2.company
       company2.accepted!
 
-      invisible_credit_card_setting = create_list(:credit_card_setting, 2, company: company2)
+      create_list(:credit_card_setting, 2, company: company2)
 
       get '/api/v1/credit_card_settings', headers: { companyToken: company.token }
 

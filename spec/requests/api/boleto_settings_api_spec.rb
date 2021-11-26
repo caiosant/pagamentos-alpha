@@ -46,7 +46,6 @@ describe 'Boleto setting API' do
     end
   end
 
-
   context 'GET /api/v1/boleto_settings/:token' do
     it 'should get corresponding setting from requesting company' do
       owner = create(:user, :complete_company_owner)

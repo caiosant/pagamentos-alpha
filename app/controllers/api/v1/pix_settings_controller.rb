@@ -2,10 +2,11 @@ module Api
   module V1
     class PixSettingsController < Api::V1::ApiController
       def index
-        @pix_settings = PixSetting.includes(:payment_method).where(company: @company, payment_method: { status: :enabled })
+        @pix_settings = PixSetting.includes(:payment_method).where(company: @company,
+                                                                   payment_method: { status: :enabled })
 
         render json: @pix_settings.as_json(except: %i[created_at updated_at],
-                                          include: { payment_method: { only: %i[name] } })
+                                           include: { payment_method: { only: %i[name] } })
       end
 
       def show
