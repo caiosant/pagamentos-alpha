@@ -3,8 +3,8 @@ require 'rails_helper'
 # recebe token da empresa, cpf, meio de pagamento, 
 # numero do cartão + validade (só cartão)
 # retorna token do cliente
-describe 'Customer Api' do
-  context 'POST create' do
+describe 'Customer API' do
+  context 'POST /api/v1/customer' do
     context 'successfully' do
       it 'with pix' do
         owner = create(:user, :complete_company_owner)
