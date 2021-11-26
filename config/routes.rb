@@ -25,7 +25,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :customer, only: %i[create]
+      resources :customer, only: %i[index create]
     end
   end
 end

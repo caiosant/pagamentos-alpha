@@ -11,11 +11,7 @@ describe 'Customer API' do
         owner.company.accepted!
         pix_method = create(:payment_method, :pix)
         pix_setting = create(:pix_setting, company: owner.company, payment_method: pix_method)
-<<<<<<< HEAD
         company_payment_method = owner.company.list_payment_methods
-=======
-        company_payment_setting, = owner.company.payment_settings
->>>>>>> ccd7afafdbbb867b8d1ebd8a1ac4a9fec96c9a92
 
         allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('LI5YuUJrZuJSB6uPH2jm')
 
