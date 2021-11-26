@@ -9,7 +9,7 @@ class CreateCustomerPaymentMethods < ActiveRecord::Migration[6.1]
       t.string :credit_card_security_code
       t.references :company, null: false, foreign_key: true
       t.references :customer, null: false, foreign_key: true
-      t.string :customer_payment_token
+      t.string :token
 
       t.timestamps
     end

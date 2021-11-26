@@ -11,7 +11,7 @@ describe 'Customer API' do
         owner.company.accepted!
         pix_method = create(:payment_method, :pix)
         pix_setting = create(:pix_setting, company: owner.company, payment_method: pix_method)
-        company_payment_method, = owner.company.list_payment_methods
+        company_payment_method = owner.company.list_payment_methods
 
         allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('LI5YuUJrZuJSB6uPH2jm')
 
@@ -34,7 +34,7 @@ describe 'Customer API' do
         owner.company.accepted!
         boleto_method = create(:payment_method, :boleto)
         boleto_setting = create(:boleto_setting, company: owner.company, payment_method: boleto_method)
-        company_payment_method, = owner.company.list_payment_methods
+        company_payment_method = owner.company.list_payment_methods
 
         allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('LI5YuUJrZuJSB6uPH2jm')
 
@@ -57,7 +57,7 @@ describe 'Customer API' do
         owner.company.accepted!
         credit_card_method = create(:payment_method, :credit_card)
         credit_card_setting = create(:credit_card_setting, company: owner.company, payment_method: credit_card_method)
-        company_payment_method, = owner.company.list_payment_methods
+        company_payment_method = owner.company.list_payment_methods
 
         allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('LI5YuUJrZuJSB6uPH2jm')
 
@@ -84,7 +84,7 @@ describe 'Customer API' do
         owner.company.accepted!
         credit_card_method = create(:payment_method, :credit_card)
         credit_card_setting = create(:credit_card_setting, company: owner.company, payment_method: credit_card_method)
-        company_payment_method, = owner.company.list_payment_methods
+        company_payment_method = owner.company.list_payment_methods
 
         customer_params = {
           company_token: owner.company.token,
@@ -106,7 +106,7 @@ describe 'Customer API' do
         owner.company.accepted!
         credit_card_method = create(:payment_method, :credit_card)
         credit_card_setting = create(:credit_card_setting, company: owner.company, payment_method: credit_card_method)
-        company_payment_method, = owner.company.list_payment_methods
+        company_payment_method = owner.company.list_payment_methods
 
         customer_params = {
           company_token: owner.company.token,
@@ -161,6 +161,7 @@ describe 'Customer API' do
       it 'cannot create without company token' do
       end
     end
-
   end
 end
+
+

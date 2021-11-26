@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_25_201700) do
+ActiveRecord::Schema.define(version: 2021_11_25_201854) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -91,7 +91,7 @@ ActiveRecord::Schema.define(version: 2021_11_25_201700) do
     t.index ["payment_method_id"], name: "index_credit_card_settings_on_payment_method_id"
   end
 
-  create_table "customerpaymentmethods", force: :cascade do |t|
+  create_table "customer_payment_methods", force: :cascade do |t|
     t.string "payment_method"
     t.integer "payment_method_id", null: false
     t.string "credit_card_name"
@@ -100,18 +100,18 @@ ActiveRecord::Schema.define(version: 2021_11_25_201700) do
     t.string "credit_card_security_code"
     t.integer "company_id", null: false
     t.integer "customer_id", null: false
-    t.string "customer_payment_token"
+    t.string "token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["company_id"], name: "index_customerpaymentmethods_on_company_id"
-    t.index ["customer_id"], name: "index_customerpaymentmethods_on_customer_id"
-    t.index ["payment_method_id"], name: "index_customerpaymentmethods_on_payment_method_id"
+    t.index ["company_id"], name: "index_customer_payment_methods_on_company_id"
+    t.index ["customer_id"], name: "index_customer_payment_methods_on_customer_id"
+    t.index ["payment_method_id"], name: "index_customer_payment_methods_on_payment_method_id"
   end
 
   create_table "customers", force: :cascade do |t|
     t.string "name"
     t.string "cpf"
-    t.string "customer_token"
+    t.string "token"
     t.integer "company_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -140,14 +140,6 @@ ActiveRecord::Schema.define(version: 2021_11_25_201700) do
     t.index ["payment_method_id"], name: "index_pix_settings_on_payment_method_id"
   end
 
-  create_table "rejected_companies", force: :cascade do |t|
-    t.integer "company_id", null: false
-    t.text "reason"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["company_id"], name: "index_rejected_companies_on_company_id", unique: true
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -169,12 +161,11 @@ ActiveRecord::Schema.define(version: 2021_11_25_201700) do
   add_foreign_key "boleto_settings", "payment_methods"
   add_foreign_key "credit_card_settings", "companies"
   add_foreign_key "credit_card_settings", "payment_methods"
-  add_foreign_key "customerpaymentmethods", "companies"
-  add_foreign_key "customerpaymentmethods", "customers"
-  add_foreign_key "customerpaymentmethods", "payment_methods"
+  add_foreign_key "customer_payment_methods", "companies"
+  add_foreign_key "customer_payment_methods", "customers"
+  add_foreign_key "customer_payment_methods", "payment_methods"
   add_foreign_key "customers", "companies"
   add_foreign_key "pix_settings", "companies"
   add_foreign_key "pix_settings", "payment_methods"
-  add_foreign_key "rejected_companies", "companies"
   add_foreign_key "users", "companies"
 end
