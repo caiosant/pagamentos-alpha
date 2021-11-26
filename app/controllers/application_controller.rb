@@ -23,9 +23,9 @@ class ApplicationController < ActionController::Base
     find_company
 
     return if current_user&.owns?(@company)
+
     redirect_to root_path, alert: t('companies.edit.no_permission_alert')
   end
-  
 
   def find_subscription_and_authenticate_company
     @subscription = Subscription.find(params[:id])
@@ -54,6 +54,16 @@ class ApplicationController < ActionController::Base
     @company = @pix_setting.company
   end
 
+  def find_boleto_setting
+    @boleto_setting = BoletoSetting.find(params[:id])
+    @company = @boleto_setting.company
+  end
+
+  def find_credit_card_setting
+    @credit_card_setting = CreditCardSetting.find(params[:id])
+    @company = @credit_card_setting.company
+  end
+
   def find_company
     @company = Company.find(params[:id])
   end
@@ -63,6 +73,4 @@ class ApplicationController < ActionController::Base
 
     redirect_to root_path, alert: t('companies.show.no_permission_alert')
   end
-
-
 end

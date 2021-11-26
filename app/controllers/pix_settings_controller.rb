@@ -1,8 +1,8 @@
 class PixSettingsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_user_company_accepted
-  before_action :find_pix_setting, only: %i[ enable disable ]
-  before_action :authenticate_company_user, only: %i[ enable disable ]
+  before_action :find_pix_setting, only: %i[enable disable]
+  before_action :authenticate_company_user, only: %i[enable disable]
 
   def new
     @payment_methods_dropdown = PaymentMethod.payment_methods_by_type_dropdown('pix')
