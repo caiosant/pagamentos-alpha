@@ -12,7 +12,7 @@ class Api::V1::ApiController < ActionController::API
     def render_not_authorized
       render status: 401, json: '{ message: Há algo errado com sua autenticação. }'
     end
-  
+
     def render_not_found(e)
       render status: 404, json: '{ message: Objeto não encontrado }'
     end
