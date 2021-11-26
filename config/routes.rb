@@ -25,8 +25,8 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      get '/pix_settings/:token_company', to: 'pix_settings#index'
-      get '/boleto_settings/:token_company', to: 'boleto_settings#index'
+      resources :pix_settings, only: %i[index show]
+      resources :boleto_settings, only: %i[index show]
     end
   end
 end
