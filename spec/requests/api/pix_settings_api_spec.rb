@@ -97,7 +97,7 @@ describe 'Pix setting API' do
 
       pix_setting = create(:pix_setting, company: company)
 
-      allow(PixSetting).to receive(:where).and_raise(ActiveRecord::ActiveRecordError)
+      allow(PixSetting).to receive(:find_by).and_raise(ActiveRecord::ActiveRecordError)
 
       get "/api/v1/pix_settings/#{pix_setting.token}", headers: { companyToken: company.token }
 

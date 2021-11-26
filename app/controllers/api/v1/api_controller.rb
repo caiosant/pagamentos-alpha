@@ -6,6 +6,11 @@ module Api
       before_action :authenticate_company!
 
       private
+      def find_by_token(model, token)
+        element = model.find_by(token: token)
+        raise ActiveRecord::RecordNotFound if element.nil?
+        element
+      end
 
       def authenticate_company!
         @company = Company.find_by(token: request.headers['companyToken'])

@@ -8,7 +8,7 @@ module Api
       end
 
       def show
-        @product = find_product
+        @product = find_by_token(Product, params[:id])
 
         return render_not_authorized if @product.company != @company
 
@@ -16,13 +16,13 @@ module Api
       end
 
       def enable
-        @product = find_product
+        @product = find_by_token(Product, params[:id])
         return render_not_authorized if @product.company != @company
         @product.enabled!
       end
 
       def disable
-        @product = find_product
+        @product = find_by_token(Product, params[:id])
         return render_not_authorized if @product.company != @company
         @product.disabled!
       end
@@ -45,12 +45,6 @@ module Api
       private 
       def product_params
         params.require(:product).permit(:name)
-      end
-
-      def find_product
-        product = Product.where(token: params[:id]).first
-        raise ActiveRecord::RecordNotFound if product.nil?
-        return product
       end
 
     end

@@ -13,8 +13,7 @@ module Api
       end
 
       def show
-        @pix_setting = PixSetting.where(token: params[:id]).first
-        raise ActiveRecord::RecordNotFound if @pix_setting.nil?
+        @pix_setting = find_by_token(PixSetting, params[:id])
 
         return render_not_authorized if @pix_setting.company != @company
 
