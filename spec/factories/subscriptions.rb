@@ -1,8 +1,6 @@
 FactoryBot.define do
   factory :subscription do
-    token { "MyString" }
-    name { "MyText" }
-    status { 5 }
+    sequence(:name) { |n| "assinatura teste #{n}" }
     company
   end
 end

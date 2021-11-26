@@ -3,11 +3,10 @@ class SubscriptionsController < ApplicationController
   before_action :find_subscription_and_authenticate_company, only: %i[show enable disable]
   before_action :redirect_if_pending_company
 
-  def show 
-  end
+  def show; end
 
   def new
-    @subscription = Subscription.new()
+    @subscription = Subscription.new
   end
 
   def create
@@ -34,5 +33,4 @@ class SubscriptionsController < ApplicationController
   def subscription_params
     params.require(:subscription).permit(:name)
   end
-
 end

@@ -27,6 +27,6 @@ describe 'User changes products status' do
 
     expect(page).to have_content('Habilitado')
     expect(page).not_to have_content('Desabilitado')
-    expect(product.reload.status).to eq 'disabled'
+    expect(product.reload.status).to eq 'enabled'
   end
 end

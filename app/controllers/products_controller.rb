@@ -1,12 +1,11 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!
-  before_action :authenticate_user_company_accepted
+  before_action :find_product_and_authenticate_company, only: %i[show enable disable]
+  before_action :redirect_if_pending_company
 
   def index; end
 
-  def show
-    @product = Product.find(params[:id])
-  end
+  def show; end
 
   def new
     @product = Product.new
@@ -21,5 +20,15 @@ class ProductsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def disable
+    @product.disabled!
+    redirect_to @product
+  end
+
+  def enable
+    @product.enabled!
+    redirect_to @product
   end
 end
