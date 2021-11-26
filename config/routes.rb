@@ -30,4 +30,14 @@ Rails.application.routes.draw do
       resources :credit_card_settings, only: %i[index show]
     end
   end
+  
+  resources :products, only: %i[new create show index] do
+    post 'enable', on: :member
+    post 'disable', on: :member
+  end
+
+  resources :subscriptions, only: %i[new create show] do
+    post 'enable', on: :member
+    post 'disable', on: :member
+  end
 end
