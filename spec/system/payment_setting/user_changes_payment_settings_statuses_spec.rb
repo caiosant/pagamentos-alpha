@@ -8,8 +8,12 @@ describe 'User changes payment settings statuses' do
             company.accepted!
             pix_setting = create(:pix_setting, company: company)
 
-            visit pix_setting_path pix_setting
-            click_on 'Desabilitar'
+            login_as owner, scope: :user
+            visit company_payment_settings_path company
+            
+            within("##{pix_setting.token}") do
+                click_on 'Desabilitar'
+            end
 
             expect(page).to have_content('Desabilitado')
         end
@@ -21,8 +25,12 @@ describe 'User changes payment settings statuses' do
             pix_setting = create(:pix_setting, company: company)
             pix_setting.disabled!
 
-            visit pix_setting_path pix_setting
-            click_on 'Habilitar'
+            login_as owner, scope: :user
+            visit company_payment_settings_path company
+            
+            within("##{pix_setting.token}") do
+                click_on 'Habilitar'
+            end
 
             expect(page).to have_content('Habilitado')
         end

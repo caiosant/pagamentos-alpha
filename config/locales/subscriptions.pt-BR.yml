@@ -15,3 +15,4 @@ pt-BR:
     new:
       title: 'Crie um novo produto do tipo assinatura:'
     create_success_notice: 'Assinatura criada com sucesso'
+    not_linked_to_company_alert: 'Assinatura não pertence a esta empresa'

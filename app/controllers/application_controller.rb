@@ -23,16 +23,16 @@ class ApplicationController < ActionController::Base
     find_company
 
     return if current_user&.owns?(@company)
-
     redirect_to root_path, alert: t('companies.edit.no_permission_alert')
   end
+  
 
   def find_subscription_and_authenticate_company
     @subscription = Subscription.find(params[:id])
     @company = @subscription.company
     return if @company == current_user.company
 
-    redirect_to root_path, alert: t('subscription.not_linked_to_company_alert')
+    redirect_to root_path, alert: t('subscriptions.not_linked_to_company_alert')
   end
 
   def find_product_and_authenticate_company
@@ -49,15 +49,20 @@ class ApplicationController < ActionController::Base
     redirect_to current_user.company, alert: t('companies.not_accepted_alert')
   end
 
+  def find_pix_setting
+    @pix_setting = PixSetting.find(params[:id])
+    @company = @pix_setting.company
+  end
+
   def find_company
     @company = Company.find(params[:id])
   end
 
   def authenticate_company_user
-    find_company
-
     return if current_user&.in_company?(@company)
 
     redirect_to root_path, alert: t('companies.show.no_permission_alert')
   end
+
+
 end

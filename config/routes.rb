@@ -17,11 +17,14 @@ Rails.application.routes.draw do
     put '/cancel_registration', to: 'companies#cancel_registration'
   end
 
-  resources :pix_settings, only: %i[new create]
+  resources :pix_settings, only: %i[new create] do
+    post 'enable', on: :member
+    post 'disable', on: :member
+  end
 
-  resources :boleto_settings, only: %i[new create]
+  resources :boleto_settings, only: %i[new create] 
 
-  resources :credit_card_settings, only: %i[new create]
+  resources :credit_card_settings, only: %i[new create] 
 
   namespace :api do
     namespace :v1 do
