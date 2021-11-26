@@ -23,6 +23,14 @@ Rails.application.routes.draw do
 
   resources :credit_card_settings, only: %i[new create]
 
+  namespace :api do
+    namespace :v1 do
+      resources :pix_settings, only: %i[index show]
+      resources :boleto_settings, only: %i[index show]
+      resources :credit_card_settings, only: %i[index show]
+    end
+  end
+
   resources :products, only: %i[new create show index] do
     post 'enable', on: :member
     post 'disable', on: :member

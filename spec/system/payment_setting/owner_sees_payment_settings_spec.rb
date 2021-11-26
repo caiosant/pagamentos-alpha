@@ -38,7 +38,7 @@ describe 'Owner sees payment settings' do
     expect(page).to have_content("Código do cartão: #{credit_card_setting.company_code}")
     expect(page).to have_content("Código do banco: #{boleto_setting.bank_code}")
     expect(page).to have_content("Número da agência: #{boleto_setting.agency_number}")
-    expect(page).to have_content("Número da agência: #{boleto_setting.account_number}")
+    expect(page).to have_content("Número da conta: #{boleto_setting.account_number}")
   end
 
   it 'unless company is not accepted' do
