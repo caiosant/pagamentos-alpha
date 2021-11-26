@@ -26,9 +26,14 @@ describe 'CustomerPaymentMethod API' do
           params: customer_payment_method_params,
           headers: { 'companyToken' => owner.company.token }
 
+        customer_payment_method = parsed_body[:customer_payment_method]
         expect(response).to have_http_status(201)
-        expect(parsed_body[:customer_payment_method_token]).to eq('hPxFizxVM5p5mNpFdOsf')
         expect(CustomerPaymentMethod.count).to eq(1)
+        expect(customer_payment_method[:token]).to eq('hPxFizxVM5p5mNpFdOsf')
+        expect(customer_payment_method[:payment_method][:name]).to eq(pix_method.name)
+        expect(customer_payment_method[:payment_method][:type_of]).to eq(pix_method.type_of)
+        expect(customer_payment_method[:customer][:token]).to eq(customer.token)
+        expect(customer_payment_method[:company][:legal_name]).to eq(owner.company.legal_name)
       end
 
       it 'with boleto' do
@@ -51,11 +56,17 @@ describe 'CustomerPaymentMethod API' do
           params: customer_payment_method_params,
           headers: { 'companyToken' => owner.company.token }
 
+        customer_payment_method = parsed_body[:customer_payment_method]
         expect(response).to have_http_status(201)
-        expect(parsed_body[:customer_payment_method_token]).to eq('hPxFizxVM5p5mNpFdOsf')
         expect(CustomerPaymentMethod.count).to eq(1)
+        expect(customer_payment_method[:token]).to eq('hPxFizxVM5p5mNpFdOsf')
+        expect(customer_payment_method[:payment_method][:name]).to eq(boleto_method.name)
+        expect(customer_payment_method[:payment_method][:type_of]).to eq(boleto_method.type_of)
+        expect(customer_payment_method[:customer][:token]).to eq(customer.token)
+        expect(customer_payment_method[:company][:legal_name]).to eq(owner.company.legal_name)
       end
 
+      # TODO: atualizar arrange act assert
       it 'with credit card' do
         owner = create(:user, :complete_company_owner)
         owner.company.accepted!

@@ -1,6 +1,7 @@
 class Api::V1::ApiController < ActionController::API
   rescue_from ActiveRecord::ActiveRecordError, with: :render_generic_error
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
+  ActiveRecord::Base.include_root_in_json = true
   before_action :authenticate_company!
 
 
