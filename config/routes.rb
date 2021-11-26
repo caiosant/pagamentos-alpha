@@ -35,6 +35,10 @@ Rails.application.routes.draw do
         post 'enable', on: :member
         post 'disable', on: :member
       end
+      resources :subscriptions, only: %i[index create show update] do
+        post 'enable', on: :member
+        post 'disable', on: :member
+      end
     end
   end
 
