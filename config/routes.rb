@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :pix_settings, only: %i[index show]
       resources :boleto_settings, only: %i[index show]
+      resources :credit_card_settings, only: %i[index show]
     end
   end
 end
