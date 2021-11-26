@@ -1,8 +1,34 @@
 module Api
   module V1
     class ProductsController < Api::V1::ApiController
+      def index
+        @products = Product.where(company: @company, status: :enabled)
+
+        render json: @products.as_json(only: %i[name token status])
+      end
+
+      def show
+        @product = find_product
+
+        return render_not_authorized if @product.company != @company
+
+        render json: @product.as_json(only: %i[name token status])
+      end
+
+      def enable
+        @product = find_product
+        return render_not_authorized if @product.company != @company
+        @product.enabled!
+      end
+
+      def disable
+        @product = find_product
+        return render_not_authorized if @product.company != @company
+        @product.disabled!
+      end
+
       def create
-        @product = Product.new(params.require(:product).permit(:name))
+        @product = Product.new(product_params)
         @product.company = @company
         
         if @product.save
@@ -15,6 +41,18 @@ module Api
                                     }    
         end
       end
+
+      private 
+      def product_params
+        params.require(:product).permit(:name)
+      end
+
+      def find_product
+        product = Product.where(token: params[:id]).first
+        raise ActiveRecord::RecordNotFound if product.nil?
+        return product
+      end
+
     end
   end
 end

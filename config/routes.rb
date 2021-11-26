@@ -31,7 +31,10 @@ Rails.application.routes.draw do
       resources :pix_settings, only: %i[index show]
       resources :boleto_settings, only: %i[index show]
       resources :credit_card_settings, only: %i[index show]
-      resources :products, only: %i[create show update]
+      resources :products, only: %i[index create show update] do
+        post 'enable', on: :member
+        post 'disable', on: :member
+      end
     end
   end
 
