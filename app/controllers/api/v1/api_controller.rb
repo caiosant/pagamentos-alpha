@@ -7,7 +7,7 @@ class Api::V1::ApiController < ActionController::API
   private
   
   def authenticate_company!
-    @company = Company.find_by(token: params[:company_token])
+    @company = Company.find_by(token: request.headers['Authorization'])
   end
 
   def render_not_found(e)

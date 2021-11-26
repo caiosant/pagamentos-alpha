@@ -3,27 +3,26 @@ require 'rails_helper'
 # recebe token da empresa, cpf, meio de pagamento, 
 # numero do cartão + validade (só cartão)
 # retorna token do cliente
-describe 'Customer API' do
-  context 'POST /api/v1/customer' do
+describe 'Customer Api' do
+  context 'POST create' do
     context 'successfully' do
       it 'with pix' do
         owner = create(:user, :complete_company_owner)
         owner.company.accepted!
         pix_method = create(:payment_method, :pix)
         pix_setting = create(:pix_setting, company: owner.company, payment_method: pix_method)
-        company_payment_method, = owner.company.list_payment_methods
+        company_payment_setting, = owner.company.payment_settings
 
         allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('LI5YuUJrZuJSB6uPH2jm')
 
         customer_params = {
+          name: 'João',
           cpf: '111.111.111-11',
-          payment_method_token: company_payment_method.token
+          payment_method_token: company_payment_setting.token
         }
-
         post '/api/v1/customer', params: {
-          company_token: owner.company.token,
           customer: customer_params
-        }
+        }, headers: { 'Authorization' => owner.company.token }
 
         expect(response).to have_http_status(200)
         expect(parsed_body[:customer_token]).to eq('LI5YuUJrZuJSB6uPH2jm')
@@ -129,7 +128,6 @@ describe 'Customer API' do
         credit_card_setting = create(:credit_card_setting, company: owner.company, payment_method: credit_card_method)
         company_payment_method, = owner.company.list_payment_methods
 
-<<<<<<< HEAD
         customer_params = {
           company_token: owner.company.token,
           cpf: '111.111.111-11',
@@ -139,9 +137,6 @@ describe 'Customer API' do
         }
 
         post '/api/v1/customer', params: { customer: customer_params }
-=======
-      it 'should inform payment_method_token'
->>>>>>> cd722931204e21cb4adc9e00a9e11b86b912648d
 
         expect(response).to have_http_status(400)
         expect(response.parsed_body[:message]). to eq('Número do cartão de crédito deve ser enviado')
