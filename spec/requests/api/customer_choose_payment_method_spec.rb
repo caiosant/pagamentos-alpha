@@ -3,56 +3,57 @@ require 'rails_helper'
 # recebe token da empresa, cpf, meio de pagamento, 
 # numero do cartão + validade (só cartão)
 # retorna token do cliente
-describe 'Customer API' do
-  context 'POST /api/v1/customer' do
+describe 'CustomerPaymentMethod API' do
+  context 'POST /api/v1/customer_payment_method' do
     context 'successfully' do
       it 'with pix' do
         owner = create(:user, :complete_company_owner)
         owner.company.accepted!
+        customer = create(:customer, company: owner.company)
         pix_method = create(:payment_method, :pix)
         pix_setting = create(:pix_setting, company: owner.company, payment_method: pix_method)
-<<<<<<< HEAD
-        company_payment_method = owner.company.list_payment_methods
-=======
         company_payment_setting, = owner.company.payment_settings
->>>>>>> ccd7afafdbbb867b8d1ebd8a1ac4a9fec96c9a92
 
-        allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('LI5YuUJrZuJSB6uPH2jm')
+        allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('hPxFizxVM5p5mNpFdOsf')
 
-        customer_params = {
-          name: 'João',
-          cpf: '111.111.111-11',
-          payment_method_token: company_payment_setting.token
+        customer_payment_method_params = {
+          customer_payment_method: {
+            customer_token: customer.token,
+            payment_method_token: company_payment_setting.token
+          }
         }
-        post '/api/v1/customer', params: {
-          customer: customer_params
-        }, headers: { 'Authorization' => owner.company.token }
+        post '/api/v1/customer_payment_method',
+          params: customer_payment_method_params,
+          headers: { 'companyToken' => owner.company.token }
 
-        expect(response).to have_http_status(200)
-        expect(parsed_body[:customer_token]).to eq('LI5YuUJrZuJSB6uPH2jm')
+        expect(response).to have_http_status(201)
+        expect(parsed_body[:customer_payment_method_token]).to eq('hPxFizxVM5p5mNpFdOsf')
+        expect(CustomerPaymentMethod.count).to eq(1)
       end
 
       it 'with boleto' do
         owner = create(:user, :complete_company_owner)
         owner.company.accepted!
+        customer = create(:customer, company: owner.company)
         boleto_method = create(:payment_method, :boleto)
         boleto_setting = create(:boleto_setting, company: owner.company, payment_method: boleto_method)
-        company_payment_method = owner.company.list_payment_methods
+        company_payment_setting, = owner.company.payment_settings
 
-        allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('LI5YuUJrZuJSB6uPH2jm')
+        allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('hPxFizxVM5p5mNpFdOsf')
 
-        customer_params = {
-          cpf: '111.111.111-11',
-          payment_method_token: company_payment_method.token
+        customer_payment_method_params = {
+          customer_payment_method: {
+            customer_token: customer.token,
+            payment_method_token: company_payment_setting.token
+          }
         }
+        post '/api/v1/customer_payment_method',
+          params: customer_payment_method_params,
+          headers: { 'companyToken' => owner.company.token }
 
-        post '/api/v1/customer', params: {
-          company_token: owner.company.token,
-          customer: customer_params
-        }
-
-        expect(response).to have_http_status(200)
-        expect(parsed_body[:customer_token]).to eq('LI5YuUJrZuJSB6uPH2jm')
+        expect(response).to have_http_status(201)
+        expect(parsed_body[:customer_payment_method_token]).to eq('hPxFizxVM5p5mNpFdOsf')
+        expect(CustomerPaymentMethod.count).to eq(1)
       end
 
       it 'with credit card' do
@@ -62,7 +63,7 @@ describe 'Customer API' do
         credit_card_setting = create(:credit_card_setting, company: owner.company, payment_method: credit_card_method)
         company_payment_method = owner.company.list_payment_methods
 
-        allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('LI5YuUJrZuJSB6uPH2jm')
+        allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('hPxFizxVM5p5mNpFdOsf')
 
         customer_params = {
           cpf: '111.111.111-11',
@@ -71,13 +72,13 @@ describe 'Customer API' do
           credit_card_expiration_date: 3.month.from_now
         }
 
-        post '/api/v1/customer', params: {
+        post '/api/v1/customer_payment_method', params: {
           company_token: owner.company.token,
           customer: customer_params
         }
 
         expect(response).to have_http_status(200)
-        expect(parsed_body[:customer_token]).to eq('LI5YuUJrZuJSB6uPH2jm')
+        expect(parsed_body[:customer_token]).to eq('hPxFizxVM5p5mNpFdOsf')
       end
     end
 
