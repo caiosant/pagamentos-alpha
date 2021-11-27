@@ -54,6 +54,16 @@ class ApplicationController < ActionController::Base
     @company = @pix_setting.company
   end
 
+  def find_boleto_setting
+    @boleto_setting = BoletoSetting.find(params[:id])
+    @company = @boleto_setting.company
+  end
+
+  def find_credit_card_setting
+    @credit_card_setting = CreditCardSetting.find(params[:id])
+    @company = @credit_card_setting.company
+  end
+
   def find_company
     @company = Company.find(params[:id])
   end
