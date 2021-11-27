@@ -1,21 +1,21 @@
 require 'rails_helper'
 
-describe 'Product API' do
-  context 'POST /api/v1/products' do
+describe 'Subscription API' do
+  context 'POST /api/v1/subscriptions' do
     it 'successfully' do
       owner = create(:user, :complete_company_owner)
       company = owner.company
       company.accepted!
 
-      post '/api/v1/products',
-           params: { product: { name: 'Video de LOL' } },
+      post '/api/v1/subscriptions',
+           params: { subscription: { name: 'Assinatura de LOL' } },
            headers: { companyToken: company.token }
 
-      product = Product.last
+      subscription = Subscription.last
 
       expect(response).to have_http_status(201)
-      expect(parsed_body[:name]).to eq(product.name)
-      expect(parsed_body[:token]).to eq(product.token)
+      expect(parsed_body[:name]).to eq(subscription.name)
+      expect(parsed_body[:token]).to eq(subscription.token)
     end
 
     it 'fail because name is blank' do
@@ -23,16 +23,16 @@ describe 'Product API' do
       company = owner.company
       company.accepted!
 
-      post '/api/v1/products',
-           params: { product: { name: '' } },
+      post '/api/v1/subscriptions',
+           params: { subscription: { name: '' } },
            headers: { companyToken: company.token }
 
       expect(response).to have_http_status(422)
       expect(parsed_body[:errors][:name]).to eq(['não pode ficar em branco'])
     end
   end
-  context 'GET /api/v1/products' do
-    it 'should get all correspondig products' do
+  context 'GET /api/v1/subscriptions' do
+    it 'should get all correspondig subscriptions' do
       owner = create(:user, :complete_company_owner)
       company = owner.company
       company.accepted!
@@ -41,21 +41,21 @@ describe 'Product API' do
       other_company = other_owner.company
       other_company.accepted!
 
-      products = create_list(:product, 3, company: company)
-      products[2].disabled!
-      create_list(:product, 2, company: other_company)
+      subscriptions = create_list(:subscription, 3, company: company)
+      subscriptions[2].disabled!
+      create_list(:subscription, 2, company: other_company)
 
-      get '/api/v1/products', headers: { companyToken: company.token }
+      get '/api/v1/subscriptions', headers: { companyToken: company.token }
 
       expect(response).to have_http_status(200)
-      expect(parsed_body.first[:name]).to eq(products.first.name)
-      expect(parsed_body.first[:token]).to eq(products.first.token)
-      expect(parsed_body.second[:name]).to eq(products.second.name)
-      expect(parsed_body.second[:token]).to eq(products.second.token)
+      expect(parsed_body.first[:name]).to eq(subscriptions.first.name)
+      expect(parsed_body.first[:token]).to eq(subscriptions.first.token)
+      expect(parsed_body.second[:name]).to eq(subscriptions.second.name)
+      expect(parsed_body.second[:token]).to eq(subscriptions.second.token)
       expect(parsed_body.count).to eq(2)
     end
 
-    it 'return no product' do
+    it 'return no subscription' do
       owner = create(:user, :complete_company_owner)
       company = owner.company
       company.accepted!
@@ -64,37 +64,37 @@ describe 'Product API' do
       company2 = owner2.company
       company2.accepted!
 
-      create_list(:product, 2, company: company2)
+      create_list(:subscription, 2, company: company2)
 
-      get '/api/v1/products', headers: { companyToken: company.token }
+      get '/api/v1/subscriptions', headers: { companyToken: company.token }
 
       expect(response).to have_http_status(200)
       expect(parsed_body).to be_empty
     end
   end
-  context 'GET /api/v1/products/:token' do
-    it 'should get correspondig product' do
+  context 'GET /api/v1/subscriptions/:token' do
+    it 'should get correspondig subscription' do
       owner = create(:user, :complete_company_owner)
       company = owner.company
       company.accepted!
 
-      products = create_list(:product, 3, company: company)
-      products.first.disabled!
+      subscriptions = create_list(:subscription, 3, company: company)
+      subscriptions.first.disabled!
 
-      get "/api/v1/products/#{products.first.token}", headers: { companyToken: company.token }
+      get "/api/v1/subscriptions/#{subscriptions.first.token}", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(200)
-      expect(parsed_body[:name]).to eq(products.first.name)
-      expect(parsed_body[:token]).to eq(products.first.token)
-      expect(parsed_body[:status]).to eq(products.first.status)
+      expect(parsed_body[:name]).to eq(subscriptions.first.name)
+      expect(parsed_body[:token]).to eq(subscriptions.first.token)
+      expect(parsed_body[:status]).to eq(subscriptions.first.status)
     end
 
-    it 'should return 404 if product does not exist' do
+    it 'should return 404 if subscription does not exist' do
       owner = create(:user, :complete_company_owner)
       company = owner.company
       company.accepted!
 
-      get '/api/v1/products/hwduhdwuqhdwquhdqi', headers: { companyToken: company.token }
+      get '/api/v1/subscriptions/hwduhdwuqhdwquhdqi', headers: { companyToken: company.token }
 
       expect(response).to have_http_status(404)
     end
@@ -108,34 +108,34 @@ describe 'Product API' do
       other_company = other_owner.company
       other_company.accepted!
 
-      other_product = create(:product, company: other_company)
+      other_subscription = create(:subscription, company: other_company)
 
-      get "/api/v1/products/#{other_product.token}", headers: { companyToken: company.token }
+      get "/api/v1/subscriptions/#{other_subscription.token}", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(401)
     end
   end
 
-  context 'POST /api/v1/products/:token/disable' do
+  context 'POST /api/v1/subscriptions/:token/disable' do
     it 'successfully' do
       owner = create(:user, :complete_company_owner)
       company = owner.company
       company.accepted!
 
-      product = create(:product, company: company)
+      subscription = create(:subscription, company: company)
 
-      post "/api/v1/products/#{product.token}/disable", headers: { companyToken: company.token }
+      post "/api/v1/subscriptions/#{subscription.token}/disable", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(204)
-      expect(product.reload.status).to eq('disabled')
+      expect(subscription.reload.status).to eq('disabled')
     end
 
-    it 'should return 404 if product does not exist' do
+    it 'should return 404 if subscription does not exist' do
       owner = create(:user, :complete_company_owner)
       company = owner.company
       company.accepted!
 
-      post '/api/v1/products/hwduhdwuqhdwquhdqi/disable', headers: { companyToken: company.token }
+      post '/api/v1/subscriptions/hwduhdwuqhdwquhdqi/disable', headers: { companyToken: company.token }
 
       expect(response).to have_http_status(404)
     end
@@ -149,35 +149,35 @@ describe 'Product API' do
       other_company = other_owner.company
       other_company.accepted!
 
-      other_product = create(:product, company: other_company)
+      other_subscription = create(:subscription, company: other_company)
 
-      post "/api/v1/products/#{other_product.token}/disable", headers: { companyToken: company.token }
+      post "/api/v1/subscriptions/#{other_subscription.token}/disable", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(401)
     end
   end
 
-  context 'POST /api/v1/products/:token/enable' do
+  context 'POST /api/v1/subscriptions/:token/enable' do
     it 'successfully' do
       owner = create(:user, :complete_company_owner)
       company = owner.company
       company.accepted!
 
-      product = create(:product, company: company)
-      product.disabled!
+      subscription = create(:subscription, company: company)
+      subscription.disabled!
 
-      post "/api/v1/products/#{product.token}/enable", headers: { companyToken: company.token }
+      post "/api/v1/subscriptions/#{subscription.token}/enable", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(204)
-      expect(product.reload.status).to eq('enabled')
+      expect(subscription.reload.status).to eq('enabled')
     end
 
-    it 'should return 404 if product does not exist' do
+    it 'should return 404 if subscription does not exist' do
       owner = create(:user, :complete_company_owner)
       company = owner.company
       company.accepted!
 
-      post '/api/v1/products/hwduhdwuqhdwquhdqi/enable', headers: { companyToken: company.token }
+      post '/api/v1/subscriptions/hwduhdwuqhdwquhdqi/enable', headers: { companyToken: company.token }
 
       expect(response).to have_http_status(404)
     end
@@ -191,9 +191,9 @@ describe 'Product API' do
       other_company = other_owner.company
       other_company.accepted!
 
-      other_product = create(:product, company: other_company)
+      other_subscription = create(:subscription, company: other_company)
 
-      post "/api/v1/products/#{other_product.token}/enable", headers: { companyToken: company.token }
+      post "/api/v1/subscriptions/#{other_subscription.token}/enable", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(401)
     end

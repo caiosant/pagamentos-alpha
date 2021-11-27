@@ -23,9 +23,9 @@ class ApplicationController < ActionController::Base
     find_company
 
     return if current_user&.owns?(@company)
+
     redirect_to root_path, alert: t('companies.edit.no_permission_alert')
   end
-  
 
   def find_subscription_and_authenticate_company
     @subscription = Subscription.find(params[:id])
@@ -63,6 +63,4 @@ class ApplicationController < ActionController::Base
 
     redirect_to root_path, alert: t('companies.show.no_permission_alert')
   end
-
-
 end

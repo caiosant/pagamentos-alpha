@@ -19,6 +19,19 @@ describe 'Owner creates subscription' do
     expect(page).to have_content("Token de integração: #{Subscription.last.token}")
   end
 
+  it 'fails on empty name' do
+    owner = create(:user, :complete_company_owner)
+    owner.company.accepted!
+
+    login_as owner, scope: :user
+    visit company_path owner.company
+    click_on 'Registrar nova assinatura'
+
+    click_on 'Criar Assinatura'
+
+    expect(page).to have_content('não pode ficar em branco')
+  end
+
   it 'but cant see register if not approved' do
     owner = create(:user, :complete_company_owner)
 

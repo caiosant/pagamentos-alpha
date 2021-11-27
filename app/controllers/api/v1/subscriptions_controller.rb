@@ -18,35 +18,35 @@ module Api
       def enable
         @subscription = find_by_token(Subscription, params[:id])
         return render_not_authorized if @subscription.company != @company
+
         @subscription.enabled!
       end
 
       def disable
         @subscription = find_by_token(Subscription, params[:id])
         return render_not_authorized if @subscription.company != @company
+
         @subscription.disabled!
       end
 
       def create
         @subscription = Subscription.new(subscription_params)
         @subscription.company = @company
-        
         if @subscription.save
-          render status: 201, json: { name: @subscription.name, token: @subscription.token}
+          render status: :created, json: { name: @subscription.name, token: @subscription.token }
         else
-          render status: 422, json: { message: 'Requisição inválida',
-                                      errors:  @subscription.errors ,
-                                      request: @subscription.as_json(except: %i[id token company_id 
-                                                                            created_at updated_at])
-                                    }    
+          render status: :unprocessable_entity,
+                 json: { message: 'Requisição inválida',
+                         errors: @subscription.errors,
+                         request: @subscription.as_json(except: %i[id token company_id created_at updated_at]) }
         end
       end
 
-      private 
+      private
+
       def subscription_params
         params.require(:subscription).permit(:name)
       end
-
     end
   end
 end

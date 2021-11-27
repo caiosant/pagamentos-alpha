@@ -26,4 +26,19 @@ describe 'authenticated user creates a new product' do
     expect(page).to have_content('Estado: Habilitado')
     expect(page).to have_content("Token de integração: #{Product.last.token}")
   end
+
+  it 'fails on empty name' do
+    owner = create(:user, :complete_company_owner)
+    owner.company.accepted!
+
+    login_as owner, scope: :user
+    visit company_path(owner.company)
+    click_on 'Criar produto'
+
+    within 'form' do
+      click_on 'Criar'
+    end
+
+    expect(page).to have_content('não pode ficar em branco')
+  end
 end

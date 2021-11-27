@@ -22,9 +22,9 @@ Rails.application.routes.draw do
     post 'disable', on: :member
   end
 
-  resources :boleto_settings, only: %i[new create] 
+  resources :boleto_settings, only: %i[new create]
 
-  resources :credit_card_settings, only: %i[new create] 
+  resources :credit_card_settings, only: %i[new create]
 
   namespace :api do
     namespace :v1 do
