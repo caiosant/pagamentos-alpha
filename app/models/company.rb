@@ -3,6 +3,9 @@ class Company < ApplicationRecord
   has_many :pix_settings, dependent: :destroy
   has_many :credit_card_settings, dependent: :destroy
   has_many :boleto_settings, dependent: :destroy
+  has_many :products, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
+  has_many :customers, dependent: :destroy
 
   enum status: { incomplete: 0, pending: 10, accepted: 20, rejected: 30 }
 
@@ -22,8 +25,8 @@ class Company < ApplicationRecord
   end
 
   def list_payment_methods
-    pix_settings.map(&:payment_method) + credit_card_settings.map(&:payment_method) + 
-    boleto_settings.map(&:payment_method)
+    pix_settings.map(&:payment_method) + credit_card_settings.map(&:payment_method) +
+      boleto_settings.map(&:payment_method)
   end
 
   def blank_all_info!

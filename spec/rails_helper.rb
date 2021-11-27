@@ -40,6 +40,7 @@ end
 RSpec.configure do |config|
   config.include ApiMacro
   config.include Warden::Test::Helpers
+  config.include ApiMacro
 
   config.before(type: :system) do
     driven_by :rack_test

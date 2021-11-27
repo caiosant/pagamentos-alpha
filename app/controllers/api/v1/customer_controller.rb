@@ -1,41 +1,47 @@
-class Api::V1::CustomerController < Api::V1::ApiController
+module Api
+  module V1
+    class CustomerController < Api::V1::ApiController
+      def index
+        @customers = Customer.all.where(company: @company)
 
-  def index
-    @customers = Customer.all.where(company: @company)
+        render status: :ok, json: @customers.as_json(except: %i[id company_id
+                                                                created_at updated_at],
+                                                     include: { company: { only: :legal_name } })
+      end
 
-    render status:200, json: @customers.as_json( except: %i[id company_id 
-                                                 created_at updated_at], 
-                                                 include: { company: { only: :legal_name } } )
-  end
+      def show
+        @customer = Customer.find_by(token: params[:id])
+        raise ActiveRecord::RecordNotFound if @customer.nil?
 
-  def show
-    @customers = Customer.all.where(company: @company)
+        return render_not_authorized if @customer.company != @company
 
-    render status:200, json: @customers.as_json( except: %i[id company_id 
-                                                 created_at updated_at], 
-                                                 include: { company: { only: :legal_name } } )
-  end
+        render status: :ok, json: @customer.as_json(except: %i[id company_id
+                                                               created_at updated_at],
+                                                    include: { company: { only: :legal_name } })
+      end
 
-  def create
-    @customer = Customer.new(customer_params)
-    @customer.company = @company
-    
-    if @customer.save
-      render status: 201, json: @customer.as_json( except: %i[id company_id 
-                                                  created_at updated_at], 
-                                                  include: { company: { only: :legal_name } } )
+      def create
+        @customer = Customer.new(customer_params)
+        @customer.company = @company
 
-    else
-      render status: 422, json: { message: 'Requisição inválida',
-                                  errors:  @customer.errors ,
-                                  request: @customer.as_json(except: %i[id token company_id 
-                                                                        created_at updated_at])
-                                }
+        if @customer.save
+          render status: :created, json: @customer.as_json(except: %i[id company_id
+                                                                      created_at updated_at],
+                                                           include: { company: { only: :legal_name } })
+
+        else
+          render status: :unprocessable_entity, json: { message: 'Requisição inválida',
+                                                        errors: @customer.errors,
+                                                        request: @customer.as_json(except: %i[id token company_id
+                                                                                              created_at updated_at]) }
+        end
+      end
+
+      private
+
+      def customer_params
+        params.require(:customer).permit(:name, :cpf)
+      end
     end
-  end
-
-  private
-  def customer_params
-    params.require(:customer).permit(:name, :cpf)
   end
 end

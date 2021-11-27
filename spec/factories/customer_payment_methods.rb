@@ -1,13 +1,13 @@
 FactoryBot.define do
   factory :customer_payment_method do
-    payment_method { "MyString" }
+    payment_method { 'MyString' }
     payment_method { nil }
-    credit_card_name { "MyString" }
-    credit_card_number { "MyString" }
-    credit_card_expiration_date { "2021-11-25" }
-    credit_card_security_code { "MyString" }
+    credit_card_name { 'MyString' }
+    credit_card_number { 'MyString' }
+    credit_card_expiration_date { '2021-11-25' }
+    credit_card_security_code { 'MyString' }
     company { nil }
     customer { nil }
-    customer_payment_token { "MyString" }
+    customer_payment_token { 'MyString' }
   end
 end

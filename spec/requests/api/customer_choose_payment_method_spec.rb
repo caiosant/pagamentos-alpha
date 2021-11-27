@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-# recebe token da empresa, cpf, meio de pagamento, 
+# recebe token da empresa, cpf, meio de pagamento,
 # numero do cartão + validade (só cartão)
 # retorna token do cliente
 describe 'Customer API' do
@@ -64,7 +64,7 @@ describe 'Customer API' do
           cpf: '111.111.111-11',
           payment_method_token: company_payment_method.token,
           credit_card_number: '47384876346537',
-          credit_card_expiration_date: 3.month.from_now
+          credit_card_expiration_date: 3.months.from_now
         }
 
         post '/api/v1/customer', params: {
@@ -91,13 +91,13 @@ describe 'Customer API' do
           cpf: '111.111.111-11',
           payment_method_token: company_payment_method.token,
           credit_card_number: '47384876346537',
-          credit_card_expiration_date: 3.month.from_now
+          credit_card_expiration_date: 3.months.from_now
         }
 
         post '/api/v1/customer', params: { customer: customer_params }
 
         expect(response).to have_http_status(400)
-        expect(response.parsed_body[:message]). to eq('Nome do cliente deve ser enviado')
+        expect(response.parsed_body[:message]).to eq('Nome do cliente deve ser enviado')
       end
 
       it 'should inform CPF' do
@@ -112,13 +112,13 @@ describe 'Customer API' do
           cpf: '',
           payment_method_token: company_payment_method.token,
           credit_card_number: '47384876346537',
-          credit_card_expiration_date: 3.month.from_now
+          credit_card_expiration_date: 3.months.from_now
         }
 
         post '/api/v1/customer', params: { customer: customer_params }
 
         expect(response).to have_http_status(400)
-        expect(response.parsed_body[:message]). to eq('CPF deve ser enviado')
+        expect(response.parsed_body[:message]).to eq('CPF deve ser enviado')
       end
 
       it 'should inform credit card number' do
@@ -133,13 +133,13 @@ describe 'Customer API' do
           cpf: '111.111.111-11',
           payment_method_token: company_payment_method.token,
           credit_card_number: '',
-          credit_card_expiration_date: 3.month.from_now
+          credit_card_expiration_date: 3.months.from_now
         }
 
         post '/api/v1/customer', params: { customer: customer_params }
 
         expect(response).to have_http_status(400)
-        expect(response.parsed_body[:message]). to eq('Número do cartão de crédito deve ser enviado')
+        expect(response.parsed_body[:message]).to eq('Número do cartão de crédito deve ser enviado')
       end
 
       it 'should inform credit card expiration date' do
@@ -159,5 +159,3 @@ describe 'Customer API' do
     end
   end
 end
-
-

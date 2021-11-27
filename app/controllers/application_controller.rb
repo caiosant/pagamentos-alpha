@@ -27,10 +27,26 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, alert: t('companies.edit.no_permission_alert')
   end
 
-  def redirect_if_pending_company
-    return unless @company.pending?
+  def find_subscription_and_authenticate_company
+    @subscription = Subscription.find(params[:id])
+    @company = @subscription.company
+    return if @company == current_user.company
 
-    redirect_to @company
+    redirect_to root_path, alert: t('subscription.not_linked_to_company_alert')
+  end
+
+  def find_product_and_authenticate_company
+    @product = Product.find(params[:id])
+    @company = @product.company
+    return if @company == current_user.company
+
+    redirect_to root_path, alert: t('product.not_linked_to_company_alert')
+  end
+
+  def redirect_if_pending_company
+    return unless current_user&.company&.pending?
+
+    redirect_to current_user.company, alert: t('companies.not_accepted_alert')
   end
 
   def find_company
