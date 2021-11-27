@@ -49,8 +49,18 @@ class Api::V1::CustomerPaymentMethodController < Api::V1::ApiController
     {
       message: 'Requisição inválida',
       errors:  @customer_payment_method.errors,
+      # TODO: passar entrada do cartão de crédito de volta?
       request: @customer_payment_method.as_json(
-        except: %i[id token company_id created_at updated_at]
+        # except: %i[
+        #   id created_at updated_at token company_id customer_id payment_method_id
+        #   credit_card_name credit_card_number credit_card_expiration_date credit_card_security_code
+        # ],
+        only: %i[],
+        include: {
+          payment_method: { only: %i[name type_of] },
+          customer: { only: %i[token] },
+          company: { only: %i[legal_name] }
+        }
       )
     }
   end

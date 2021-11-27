@@ -66,7 +66,6 @@ describe 'CustomerPaymentMethod API' do
         expect(customer_payment_method[:company][:legal_name]).to eq(owner.company.legal_name)
       end
 
-      # TODO: atualizar arrange act assert
       it 'with credit card' do
         owner = create(:user, :complete_company_owner)
         owner.company.accepted!
@@ -103,39 +102,46 @@ describe 'CustomerPaymentMethod API' do
     end
 
     context '400 error' do
-      it 'should inform customer name' do
+      it 'should inform customer token' do
         owner = create(:user, :complete_company_owner)
         owner.company.accepted!
-        credit_card_method = create(:payment_method, :credit_card)
-        credit_card_setting = create(:credit_card_setting, company: owner.company, payment_method: credit_card_method)
-        company_payment_method = owner.company.list_payment_methods
+        pix_method = create(:payment_method, :pix)
+        pix_setting = create(:pix_setting, company: owner.company, payment_method: pix_method)
+        company_payment_setting, = owner.company.payment_settings
 
-        customer_params = {
-          company_token: owner.company.token,
-          customer_name: '',
-          cpf: '111.111.111-11',
-          payment_method_token: company_payment_method.token,
-          credit_card_number: '47384876346537',
-          credit_card_expiration_date: 3.month.from_now
+        customer_payment_method_params = {
+          customer_payment_method: {
+            customer_token: '',
+            payment_method_token: company_payment_setting.token
+          }
         }
+        post '/api/v1/customer_payment_method',
+          params: customer_payment_method_params,
+          headers: { 'companyToken' => owner.company.token }
 
-        post '/api/v1/customer', params: { customer: customer_params }
-
-        expect(response).to have_http_status(400)
-        expect(response.parsed_body[:message]). to eq('Nome do cliente deve ser enviado')
+        customer_payment_method = parsed_body[:request][:customer_payment_method]
+        expect(response).to have_http_status(422)
+        expect(CustomerPaymentMethod.count).to eq(0)
+        expect(parsed_body[:message]). to eq('Requisição inválida')
+        expect(parsed_body[:errors][:customer].first).to eq('é obrigatório(a)')
+        expect(customer_payment_method[:payment_method][:name]).to eq(pix_method.name)
+        expect(customer_payment_method[:payment_method][:type_of]).to eq(pix_method.type_of)
+        expect(customer_payment_method[:company][:legal_name]).to eq(owner.company.legal_name)
+        expect(customer_payment_method[:customer]).to be_nil
       end
 
       it 'should inform CPF' do
         owner = create(:user, :complete_company_owner)
         owner.company.accepted!
+        customer = create(:customer, company: owner.company)
         credit_card_method = create(:payment_method, :credit_card)
         credit_card_setting = create(:credit_card_setting, company: owner.company, payment_method: credit_card_method)
-        company_payment_method = owner.company.list_payment_methods
+        company_payment_setting, = owner.company.payment_settings
 
         customer_params = {
           company_token: owner.company.token,
           cpf: '',
-          payment_method_token: company_payment_method.token,
+          payment_method_token: company_payment_setting.token,
           credit_card_number: '47384876346537',
           credit_card_expiration_date: 3.month.from_now
         }
@@ -149,14 +155,15 @@ describe 'CustomerPaymentMethod API' do
       it 'should inform credit card number' do
         owner = create(:user, :complete_company_owner)
         owner.company.accepted!
+        customer = create(:customer, company: owner.company)
         credit_card_method = create(:payment_method, :credit_card)
         credit_card_setting = create(:credit_card_setting, company: owner.company, payment_method: credit_card_method)
-        company_payment_method, = owner.company.list_payment_methods
+        company_payment_setting, = owner.company.payment_settings
 
         customer_params = {
           company_token: owner.company.token,
           cpf: '111.111.111-11',
-          payment_method_token: company_payment_method.token,
+          payment_method_token: company_payment_setting.token,
           credit_card_number: '',
           credit_card_expiration_date: 3.month.from_now
         }
