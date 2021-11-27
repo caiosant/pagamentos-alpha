@@ -102,6 +102,27 @@ describe 'CustomerPaymentMethod API' do
     end
 
     context '400 error' do
+      it 'should inform company token on headers' do
+        owner = create(:user, :complete_company_owner)
+        owner.company.accepted!
+        customer = create(:customer, company: owner.company)
+        pix_method = create(:payment_method, :pix)
+        pix_setting = create(:pix_setting, company: owner.company, payment_method: pix_method)
+        company_payment_setting, = owner.company.payment_settings
+
+        customer_payment_method_params = {
+          customer_payment_method: {
+            customer_token: customer.token,
+            payment_method_token: company_payment_setting.token
+          }
+        }
+        post '/api/v1/customer_payment_method', params: customer_payment_method_params
+
+        expect(response).to have_http_status(401)
+        expect(parsed_body[:message]). to eq('Há algo errado com sua autenticação.')
+        expect(CustomerPaymentMethod.count).to eq(0)
+      end
+
       it 'should inform customer token' do
         owner = create(:user, :complete_company_owner)
         owner.company.accepted!
@@ -130,7 +151,34 @@ describe 'CustomerPaymentMethod API' do
         expect(customer_payment_method[:customer]).to be_nil
       end
 
-      it 'should inform CPF' do
+      it 'should inform payment method token' do
+        owner = create(:user, :complete_company_owner)
+        owner.company.accepted!
+        customer = create(:customer, company: owner.company)
+        pix_method = create(:payment_method, :pix)
+        pix_setting = create(:pix_setting, company: owner.company, payment_method: pix_method)
+
+        customer_payment_method_params = {
+          customer_payment_method: {
+            customer_token: customer.token,
+            payment_method_token: ''
+          }
+        }
+        post '/api/v1/customer_payment_method',
+          params: customer_payment_method_params,
+          headers: { 'companyToken' => owner.company.token }
+
+        customer_payment_method = parsed_body[:request][:customer_payment_method]
+        expect(response).to have_http_status(422)
+        expect(CustomerPaymentMethod.count).to eq(0)
+        expect(parsed_body[:message]). to eq('Requisição inválida')
+        expect(parsed_body[:errors][:payment_method].first).to eq('é obrigatório(a)')
+        expect(customer_payment_method[:customer][:token]).to eq(customer.token)
+        expect(customer_payment_method[:company][:legal_name]).to eq(owner.company.legal_name)
+        expect(customer_payment_method[:payment_method]).to be_nil
+      end
+
+      it 'should inform credit card name' do
         owner = create(:user, :complete_company_owner)
         owner.company.accepted!
         customer = create(:customer, company: owner.company)
@@ -138,18 +186,29 @@ describe 'CustomerPaymentMethod API' do
         credit_card_setting = create(:credit_card_setting, company: owner.company, payment_method: credit_card_method)
         company_payment_setting, = owner.company.payment_settings
 
-        customer_params = {
-          company_token: owner.company.token,
-          cpf: '',
-          payment_method_token: company_payment_setting.token,
-          credit_card_number: '47384876346537',
-          credit_card_expiration_date: 3.month.from_now
+        customer_payment_method_params = {
+          customer_payment_method: {
+            customer_token: customer.token,
+            payment_method_token: company_payment_setting.token,
+            credit_card_name: '',
+            credit_card_number: '4929513324664053',
+            credit_card_expiration_date: 3.months.from_now,
+            credit_card_security_code: '123'
+          }
         }
+        post '/api/v1/customer_payment_method',
+          params: customer_payment_method_params,
+          headers: { 'companyToken' => owner.company.token }
 
-        post '/api/v1/customer', params: { customer: customer_params }
-
-        expect(response).to have_http_status(400)
-        expect(response.parsed_body[:message]). to eq('CPF deve ser enviado')
+        customer_payment_method = parsed_body[:request][:customer_payment_method]
+        expect(response).to have_http_status(422)
+        expect(CustomerPaymentMethod.count).to eq(0)
+        expect(parsed_body[:message]). to eq('Requisição inválida')
+        expect(parsed_body[:errors][:credit_card_name].first).to eq('não pode ficar em branco')
+        expect(customer_payment_method[:customer][:token]).to eq(customer.token)
+        expect(customer_payment_method[:company][:legal_name]).to eq(owner.company.legal_name)
+        expect(customer_payment_method[:payment_method][:name]).to eq(credit_card_method.name)
+        expect(customer_payment_method[:payment_method][:type_of]).to eq(credit_card_method.type_of)
       end
 
       it 'should inform credit card number' do
@@ -160,34 +219,98 @@ describe 'CustomerPaymentMethod API' do
         credit_card_setting = create(:credit_card_setting, company: owner.company, payment_method: credit_card_method)
         company_payment_setting, = owner.company.payment_settings
 
-        customer_params = {
-          company_token: owner.company.token,
-          cpf: '111.111.111-11',
-          payment_method_token: company_payment_setting.token,
-          credit_card_number: '',
-          credit_card_expiration_date: 3.month.from_now
+        customer_payment_method_params = {
+          customer_payment_method: {
+            customer_token: customer.token,
+            payment_method_token: company_payment_setting.token,
+            credit_card_name: 'Credit Card 1',
+            credit_card_number: '',
+            credit_card_expiration_date: 3.months.from_now,
+            credit_card_security_code: '123'
+          }
         }
+        post '/api/v1/customer_payment_method',
+          params: customer_payment_method_params,
+          headers: { 'companyToken' => owner.company.token }
 
-        post '/api/v1/customer', params: { customer: customer_params }
-
-        expect(response).to have_http_status(400)
-        expect(response.parsed_body[:message]). to eq('Número do cartão de crédito deve ser enviado')
+        customer_payment_method = parsed_body[:request][:customer_payment_method]
+        expect(response).to have_http_status(422)
+        expect(CustomerPaymentMethod.count).to eq(0)
+        expect(parsed_body[:message]). to eq('Requisição inválida')
+        expect(parsed_body[:errors][:credit_card_number].first).to eq('não pode ficar em branco')
+        expect(customer_payment_method[:customer][:token]).to eq(customer.token)
+        expect(customer_payment_method[:company][:legal_name]).to eq(owner.company.legal_name)
+        expect(customer_payment_method[:payment_method][:name]).to eq(credit_card_method.name)
+        expect(customer_payment_method[:payment_method][:type_of]).to eq(credit_card_method.type_of)
       end
 
       it 'should inform credit card expiration date' do
+        owner = create(:user, :complete_company_owner)
+        owner.company.accepted!
+        customer = create(:customer, company: owner.company)
+        credit_card_method = create(:payment_method, :credit_card)
+        credit_card_setting = create(:credit_card_setting, company: owner.company, payment_method: credit_card_method)
+        company_payment_setting, = owner.company.payment_settings
+
+        customer_payment_method_params = {
+          customer_payment_method: {
+            customer_token: customer.token,
+            payment_method_token: company_payment_setting.token,
+            credit_card_name: 'Credit Card 1',
+            credit_card_number: '4929513324664053',
+            credit_card_expiration_date: '',
+            credit_card_security_code: '123'
+          }
+        }
+        post '/api/v1/customer_payment_method',
+          params: customer_payment_method_params,
+          headers: { 'companyToken' => owner.company.token }
+
+        customer_payment_method = parsed_body[:request][:customer_payment_method]
+        expect(response).to have_http_status(422)
+        expect(CustomerPaymentMethod.count).to eq(0)
+        expect(parsed_body[:message]). to eq('Requisição inválida')
+        expect(parsed_body[:errors][:credit_card_expiration_date].first).to eq('não pode ficar em branco')
+        expect(customer_payment_method[:customer][:token]).to eq(customer.token)
+        expect(customer_payment_method[:company][:legal_name]).to eq(owner.company.legal_name)
+        expect(customer_payment_method[:payment_method][:name]).to eq(credit_card_method.name)
+        expect(customer_payment_method[:payment_method][:type_of]).to eq(credit_card_method.type_of)
       end
 
-      it 'should inform cpf' do
+      it 'should inform credit card security code' do
+        owner = create(:user, :complete_company_owner)
+        owner.company.accepted!
+        customer = create(:customer, company: owner.company)
+        credit_card_method = create(:payment_method, :credit_card)
+        credit_card_setting = create(:credit_card_setting, company: owner.company, payment_method: credit_card_method)
+        company_payment_setting, = owner.company.payment_settings
+
+        customer_payment_method_params = {
+          customer_payment_method: {
+            customer_token: customer.token,
+            payment_method_token: company_payment_setting.token,
+            credit_card_name: 'Credit Card 1',
+            credit_card_number: '4929513324664053',
+            credit_card_expiration_date: 3.months.from_now,
+            credit_card_security_code: ''
+          }
+        }
+        post '/api/v1/customer_payment_method',
+          params: customer_payment_method_params,
+          headers: { 'companyToken' => owner.company.token }
+
+        customer_payment_method = parsed_body[:request][:customer_payment_method]
+        expect(response).to have_http_status(422)
+        expect(CustomerPaymentMethod.count).to eq(0)
+        expect(parsed_body[:message]). to eq('Requisição inválida')
+        expect(parsed_body[:errors][:credit_card_security_code].first).to eq('não pode ficar em branco')
+        expect(customer_payment_method[:customer][:token]).to eq(customer.token)
+        expect(customer_payment_method[:company][:legal_name]).to eq(owner.company.legal_name)
+        expect(customer_payment_method[:payment_method][:name]).to eq(credit_card_method.name)
+        expect(customer_payment_method[:payment_method][:type_of]).to eq(credit_card_method.type_of)
       end
 
-      it 'should inform payment_method_id' do
-      end
-
-      it 'payment_method does not exist' do
-      end
-
-      it 'cannot create without company token' do
-      end
+      it 'should inform not expired expiration date'
     end
   end
 end
