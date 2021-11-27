@@ -32,7 +32,7 @@ describe 'Owner creates boleto payment setting' do
     company = owner.company
     company.accepted!
 
-    boleto_method, * = create_list(:payment_method, 3, :boleto)
+    create_list(:payment_method, 3, :boleto)
 
     login_as owner, scope: :user
     visit company_path owner.company
