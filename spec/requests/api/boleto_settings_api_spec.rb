@@ -18,13 +18,13 @@ describe 'Boleto setting API' do
       get '/api/v1/boleto_settings', headers: { companyToken: company.token }
 
       expect(response).to have_http_status(200)
-      expect(parsed_body.first[:agency_number]).to eq(boleto_settings.first.agency_number)
-      expect(parsed_body.first[:account_number]).to eq(boleto_settings.first.account_number)
-      expect(parsed_body.first[:token]).to eq(boleto_settings.first.token)
-      expect(parsed_body.first[:bank_code]).to eq(boleto_settings.first.bank_code)
-      expect(parsed_body.first[:payment_method][:name]).to eq(boleto_settings.first.payment_method.name)
-      expect(parsed_body.second[:agency_number]).to eq(boleto_settings.second.agency_number)
-      expect(parsed_body.second[:token]).to eq(boleto_settings.second.token)
+      expect(parsed_body.first[:boleto_setting][:agency_number]).to eq(boleto_settings.first.agency_number)
+      expect(parsed_body.first[:boleto_setting][:account_number]).to eq(boleto_settings.first.account_number)
+      expect(parsed_body.first[:boleto_setting][:token]).to eq(boleto_settings.first.token)
+      expect(parsed_body.first[:boleto_setting][:bank_code]).to eq(boleto_settings.first.bank_code)
+      expect(parsed_body.first[:boleto_setting][:payment_method][:name]).to eq(boleto_settings.first.payment_method.name)
+      expect(parsed_body.second[:boleto_setting][:agency_number]).to eq(boleto_settings.second.agency_number)
+      expect(parsed_body.second[:boleto_setting][:token]).to eq(boleto_settings.second.token)
       expect(parsed_body.count).to eq(2)
     end
 
@@ -58,12 +58,12 @@ describe 'Boleto setting API' do
       get "/api/v1/boleto_settings/#{boleto_settings.first.token}", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(200)
-      expect(parsed_body[:agency_number]).to eq(boleto_settings.first.agency_number)
-      expect(parsed_body[:account_number]).to eq(boleto_settings.first.account_number)
-      expect(parsed_body[:token]).to eq(boleto_settings.first.token)
-      expect(parsed_body[:bank_code]).to eq(boleto_settings.first.bank_code)
-      expect(parsed_body[:payment_method][:status]).to eq(boleto_settings.first.payment_method.status)
-      expect(parsed_body[:payment_method][:name]).to eq(boleto_settings.first.payment_method.name)
+      expect(parsed_body[:boleto_setting][:agency_number]).to eq(boleto_settings.first.agency_number)
+      expect(parsed_body[:boleto_setting][:account_number]).to eq(boleto_settings.first.account_number)
+      expect(parsed_body[:boleto_setting][:token]).to eq(boleto_settings.first.token)
+      expect(parsed_body[:boleto_setting][:bank_code]).to eq(boleto_settings.first.bank_code)
+      expect(parsed_body[:boleto_setting][:payment_method][:status]).to eq(boleto_settings.first.payment_method.status)
+      expect(parsed_body[:boleto_setting][:payment_method][:name]).to eq(boleto_settings.first.payment_method.name)
     end
 
     it 'should return 404 if setting does not exist' do
