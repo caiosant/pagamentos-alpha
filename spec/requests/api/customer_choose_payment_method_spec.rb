@@ -1,10 +1,8 @@
 require 'rails_helper'
 
-# recebe token da empresa, cpf, meio de pagamento, 
-# numero do cartão + validade (só cartão)
-# retorna token do cliente
 describe 'CustomerPaymentMethod API' do
   context 'POST /api/v1/customer_payment_method' do
+
     context 'successfully' do
       it 'with pix' do
         owner = create(:user, :complete_company_owner)
@@ -310,9 +308,43 @@ describe 'CustomerPaymentMethod API' do
         expect(customer_payment_method[:payment_method][:type_of]).to eq(credit_card_method.type_of)
       end
 
-      it 'should inform not expired expiration date'
+      it 'should inform credit card invalid when expired expiration date' do
+        owner = create(:user, :complete_company_owner)
+        owner.company.accepted!
+        customer = create(:customer, company: owner.company)
+        credit_card_method = create(:payment_method, :credit_card)
+        credit_card_setting = create(:credit_card_setting, company: owner.company, payment_method: credit_card_method)
+        company_payment_setting, = owner.company.payment_settings
+
+        customer_payment_method_params = {
+          customer_payment_method: {
+            customer_token: customer.token,
+            payment_method_token: company_payment_setting.token,
+            credit_card_name: 'Credit Card 1',
+            credit_card_number: '4929513324664053',
+            credit_card_expiration_date: Date.yesterday,
+            credit_card_security_code: '123'
+          }
+        }
+
+        post '/api/v1/customer_payment_method',
+          params: customer_payment_method_params,
+          headers: { 'companyToken' => owner.company.token }
+
+        customer_payment_method = parsed_body[:request][:customer_payment_method]
+        expect(response).to have_http_status(422)
+        expect(CustomerPaymentMethod.count).to eq(0)
+        expect(parsed_body[:message]). to eq('Requisição inválida')
+        expect(parsed_body[:errors][:credit_card_name].first).to eq('inválido(a)')
+        expect(parsed_body[:errors][:credit_card_number].first).to eq('inválido(a)')
+        expect(parsed_body[:errors][:credit_card_expiration_date].first).to eq('inválido(a)')
+        expect(parsed_body[:errors][:credit_card_security_code].first).to eq('inválido(a)')
+        expect(customer_payment_method[:customer][:token]).to eq(customer.token)
+        expect(customer_payment_method[:company][:legal_name]).to eq(owner.company.legal_name)
+        expect(customer_payment_method[:payment_method][:name]).to eq(credit_card_method.name)
+        expect(customer_payment_method[:payment_method][:type_of]).to eq(credit_card_method.type_of)
+      end
     end
+
   end
 end
-
-
