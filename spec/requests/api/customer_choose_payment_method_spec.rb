@@ -376,5 +376,50 @@ describe 'CustomerPaymentMethod API' do
     end
   end
 
-  context 'GET /api/v1/customer_payment_method/:id'
+  context 'GET /api/v1/customer_payment_method/:id' do
+    it 'successfully' do
+      customer_payment_method = create(:customer_payment_method, :boleto)
+
+      get "/api/v1/customer_payment_method/#{customer_payment_method.token}",
+      headers: { 'companyToken' => customer_payment_method.company.token }
+
+      expect(response).to have_http_status(200)
+      expect(parsed_body[:customer_payment_method][:token]).to eq(customer_payment_method.token)
+      expect(parsed_body[:customer_payment_method][:payment_method][:name]).to eq(
+        customer_payment_method.payment_method.name
+      )
+      expect(parsed_body[:customer_payment_method][:payment_method][:type_of]).to eq(
+        customer_payment_method.payment_method.type_of
+      )
+      expect(parsed_body[:customer_payment_method][:customer][:token]).to eq(
+        customer_payment_method.customer.token
+      )
+      expect(parsed_body[:customer_payment_method][:company][:legal_name]).to eq(
+        customer_payment_method.company.legal_name
+      )
+    end
+
+    it '404 not found error' do
+      owner = create(:user, :complete_company_owner)
+      owner.company.accepted!
+
+      get '/api/v1/customer_payment_method/not_a_token',
+      headers: { 'companyToken' => owner.company.token }
+
+      expect(response).to have_http_status(404)
+      expect(parsed_body[:message]).to eq('Objeto não encontrado')
+    end
+
+    it '404 not found error when customer payment method from another company' do
+      customer_payment_method = create(:customer_payment_method, :boleto)
+      another_customer_payment_method = create(:customer_payment_method, :credit_card)
+
+      get "/api/v1/customer_payment_method/#{customer_payment_method.token}",
+      headers: { 'companyToken' => another_customer_payment_method.company.token }
+
+      expect(response).to have_http_status(404)
+      expect(parsed_body[:message]).to eq('Objeto não encontrado')
+      expect(CustomerPaymentMethod.count).to eq(2)
+    end
+  end
 end

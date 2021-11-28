@@ -5,6 +5,13 @@ class Api::V1::CustomerPaymentMethodController < Api::V1::ApiController
     render status: 200, json: success_json
   end
 
+  def show
+    @customer_payment_method = CustomerPaymentMethod.find_by(token: params[:id], company: @company)
+    raise ActiveRecord::RecordNotFound if @customer_payment_method.nil?
+
+    render status: 200, json: success_json
+  end
+
   def create
     @payment_method = find_payment_method
     @customer = Customer.find_by(token: customer_payment_method_params[:customer_token])
