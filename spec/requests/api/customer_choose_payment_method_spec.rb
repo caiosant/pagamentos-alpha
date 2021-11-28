@@ -322,7 +322,7 @@ describe 'CustomerPaymentMethod API' do
             payment_method_token: company_payment_setting.token,
             credit_card_name: 'Credit Card 1',
             credit_card_number: '4929513324664053',
-            credit_card_expiration_date: Date.yesterday,
+            credit_card_expiration_date: 3.days.ago,
             credit_card_security_code: '123'
           }
         }
@@ -347,4 +347,34 @@ describe 'CustomerPaymentMethod API' do
     end
 
   end
+
+  context 'GET /api/v1/customer_payment_method' do
+    it 'successfully' do
+      owner = create(:user, :complete_company_owner)
+      owner.company.accepted!
+      customer_payment_methods = create_list(
+        :customer_payment_method, 3, :pix, company: owner.company
+      )
+
+      get '/api/v1/customer_payment_method',
+      headers: { 'companyToken' => owner.company.token }
+
+      expect(response).to have_http_status(200)
+      expect(parsed_body.count).to eq(3)
+      expect(parsed_body.first[:customer_payment_method][:token]).to eq(customer_payment_methods.first.token)
+      expect(parsed_body.first[:customer_payment_method][:customer][:token]).to eq(
+        customer_payment_methods.first.customer.token
+      )
+      expect(parsed_body.second[:customer_payment_method][:token]).to eq(customer_payment_methods.second.token)
+      expect(parsed_body.second[:customer_payment_method][:customer][:token]).to eq(
+        customer_payment_methods.second.customer.token
+      )
+      expect(parsed_body.third[:customer_payment_method][:token]).to eq(customer_payment_methods.third.token)
+      expect(parsed_body.third[:customer_payment_method][:customer][:token]).to eq(
+        customer_payment_methods.third.customer.token
+      )
+    end
+  end
+
+  context 'GET /api/v1/customer_payment_method/:id'
 end

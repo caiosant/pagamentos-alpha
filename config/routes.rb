@@ -29,8 +29,7 @@ Rails.application.routes.draw do
       resources :pix_settings, only: %i[index show]
       resources :boleto_settings, only: %i[index show]
       resources :credit_card_settings, only: %i[index show]
-      resources :customer, only: %i[index create]
-      resources :customer_payment_method, only: %i[create]
+      resources :customer_payment_method, only: %i[index create]
     end
   end
 

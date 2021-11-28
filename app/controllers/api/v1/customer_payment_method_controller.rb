@@ -1,4 +1,10 @@
 class Api::V1::CustomerPaymentMethodController < Api::V1::ApiController
+  def index
+    @customer_payment_method = CustomerPaymentMethod.where(company: @company)
+
+    render status: 200, json: success_json
+  end
+
   def create
     @payment_method = find_payment_method
     @customer = Customer.find_by(token: customer_payment_method_params[:customer_token])
@@ -27,6 +33,7 @@ class Api::V1::CustomerPaymentMethodController < Api::V1::ApiController
     )
   end
 
+  # TODO: filtrar enabled?
   def find_payment_method
     payment_setting = @company.payment_settings.find{ |ps|
       ps.token == customer_payment_method_params[:payment_method_token]
@@ -47,17 +54,14 @@ class Api::V1::CustomerPaymentMethodController < Api::V1::ApiController
 
   def error_json
     {
-      message: 'Requisição inválida',
-      errors:  @customer_payment_method.errors,
+      message: 'Requisição inválida', errors:  @customer_payment_method.errors,
       # TODO: passar entrada do cartão de crédito de volta?
       request: @customer_payment_method.as_json(
         only: %i[],
         include: {
           payment_method: { only: %i[name type_of] },
-          customer: { only: %i[token] },
-          company: { only: %i[legal_name] }
-        }
-      )
+          customer: { only: %i[token] }, company: { only: %i[legal_name] }
+      } )
     }
   end
 end
