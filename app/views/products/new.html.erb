@@ -9,6 +9,20 @@
           <div><%= message %></div>
         <% end %>
       </div>
+
+      <div class="mb-4">
+        <%= f.label :type_of, class: "form-label" %>
+
+        <%= 
+        f.select :type_of, 
+        @product_types_dropdown,
+        class: "form-text-field" 
+        %>
+
+        <% @product.errors.full_messages_for(:type_of).each do |message| %>
+          <div><%= message %></div>
+        <% end %>
+      </div>
     
        <%= f.submit 'Criar', class: "form-submit-button" %>
     </div>
