@@ -24,6 +24,13 @@ class Company < ApplicationRecord
     pix_settings + credit_card_settings + boleto_settings
   end
 
+  def find_enabled_payment_setting_by_token(token)
+    payment_settings.find{ |ps|
+      ps.enabled? && ps.payment_method.enabled? && ps.token == token
+    }
+  end
+
+  # TODO: remover se não for utilizado
   def list_payment_methods
     pix_settings.map(&:payment_method) + credit_card_settings.map(&:payment_method) +
       boleto_settings.map(&:payment_method)
