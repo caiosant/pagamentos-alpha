@@ -176,6 +176,35 @@ describe 'CustomerPaymentMethod API' do
         expect(customer_payment_method[:payment_method]).to be_nil
       end
 
+      it 'should inform enabled payment method token' do
+        owner = create(:user, :complete_company_owner)
+        owner.company.accepted!
+        customer = create(:customer, company: owner.company)
+        pix_method = create(:payment_method, :pix)
+        pix_setting = create(:pix_setting, company: owner.company, payment_method: pix_method)
+        company_payment_setting, = owner.company.payment_settings
+        company_payment_setting.disabled!
+
+        customer_payment_method_params = {
+          customer_payment_method: {
+            customer_token: customer.token,
+            payment_method_token: company_payment_setting.token
+          }
+        }
+        post '/api/v1/customer_payment_method',
+          params: customer_payment_method_params,
+          headers: { 'companyToken' => owner.company.token }
+
+        customer_payment_method = parsed_body[:request][:customer_payment_method]
+        expect(response).to have_http_status(422)
+        expect(CustomerPaymentMethod.count).to eq(0)
+        expect(parsed_body[:message]). to eq('Requisição inválida')
+        expect(parsed_body[:errors][:payment_method].first).to eq('é obrigatório(a)')
+        expect(customer_payment_method[:customer][:token]).to eq(customer.token)
+        expect(customer_payment_method[:company][:legal_name]).to eq(owner.company.legal_name)
+        expect(customer_payment_method[:payment_method]).to be_nil
+      end
+
       it 'should inform credit card name' do
         owner = create(:user, :complete_company_owner)
         owner.company.accepted!
