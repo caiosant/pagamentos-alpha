@@ -14,9 +14,9 @@ describe 'Product API' do
       product = Product.last
 
       expect(response).to have_http_status(201)
-      expect(parsed_body[:name]).to eq(product.name)
-      expect(parsed_body[:type_of]).to eq('single')
-      expect(parsed_body[:token]).to eq(product.token)
+      expect(parsed_body[:product][:name]).to eq(product.name)
+      expect(parsed_body[:product][:type_of]).to eq('single')
+      expect(parsed_body[:product][:token]).to eq(product.token)
     end
 
     it 'successfully as subscription' do
@@ -31,9 +31,9 @@ describe 'Product API' do
       product = Product.last
 
       expect(response).to have_http_status(201)
-      expect(parsed_body[:name]).to eq(product.name)
-      expect(parsed_body[:type_of]).to eq('subscription')
-      expect(parsed_body[:token]).to eq(product.token)
+      expect(parsed_body[:product][:name]).to eq(product.name)
+      expect(parsed_body[:product][:type_of]).to eq('subscription')
+      expect(parsed_body[:product][:token]).to eq(product.token)
     end
 
     it 'fail because name is blank' do
@@ -66,10 +66,10 @@ describe 'Product API' do
       get '/api/v1/products', headers: { companyToken: company.token }
 
       expect(response).to have_http_status(200)
-      expect(parsed_body.first[:name]).to eq(products.first.name)
-      expect(parsed_body.first[:token]).to eq(products.first.token)
-      expect(parsed_body.second[:name]).to eq(products.second.name)
-      expect(parsed_body.second[:token]).to eq(products.second.token)
+      expect(parsed_body.first[:product][:name]).to eq(products.first.name)
+      expect(parsed_body.first[:product][:token]).to eq(products.first.token)
+      expect(parsed_body.second[:product][:name]).to eq(products.second.name)
+      expect(parsed_body.second[:product][:token]).to eq(products.second.token)
       expect(parsed_body.count).to eq(2)
     end
 
@@ -102,9 +102,9 @@ describe 'Product API' do
       get "/api/v1/products/#{products.first.token}", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(200)
-      expect(parsed_body[:name]).to eq(products.first.name)
-      expect(parsed_body[:token]).to eq(products.first.token)
-      expect(parsed_body[:status]).to eq(products.first.status)
+      expect(parsed_body[:product][:name]).to eq(products.first.name)
+      expect(parsed_body[:product][:token]).to eq(products.first.token)
+      expect(parsed_body[:product][:status]).to eq(products.first.status)
     end
 
     it 'should return 404 if product does not exist' do

@@ -1,0 +1,41 @@
+<div>
+    <div>
+        <%= link_to 'Empresas Pendentes', pending_companies_path %>
+    </div>
+    <div>
+        <table>
+            <tr>
+                <td>
+                    Owner
+                </td>
+                <td>
+                    Empresa
+                </td>
+                <td>
+                    Status
+                </td>
+                <td>
+                    Motivo de Rejeição
+                </td>
+            </tr>
+            <% @companies.each do |company| %>
+                <tr>
+                    <td>
+                        <%= company.users.where(owner: true).first.email %>
+                    </td>
+                    <td>
+                        <%= company.legal_name %>
+                    </td>
+                    <td>
+                        <%= Company.human_attribute_name("status.#{company.status}").capitalize %>
+                    </td>
+                    <td>
+                        <% if company.status == 'rejected'%>
+                            <%= company.rejected_company.reason %>
+                        <% end %>
+                    </td>
+                </tr>
+            <% end %>
+        </table>
+    </div>
+</div>
