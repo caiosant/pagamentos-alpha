@@ -4,7 +4,7 @@ module Api
       def index
         @products = Product.where(company: @company, status: :enabled)
 
-        render json: @products.as_json(only: %i[name token status])
+        render json: @products.as_json(only: %i[name token type_of status])
       end
 
       def show
@@ -12,7 +12,7 @@ module Api
 
         return render_not_authorized if @product.company != @company
 
-        render json: @product.as_json(only: %i[name token status])
+        render json: @product.as_json(only: %i[name token type_of status])
       end
 
       def enable
@@ -34,7 +34,7 @@ module Api
         @product.company = @company
 
         if @product.save
-          render status: :created, json: { name: @product.name, token: @product.token }
+          render status: :created, json: @product.as_json(only: %i[name token type_of status])
         else
           render status: :unprocessable_entity, json: { message: 'Requisição inválida',
                                                         errors: @product.errors,
@@ -46,7 +46,7 @@ module Api
       private
 
       def product_params
-        params.require(:product).permit(:name)
+        params.require(:product).permit(:name, :type_of)
       end
     end
   end

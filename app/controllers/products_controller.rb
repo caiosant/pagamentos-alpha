@@ -10,10 +10,12 @@ class ProductsController < ApplicationController
 
   def new
     @product = Product.new
+    @product_types_dropdown = Product.product_types_dropdown
   end
 
   def create
-    @product = Product.new(params.require(:product).permit(:name))
+    @product = Product.new(product_params)
+    @product_types_dropdown = Product.product_types_dropdown
     @product.company = current_user.company
 
     if @product.save
@@ -31,5 +33,11 @@ class ProductsController < ApplicationController
   def enable
     @product.enabled!
     redirect_to @product
+  end
+
+  private
+
+  def product_params
+    params.require(:product).permit(:name, :type_of)
   end
 end

@@ -2,19 +2,37 @@ require 'rails_helper'
 
 describe 'Product API' do
   context 'POST /api/v1/products' do
-    it 'successfully' do
+    it 'successfully as product' do
       owner = create(:user, :complete_company_owner)
       company = owner.company
       company.accepted!
 
       post '/api/v1/products',
-           params: { product: { name: 'Video de LOL' } },
+           params: { product: { name: 'Video de LOL', type_of: 'single' } },
            headers: { companyToken: company.token }
 
       product = Product.last
 
       expect(response).to have_http_status(201)
       expect(parsed_body[:name]).to eq(product.name)
+      expect(parsed_body[:type_of]).to eq('single')
+      expect(parsed_body[:token]).to eq(product.token)
+    end
+
+    it 'successfully as subscription' do
+      owner = create(:user, :complete_company_owner)
+      company = owner.company
+      company.accepted!
+
+      post '/api/v1/products',
+           params: { product: { name: 'Video de LOL', type_of: 'subscription' } },
+           headers: { companyToken: company.token }
+
+      product = Product.last
+
+      expect(response).to have_http_status(201)
+      expect(parsed_body[:name]).to eq(product.name)
+      expect(parsed_body[:type_of]).to eq('subscription')
       expect(parsed_body[:token]).to eq(product.token)
     end
 

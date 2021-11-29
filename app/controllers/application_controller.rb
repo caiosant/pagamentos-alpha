@@ -27,14 +27,6 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, alert: t('companies.edit.no_permission_alert')
   end
 
-  def find_subscription_and_authenticate_company
-    @subscription = Subscription.find(params[:id])
-    @company = @subscription.company
-    return if @company == current_user.company
-
-    redirect_to root_path, alert: t('subscriptions.not_linked_to_company_alert')
-  end
-
   def find_product_and_authenticate_company
     @product = Product.find(params[:id])
     @company = @product.company
