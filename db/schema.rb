@@ -143,6 +143,14 @@ ActiveRecord::Schema.define(version: 2021_11_28_211624) do
     t.index ["payment_method_id"], name: "index_pix_settings_on_payment_method_id"
   end
 
+  create_table "rejected_companies", force: :cascade do |t|
+    t.integer "company_id", null: false
+    t.text "reason"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_rejected_companies_on_company_id", unique: true
+  end
+  
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.string "token"
@@ -181,6 +189,7 @@ ActiveRecord::Schema.define(version: 2021_11_28_211624) do
   add_foreign_key "customers", "companies"
   add_foreign_key "pix_settings", "companies"
   add_foreign_key "pix_settings", "payment_methods"
+  add_foreign_key "rejected_companies", "companies"
   add_foreign_key "products", "companies"
   add_foreign_key "users", "companies"
 end

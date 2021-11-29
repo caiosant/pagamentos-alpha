@@ -6,6 +6,7 @@ class Company < ApplicationRecord
   has_many :products, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
   has_many :customers, dependent: :destroy
+  has_one :rejected_company, dependent: :destroy
 
   enum status: { incomplete: 0, pending: 10, accepted: 20, rejected: 30 }
 
