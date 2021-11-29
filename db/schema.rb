@@ -94,7 +94,6 @@ ActiveRecord::Schema.define(version: 2021_11_27_004220) do
   end
 
   create_table "customer_payment_methods", force: :cascade do |t|
-    t.string "payment_method"
     t.integer "payment_method_id", null: false
     t.string "credit_card_name"
     t.string "credit_card_number"

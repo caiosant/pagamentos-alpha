@@ -25,9 +25,9 @@ class Company < ApplicationRecord
   end
 
   def find_enabled_payment_setting_by_token(token)
-    payment_settings.find{ |ps|
+    payment_settings.find do |ps|
       ps.enabled? && ps.payment_method.enabled? && ps.token == token
-    }
+    end
   end
 
   # TODO: remover se não for utilizado

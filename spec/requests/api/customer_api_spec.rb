@@ -28,7 +28,7 @@ describe 'Customer API' do
       company = owner.company
       company.accepted!
 
-      customer1 = create(:customer, company: company)
+      create(:customer, company: company)
 
       allow(Customer).to receive(:all).and_raise(ActiveRecord::ActiveRecordError)
 
@@ -54,6 +54,7 @@ describe 'Customer API' do
       expect(parsed_body[:customer][:cpf]).to eq(customer1.cpf)
       expect(parsed_body[:customer][:token]).to eq(customer1.token)
       expect(parsed_body[:customer][:company][:legal_name]).to eq(owner.company.legal_name)
+      expect(parsed_body[:customer][:token]).to_not eq(customer2.token)
     end
 
     it 'should return 404 if setting does not exist' do
@@ -75,7 +76,7 @@ describe 'Customer API' do
       other_company = other_owner.company
       other_company.accepted!
 
-      customer1 = create(:customer, company: company)
+      create(:customer, company: company)
       customer2 = create(:customer, company: other_company)
 
       get "/api/v1/customer/#{customer2.token}", headers: { companyToken: company.token }
@@ -174,7 +175,7 @@ describe 'Customer API' do
                                       cpf: '411.467.289.56' } }
 
       post '/api/v1/customer', params: customer_params, headers: { companyToken: owner.company.token }
-      
+
       expect(response).to have_http_status(422)
       expect(response.content_type).to include('application/json')
       expect(parsed_body[:message]).to eq('Requisição inválida')

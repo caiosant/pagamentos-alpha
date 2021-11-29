@@ -21,17 +21,13 @@ module Api
       end
 
       def create
-        @customer = Customer.new(customer_params)
-        @customer.company = @company
+        @customer = @company.customers.create(customer_params)
 
         if @customer.save
-          render status: :created, json: @customer.as_json(except: %i[id company_id
-                                                                      created_at updated_at],
+          render status: :created, json: @customer.as_json(except: %i[id company_id created_at updated_at],
                                                            include: { company: { only: :legal_name } })
-
         else
-          render status: :unprocessable_entity, json: { message: 'Requisição inválida',
-                                                        errors: @customer.errors,
+          render status: :unprocessable_entity, json: { message: 'Requisição inválida', errors: @customer.errors,
                                                         request: @customer.as_json(except: %i[id token company_id
                                                                                               created_at updated_at]) }
         end

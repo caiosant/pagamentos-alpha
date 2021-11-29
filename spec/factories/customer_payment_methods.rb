@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :customer_payment_method do
     company { create(:company, status: :accepted) }
-    customer { create(:customer, company: self.company) }
+    customer { create(:customer, company: company) }
 
     trait :pix do
       payment_method { create(:payment_method, :pix) }
