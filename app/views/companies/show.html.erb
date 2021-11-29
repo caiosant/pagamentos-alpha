@@ -6,13 +6,6 @@
   <% end %>
 <% end %>
 
-<% if @company.accepted? %>
-  <%= 
-  link_to t('.register_new_subscription'), 
-  new_subscription_path
-  %>
-<% end %>
-
 <div>
     <span><%= Company.human_attribute_name('status') %>: <%= Company.human_attribute_name("status.#{@company.status}") %></span>
 </div>
