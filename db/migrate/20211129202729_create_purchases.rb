@@ -1,6 +1,6 @@
-class CreateTransactions < ActiveRecord::Migration[6.1]
+class CreatePurchases < ActiveRecord::Migration[6.1]
   def change
-    create_table :transactions do |t|
+    create_table :purchases do |t|
       t.string :token
       t.references :customer_payment_method, null: false, foreign_key: true
       t.integer :type_of, default: 0

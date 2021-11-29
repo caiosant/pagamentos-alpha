@@ -1,4 +1,4 @@
-class Transaction < ApplicationRecord
+class Purchase < ApplicationRecord
   belongs_to :customer_payment_method
   belongs_to :pix_setting, optional: true
   belongs_to :boleto_setting, optional: true

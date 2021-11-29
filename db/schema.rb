@@ -143,14 +143,6 @@ ActiveRecord::Schema.define(version: 2021_11_29_202729) do
     t.index ["payment_method_id"], name: "index_pix_settings_on_payment_method_id"
   end
 
-  create_table "rejected_companies", force: :cascade do |t|
-    t.integer "company_id", null: false
-    t.text "reason"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["company_id"], name: "index_rejected_companies_on_company_id", unique: true
-  end
-  
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.string "token"
@@ -162,7 +154,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_202729) do
     t.index ["company_id"], name: "index_products_on_company_id"
   end
 
-  create_table "transactions", force: :cascade do |t|
+  create_table "purchases", force: :cascade do |t|
     t.string "token"
     t.integer "customer_payment_method_id", null: false
     t.integer "type_of", default: 0
@@ -176,12 +168,27 @@ ActiveRecord::Schema.define(version: 2021_11_29_202729) do
     t.date "expiration_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["boleto_setting_id"], name: "index_transactions_on_boleto_setting_id"
-    t.index ["credit_card_setting_id"], name: "index_transactions_on_credit_card_setting_id"
-    t.index ["customer_payment_method_id"], name: "index_transactions_on_customer_payment_method_id"
-    t.index ["pix_setting_id"], name: "index_transactions_on_pix_setting_id"
-    t.index ["product_id"], name: "index_transactions_on_product_id"
-    t.index ["receipt_id"], name: "index_transactions_on_receipt_id"
+    t.index ["boleto_setting_id"], name: "index_purchases_on_boleto_setting_id"
+    t.index ["credit_card_setting_id"], name: "index_purchases_on_credit_card_setting_id"
+    t.index ["customer_payment_method_id"], name: "index_purchases_on_customer_payment_method_id"
+    t.index ["pix_setting_id"], name: "index_purchases_on_pix_setting_id"
+    t.index ["product_id"], name: "index_purchases_on_product_id"
+    t.index ["receipt_id"], name: "index_purchases_on_receipt_id"
+  end
+
+  create_table "receipts", force: :cascade do |t|
+    t.integer "purchase_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["purchase_id"], name: "index_receipts_on_purchase_id"
+  end
+
+  create_table "rejected_companies", force: :cascade do |t|
+    t.integer "company_id", null: false
+    t.text "reason"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_rejected_companies_on_company_id", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -211,13 +218,14 @@ ActiveRecord::Schema.define(version: 2021_11_29_202729) do
   add_foreign_key "customers", "companies"
   add_foreign_key "pix_settings", "companies"
   add_foreign_key "pix_settings", "payment_methods"
-  add_foreign_key "rejected_companies", "companies"
   add_foreign_key "products", "companies"
-  add_foreign_key "transactions", "boleto_settings"
-  add_foreign_key "transactions", "credit_card_settings"
-  add_foreign_key "transactions", "customer_payment_methods"
-  add_foreign_key "transactions", "pix_settings"
-  add_foreign_key "transactions", "products"
-  add_foreign_key "transactions", "receipts"
+  add_foreign_key "purchases", "boleto_settings"
+  add_foreign_key "purchases", "credit_card_settings"
+  add_foreign_key "purchases", "customer_payment_methods"
+  add_foreign_key "purchases", "pix_settings"
+  add_foreign_key "purchases", "products"
+  add_foreign_key "purchases", "receipts"
+  add_foreign_key "receipts", "purchases"
+  add_foreign_key "rejected_companies", "companies"
   add_foreign_key "users", "companies"
 end
