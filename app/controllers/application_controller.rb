@@ -1,11 +1,11 @@
 class ApplicationController < ActionController::Base
+  before_action :redirect_empty_company_users, unless: :devise_controller?
+
   def authenticate_users!
     return if user_signed_in? || admin_signed_in?
 
     redirect_to root_path, alert: 'Faça login para ter acesso ao sistema'
   end
-
-  before_action :redirect_empty_company_users, unless: :devise_controller?
 
   def redirect_empty_company_users
     redirect_to edit_company_path current_user.company if current_user&.incomplete_company?
