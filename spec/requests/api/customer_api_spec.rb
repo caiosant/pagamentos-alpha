@@ -215,6 +215,24 @@ describe 'Customer API' do
       expect(parsed_body[:request]).to eq(customer_params)
     end
 
+    it 'should save an error about name with numbers' do
+      owner = create(:user, :complete_company_owner)
+
+      owner.company.accepted!
+      customer_params = { customer: { name: 'Caio Silva2',
+                                      cpf: '41492765872' } }
+
+      allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('LI5YuUJrZuJSB6uPH2jm')
+
+      post '/api/v1/customer', params: customer_params, headers: { companyToken: owner.company.token }
+
+      expect(response).to have_http_status(422)
+      expect(response.content_type).to include('application/json')
+      expect(parsed_body[:message]).to eq('Requisição inválida')
+      expect(parsed_body[:errors][:name]).to include('não pode conter números')
+      expect(parsed_body[:request]).to eq(customer_params)
+    end
+
     it 'should return 500 if database is not available' do
       owner = create(:user, :complete_company_owner)
       company = owner.company

@@ -12,8 +12,7 @@ module Api
       end
 
       def show
-        @boleto_setting = BoletoSetting.where(token: params[:id]).first
-        raise ActiveRecord::RecordNotFound if @boleto_setting.nil?
+        @boleto_setting = find_by_token(BoletoSetting, params[:id])
 
         return render_not_authorized if @boleto_setting.company != @company
 

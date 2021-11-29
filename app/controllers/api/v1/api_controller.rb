@@ -8,6 +8,13 @@ module Api
 
       private
 
+      def find_by_token(model, token)
+        element = model.find_by(token: token)
+        raise ActiveRecord::RecordNotFound if element.nil?
+
+        element
+      end
+
       def authenticate_company!
         @company = Company.find_by(token: request.headers['companyToken'])
         render_not_authorized if @company.nil?
@@ -23,13 +30,6 @@ module Api
 
       def render_generic_error(_exception)
         render status: :internal_server_error, json: { message: 'Erro geral' }
-      end
-
-      def find_by_token(model, token)
-        element = model.find_by(token: token)
-        raise ActiveRecord::RecordNotFound if element.nil?
-
-        element
       end
     end
   end

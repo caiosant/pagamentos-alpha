@@ -61,7 +61,7 @@ class Company < ApplicationRecord
   end
 
   def generate_token_if_accepted
-    return unless token.blank? && accepted?
+    return unless accepted_but_no_token?
 
     self.token = generate_token
     save!

@@ -10,7 +10,7 @@ class CustomerPaymentMethod < ApplicationRecord
 
   validate :expiration_date_cannot_be_in_the_past, if: -> { payment_method&.credit_card? }
 
-  enum name: { pix: 5, boleto: 10, cartao_de_credito: 15 }
+  enum name: { pix: 5, boleto: 10, credit_card: 15 }
 
   # TODO: testar esse metodo?
   def add_credit_card(params)
