@@ -16,8 +16,7 @@ module Api
       end
 
       def show
-        @credit_card_setting = CreditCardSetting.where(token: params[:id]).first
-        raise ActiveRecord::RecordNotFound if @credit_card_setting.nil?
+        @credit_card_setting = find_by_token(CreditCardSetting, params[:id])
 
         return render_not_authorized if @credit_card_setting.company != @company
 

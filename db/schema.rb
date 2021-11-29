@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 2021_11_28_211624) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "token"
+    t.integer "status", default: 5
     t.index ["company_id"], name: "index_boleto_settings_on_company_id"
     t.index ["payment_method_id"], name: "index_boleto_settings_on_payment_method_id"
   end
@@ -87,6 +88,7 @@ ActiveRecord::Schema.define(version: 2021_11_28_211624) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "token"
+    t.integer "status", default: 5
     t.index ["company_id"], name: "index_credit_card_settings_on_company_id"
     t.index ["payment_method_id"], name: "index_credit_card_settings_on_payment_method_id"
   end
@@ -109,6 +111,7 @@ ActiveRecord::Schema.define(version: 2021_11_28_211624) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "token"
+    t.integer "status", default: 5
     t.index ["company_id"], name: "index_pix_settings_on_company_id"
     t.index ["payment_method_id"], name: "index_pix_settings_on_payment_method_id"
   end

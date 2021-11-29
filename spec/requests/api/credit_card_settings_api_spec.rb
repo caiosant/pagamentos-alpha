@@ -95,7 +95,7 @@ describe 'Credit Card setting API' do
 
       credit_card_setting = create(:credit_card_setting, company: company)
 
-      allow(CreditCardSetting).to receive(:where).and_raise(ActiveRecord::ActiveRecordError)
+      allow(CreditCardSetting).to receive(:find_by).and_raise(ActiveRecord::ActiveRecordError)
 
       get "/api/v1/credit_card_settings/#{credit_card_setting.id}", headers: { companyToken: company.token }
 

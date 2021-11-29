@@ -99,7 +99,7 @@ describe 'Boleto setting API' do
 
       boleto_setting = create(:boleto_setting, company: company)
 
-      allow(BoletoSetting).to receive(:where).and_raise(ActiveRecord::ActiveRecordError)
+      allow(BoletoSetting).to receive(:find_by).and_raise(ActiveRecord::ActiveRecordError)
 
       get "/api/v1/boleto_settings/#{boleto_setting.token}", headers: { companyToken: company.token }
 
