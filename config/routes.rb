@@ -22,9 +22,44 @@ Rails.application.routes.draw do
     resources :rejected_companies, only: %i[new create]
   end
 
-  resources :pix_settings, only: %i[new create]
+  resources :pix_settings, only: %i[new create] do
+    post 'enable', on: :member
+    post 'disable', on: :member
+  end
 
-  resources :boleto_settings, only: %i[new create]
+  resources :boleto_settings, only: %i[new create] do
+    post 'enable', on: :member
+    post 'disable', on: :member
+  end
 
-  resources :credit_card_settings, only: %i[new create]
+  resources :credit_card_settings, only: %i[new create] do
+    post 'enable', on: :member
+    post 'disable', on: :member
+  end
+
+  namespace :api do
+    namespace :v1 do
+      resources :pix_settings, only: %i[index show]
+      resources :boleto_settings, only: %i[index show]
+      resources :credit_card_settings, only: %i[index show]
+      resources :products, only: %i[index create show update] do
+        post 'enable', on: :member
+        post 'disable', on: :member
+      end
+      resources :subscriptions, only: %i[index create show update] do
+        post 'enable', on: :member
+        post 'disable', on: :member
+      end
+    end
+  end
+
+  resources :products, only: %i[new create show index] do
+    post 'enable', on: :member
+    post 'disable', on: :member
+  end
+
+  resources :subscriptions, only: %i[new create show] do
+    post 'enable', on: :member
+    post 'disable', on: :member
+  end
 end

@@ -26,6 +26,7 @@ pt-BR:
       no_permission_alert: 'Você não tem permissão para ver os dados dessa empresa.'
       configure_payment: 'Meios de pagamento configurados'
       token_explanation: 'Este token representa sua empresa na nossa API:'
+      register_new_subscription: 'Registrar nova assinatura'
     update:
       complete_success_notice: 'Registro feito com sucesso!'
     payment_settings:

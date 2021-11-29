@@ -27,10 +27,33 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, alert: t('companies.edit.no_permission_alert')
   end
 
-  def redirect_if_pending_company
-    return unless @company.pending?
+  def find_product_and_authenticate_company
+    @product = Product.find(params[:id])
+    @company = @product.company
+    return if @company == current_user.company
 
-    redirect_to @company
+    redirect_to root_path, alert: t('product.not_linked_to_company_alert')
+  end
+
+  def redirect_if_pending_company
+    return unless current_user&.company&.pending?
+
+    redirect_to current_user.company, alert: t('companies.not_accepted_alert')
+  end
+
+  def find_pix_setting
+    @pix_setting = PixSetting.find(params[:id])
+    @company = @pix_setting.company
+  end
+
+  def find_boleto_setting
+    @boleto_setting = BoletoSetting.find(params[:id])
+    @company = @boleto_setting.company
+  end
+
+  def find_credit_card_setting
+    @credit_card_setting = CreditCardSetting.find(params[:id])
+    @company = @credit_card_setting.company
   end
 
   def find_company
@@ -38,8 +61,6 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_company_user
-    find_company
-
     return if current_user&.in_company?(@company)
 
     redirect_to root_path, alert: t('companies.show.no_permission_alert')

@@ -3,6 +3,8 @@ class Company < ApplicationRecord
   has_many :pix_settings, dependent: :destroy
   has_many :credit_card_settings, dependent: :destroy
   has_many :boleto_settings, dependent: :destroy
+  has_many :products, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
   has_one :rejected_company, dependent: :destroy
 
   enum status: { incomplete: 0, pending: 10, accepted: 20, rejected: 30 }
@@ -47,7 +49,7 @@ class Company < ApplicationRecord
   end
 
   def generate_token_if_accepted
-    return unless token.blank? && accepted?
+    return unless accepted_but_no_token?
 
     self.token = generate_token
     save!
