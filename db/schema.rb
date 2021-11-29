@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_28_211624) do
+ActiveRecord::Schema.define(version: 2021_11_29_202729) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -127,6 +127,28 @@ ActiveRecord::Schema.define(version: 2021_11_28_211624) do
     t.index ["company_id"], name: "index_products_on_company_id"
   end
 
+  create_table "transactions", force: :cascade do |t|
+    t.string "token"
+    t.integer "customer_payment_method_id", null: false
+    t.integer "type_of", default: 0
+    t.integer "pix_setting_id", null: false
+    t.integer "boleto_setting_id", null: false
+    t.integer "credit_card_setting_id", null: false
+    t.integer "product_id", null: false
+    t.decimal "cost"
+    t.integer "receipt_id", null: false
+    t.date "paid_date"
+    t.date "expiration_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["boleto_setting_id"], name: "index_transactions_on_boleto_setting_id"
+    t.index ["credit_card_setting_id"], name: "index_transactions_on_credit_card_setting_id"
+    t.index ["customer_payment_method_id"], name: "index_transactions_on_customer_payment_method_id"
+    t.index ["pix_setting_id"], name: "index_transactions_on_pix_setting_id"
+    t.index ["product_id"], name: "index_transactions_on_product_id"
+    t.index ["receipt_id"], name: "index_transactions_on_receipt_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -151,5 +173,11 @@ ActiveRecord::Schema.define(version: 2021_11_28_211624) do
   add_foreign_key "pix_settings", "companies"
   add_foreign_key "pix_settings", "payment_methods"
   add_foreign_key "products", "companies"
+  add_foreign_key "transactions", "boleto_settings"
+  add_foreign_key "transactions", "credit_card_settings"
+  add_foreign_key "transactions", "customer_payment_methods"
+  add_foreign_key "transactions", "pix_settings"
+  add_foreign_key "transactions", "products"
+  add_foreign_key "transactions", "receipts"
   add_foreign_key "users", "companies"
 end
