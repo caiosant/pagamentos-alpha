@@ -39,9 +39,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :customer, only: %i[index show create]
       resources :pix_settings, only: %i[index show]
       resources :boleto_settings, only: %i[index show]
       resources :credit_card_settings, only: %i[index show]
+      resources :customer_payment_method, only: %i[index show create]
       resources :products, only: %i[index create show update] do
         post 'enable', on: :member
         post 'disable', on: :member
