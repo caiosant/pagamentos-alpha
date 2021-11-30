@@ -5,14 +5,17 @@ FactoryBot.define do
 
     trait :pix do
       payment_method { create(:payment_method, :pix) }
+      name { :pix }
     end
 
     trait :boleto do
       payment_method { create(:payment_method, :boleto) }
+      name { :boleto }
     end
 
     trait :credit_card do
       payment_method { create(:payment_method, :credit_card) }
+      name { :credit_card }
       credit_card_name { 'Credit Card 1' }
       credit_card_number { '4929513324664053' }
       credit_card_expiration_date { 3.months.from_now }
