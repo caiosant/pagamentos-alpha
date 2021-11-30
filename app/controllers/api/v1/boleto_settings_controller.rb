@@ -12,7 +12,7 @@ module Api
       end
 
       def show
-        @boleto_setting = find_by_token(BoletoSetting, params[:id])
+        @boleto_setting = find_by_token!(BoletoSetting, params[:id])
 
         return render_not_authorized if @boleto_setting.company != @company
 

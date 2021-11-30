@@ -9,7 +9,7 @@ describe 'CustomerPaymentMethod API' do
         customer = create(:customer, company: owner.company)
         pix_method = create(:payment_method, :pix)
         create(:pix_setting, company: owner.company, payment_method: pix_method)
-        company_payment_setting, = owner.company.payment_settings
+        company_payment_setting = owner.company.payment_settings
 
         allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('hPxFizxVM5p5mNpFdOsf')
 

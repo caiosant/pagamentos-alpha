@@ -57,6 +57,28 @@ describe 'Customer API' do
       expect(parsed_body[:customer][:token]).to_not eq(customer2.token)
     end
 
+    it 'should get customer 1 with customer payment method' do
+      owner = create(:user, :complete_company_owner)
+      owner.company.accepted!
+
+      customer1 = create(:customer, company: owner.company)
+      customer2 = create(:customer, company: owner.company)
+
+      customer_payment_method = create(:customer_payment_method, :pix, customer: customer1, company: owner.company)
+
+      get "/api/v1/customer/#{customer1.token}", headers: { companyToken: owner.company.token }
+
+      expect(response).to have_http_status(200)
+      expect(response.content_type).to include('application/json')
+      expect(parsed_body[:customer][:name]).to eq(customer1.name)
+      expect(parsed_body[:customer][:cpf]).to eq(customer1.cpf)
+      expect(parsed_body[:customer][:token]).to eq(customer1.token)
+      expect(parsed_body[:customer][:customer_payment_methods][0][:name]).to eq(customer_payment_method.name)
+      expect(parsed_body[:customer][:customer_payment_methods][0][:token]).to eq(customer_payment_method.token)
+      expect(parsed_body[:customer][:company][:legal_name]).to eq(owner.company.legal_name)
+      expect(parsed_body[:customer][:token]).to_not eq(customer2.token)
+    end
+
     it 'should return 404 if setting does not exist' do
       owner = create(:user, :complete_company_owner)
       company = owner.company

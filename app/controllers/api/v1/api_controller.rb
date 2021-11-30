@@ -8,11 +8,15 @@ module Api
 
       private
 
-      def find_by_token(model, token)
+      def find_by_token!(model, token)
         element = model.find_by(token: token)
         raise ActiveRecord::RecordNotFound if element.nil?
 
         element
+      end
+
+      def find_by_token(model, token)
+        model.find_by(token: token)
       end
 
       def authenticate_company!

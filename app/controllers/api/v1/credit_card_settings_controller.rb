@@ -16,7 +16,7 @@ module Api
       end
 
       def show
-        @credit_card_setting = find_by_token(CreditCardSetting, params[:id])
+        @credit_card_setting = find_by_token!(CreditCardSetting, params[:id])
 
         return render_not_authorized if @credit_card_setting.company != @company
 

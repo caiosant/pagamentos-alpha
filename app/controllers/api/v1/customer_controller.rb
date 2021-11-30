@@ -17,7 +17,10 @@ module Api
 
         render status: :ok, json: @customer.as_json(except: %i[id company_id
                                                                created_at updated_at],
-                                                    include: { company: { only: :legal_name } })
+                                                    include: {
+                                                      company: { only: :legal_name },
+                                                      customer_payment_methods: { only: %i[name token] }
+                                                    })
       end
 
       def create
