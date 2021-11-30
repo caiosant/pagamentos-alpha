@@ -158,12 +158,12 @@ ActiveRecord::Schema.define(version: 2021_11_30_145910) do
     t.string "token"
     t.integer "customer_payment_method_id", null: false
     t.integer "type_of", default: 0
-    t.integer "pix_setting_id", null: false
-    t.integer "boleto_setting_id", null: false
-    t.integer "credit_card_setting_id", null: false
+    t.integer "pix_setting_id"
+    t.integer "boleto_setting_id"
+    t.integer "credit_card_setting_id"
     t.integer "product_id", null: false
     t.decimal "cost"
-    t.integer "receipt_id", null: false
+    t.integer "receipt_id"
     t.date "paid_date"
     t.date "expiration_date"
     t.datetime "created_at", precision: 6, null: false

@@ -103,14 +103,14 @@ FactoryBot.create(
     :customer,
     company: company,
     name: 'John Smith',
-    cpf: '1234567890'
+    cpf: '12345678901'
 )
 
 FactoryBot.create(
     :customer,
     company: company,
     name: 'Joana da Silva',
-    cpf: '1234567891'
+    cpf: '12345678912'
 )
 
 
