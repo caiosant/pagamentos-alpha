@@ -19,7 +19,7 @@ module Api
         @customer = Customer.find_by(token: customer_payment_method_params[:customer_token], company: @company)
 
         @customer_payment_method = CustomerPaymentMethod.new(
-          payment_method: @payment_method, customer: @customer, company: @company
+          payment_method: @payment_method, customer: @customer, company: @company, name: @payment_method&.type_of
         )
         @customer_payment_method.add_credit_card(credit_card_params) if @payment_method&.credit_card?
 
