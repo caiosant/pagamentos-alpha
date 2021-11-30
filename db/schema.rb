@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_29_202729) do
+ActiveRecord::Schema.define(version: 2021_11_30_145910) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -168,7 +168,9 @@ ActiveRecord::Schema.define(version: 2021_11_29_202729) do
     t.date "expiration_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "company_id", null: false
     t.index ["boleto_setting_id"], name: "index_purchases_on_boleto_setting_id"
+    t.index ["company_id"], name: "index_purchases_on_company_id"
     t.index ["credit_card_setting_id"], name: "index_purchases_on_credit_card_setting_id"
     t.index ["customer_payment_method_id"], name: "index_purchases_on_customer_payment_method_id"
     t.index ["pix_setting_id"], name: "index_purchases_on_pix_setting_id"
@@ -220,6 +222,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_202729) do
   add_foreign_key "pix_settings", "payment_methods"
   add_foreign_key "products", "companies"
   add_foreign_key "purchases", "boleto_settings"
+  add_foreign_key "purchases", "companies"
   add_foreign_key "purchases", "credit_card_settings"
   add_foreign_key "purchases", "customer_payment_methods"
   add_foreign_key "purchases", "pix_settings"

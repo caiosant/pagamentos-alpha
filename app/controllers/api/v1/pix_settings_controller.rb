@@ -13,7 +13,7 @@ module Api
       end
 
       def show
-        @pix_setting = find_by_token(PixSetting, params[:id])
+        @pix_setting = find_by_token!(PixSetting, params[:id])
 
         return render_not_authorized if @pix_setting.company != @company
 
