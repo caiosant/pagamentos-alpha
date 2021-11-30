@@ -1,7 +1,7 @@
 class CreateCustomerPaymentMethods < ActiveRecord::Migration[6.1]
   def change
     create_table :customer_payment_methods do |t|
-      t.integer :name
+      t.integer :type_of
       t.references :payment_method, null: false, foreign_key: true
       t.string :credit_card_name
       t.string :credit_card_number
