@@ -1,6 +1,6 @@
 module Api
   module V1
-    class CustomerController < Api::V1::ApiController
+    class CustomersController < Api::V1::ApiController
       def index
         @customers = Customer.all.where(company: @company)
 

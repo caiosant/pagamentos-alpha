@@ -1,6 +1,6 @@
 module Api
   module V1
-    class CustomerPaymentMethodController < Api::V1::ApiController
+    class CustomerPaymentMethodsController < Api::V1::ApiController
       def index
         @customer_payment_method = CustomerPaymentMethod.where(company: @company)
 

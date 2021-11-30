@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'CustomerPaymentMethod API' do
-  context 'POST /api/v1/customer_payment_method' do
+  context 'POST /api/v1/customer_payment_methods' do
     context 'successfully' do
       it 'with pix' do
         owner = create(:user, :complete_company_owner)
@@ -18,7 +18,7 @@ describe 'CustomerPaymentMethod API' do
             payment_setting_token: company_payment_setting.token
           }
         }
-        post '/api/v1/customer_payment_method',
+        post '/api/v1/customer_payment_methods',
              params: customer_payment_method_params,
              headers: { 'companyToken' => owner.company.token }
 
@@ -47,7 +47,7 @@ describe 'CustomerPaymentMethod API' do
             payment_setting_token: company_payment_setting.token
           }
         }
-        post '/api/v1/customer_payment_method',
+        post '/api/v1/customer_payment_methods',
              params: customer_payment_method_params,
              headers: { 'companyToken' => owner.company.token }
 
@@ -80,7 +80,7 @@ describe 'CustomerPaymentMethod API' do
             credit_card_security_code: '123'
           }
         }
-        post '/api/v1/customer_payment_method',
+        post '/api/v1/customer_payment_methods',
              params: customer_payment_method_params,
              headers: { 'companyToken' => owner.company.token }
 
@@ -111,7 +111,7 @@ describe 'CustomerPaymentMethod API' do
             payment_setting_token: company_payment_setting.token
           }
         }
-        post '/api/v1/customer_payment_method', params: customer_payment_method_params
+        post '/api/v1/customer_payment_methods', params: customer_payment_method_params
 
         expect(response).to have_http_status(401)
         expect(parsed_body[:message]).to eq('Há algo errado com sua autenticação.')
@@ -131,7 +131,7 @@ describe 'CustomerPaymentMethod API' do
             type_of: company_payment_setting.type_of
           }
         }
-        post '/api/v1/customer_payment_method',
+        post '/api/v1/customer_payment_methods',
              params: customer_payment_method_params,
              headers: { 'companyToken' => owner.company.token }
 
@@ -157,7 +157,7 @@ describe 'CustomerPaymentMethod API' do
             payment_setting_token: ''
           }
         }
-        post '/api/v1/customer_payment_method',
+        post '/api/v1/customer_payment_methods',
              params: customer_payment_method_params,
              headers: { 'companyToken' => owner.company.token }
 
@@ -184,7 +184,7 @@ describe 'CustomerPaymentMethod API' do
             payment_setting_token: company_payment_setting.token
           }
         }
-        post '/api/v1/customer_payment_method',
+        post '/api/v1/customer_payment_methods',
              params: customer_payment_method_params,
              headers: { 'companyToken' => owner.company.token }
 
@@ -214,7 +214,7 @@ describe 'CustomerPaymentMethod API' do
             credit_card_security_code: '123'
           }
         }
-        post '/api/v1/customer_payment_method',
+        post '/api/v1/customer_payment_methods',
              params: customer_payment_method_params,
              headers: { 'companyToken' => owner.company.token }
 
@@ -247,7 +247,7 @@ describe 'CustomerPaymentMethod API' do
             credit_card_security_code: '123'
           }
         }
-        post '/api/v1/customer_payment_method',
+        post '/api/v1/customer_payment_methods',
              params: customer_payment_method_params,
              headers: { 'companyToken' => owner.company.token }
 
@@ -279,7 +279,7 @@ describe 'CustomerPaymentMethod API' do
             credit_card_security_code: '123'
           }
         }
-        post '/api/v1/customer_payment_method',
+        post '/api/v1/customer_payment_methods',
              params: customer_payment_method_params,
              headers: { 'companyToken' => owner.company.token }
 
@@ -311,7 +311,7 @@ describe 'CustomerPaymentMethod API' do
             credit_card_security_code: ''
           }
         }
-        post '/api/v1/customer_payment_method',
+        post '/api/v1/customer_payment_methods',
              params: customer_payment_method_params,
              headers: { 'companyToken' => owner.company.token }
 
@@ -344,7 +344,7 @@ describe 'CustomerPaymentMethod API' do
           }
         }
 
-        post '/api/v1/customer_payment_method',
+        post '/api/v1/customer_payment_methods',
              params: customer_payment_method_params,
              headers: { 'companyToken' => owner.company.token }
 
@@ -364,7 +364,7 @@ describe 'CustomerPaymentMethod API' do
     end
   end
 
-  context 'GET /api/v1/customer_payment_method' do
+  context 'GET /api/v1/customer_payment_methods' do
     it 'successfully' do
       owner = create(:user, :complete_company_owner)
       owner.company.accepted!
@@ -372,7 +372,7 @@ describe 'CustomerPaymentMethod API' do
         :customer_payment_method, 3, :pix, company: owner.company
       )
 
-      get '/api/v1/customer_payment_method',
+      get '/api/v1/customer_payment_methods',
           headers: { 'companyToken' => owner.company.token }
 
       expect(response).to have_http_status(200)
@@ -392,11 +392,11 @@ describe 'CustomerPaymentMethod API' do
     end
   end
 
-  context 'GET /api/v1/customer_payment_method/:id' do
+  context 'GET /api/v1/customer_payment_methods/:id' do
     it 'successfully' do
       customer_payment_method = create(:customer_payment_method, :boleto)
 
-      get "/api/v1/customer_payment_method/#{customer_payment_method.token}",
+      get "/api/v1/customer_payment_methods/#{customer_payment_method.token}",
           headers: { 'companyToken' => customer_payment_method.company.token }
 
       expect(response).to have_http_status(200)
@@ -418,7 +418,7 @@ describe 'CustomerPaymentMethod API' do
       owner = create(:user, :complete_company_owner)
       owner.company.accepted!
 
-      get '/api/v1/customer_payment_method/not_a_token',
+      get '/api/v1/customer_payment_methods/not_a_token',
           headers: { 'companyToken' => owner.company.token }
 
       expect(response).to have_http_status(404)
@@ -429,7 +429,7 @@ describe 'CustomerPaymentMethod API' do
       customer_payment_method = create(:customer_payment_method, :boleto)
       another_customer_payment_method = create(:customer_payment_method, :credit_card)
 
-      get "/api/v1/customer_payment_method/#{customer_payment_method.token}",
+      get "/api/v1/customer_payment_methods/#{customer_payment_method.token}",
           headers: { 'companyToken' => another_customer_payment_method.company.token }
 
       expect(response).to have_http_status(404)

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Customer API' do
-  context 'GET /api/v1/customer' do
+  context 'GET /api/v1/customers' do
     it 'should get all customers' do
       owner = create(:user, :complete_company_owner)
       owner.company.accepted!
@@ -9,7 +9,7 @@ describe 'Customer API' do
       customer1 = create(:customer, company: owner.company)
       customer2 = create(:customer, company: owner.company)
 
-      get '/api/v1/customer', headers: { companyToken: owner.company.token }
+      get '/api/v1/customers', headers: { companyToken: owner.company.token }
 
       expect(response).to have_http_status(200)
       expect(response.content_type).to include('application/json')
@@ -32,13 +32,13 @@ describe 'Customer API' do
 
       allow(Customer).to receive(:all).and_raise(ActiveRecord::ActiveRecordError)
 
-      get '/api/v1/customer', headers: { companyToken: company.token }
+      get '/api/v1/customers', headers: { companyToken: company.token }
 
       expect(response).to have_http_status(500)
     end
   end
 
-  context 'GET /api/v1/customer/:token' do
+  context 'GET /api/v1/customers/:token' do
     it 'should get customer 1' do
       owner = create(:user, :complete_company_owner)
       owner.company.accepted!
@@ -46,7 +46,7 @@ describe 'Customer API' do
       customer1 = create(:customer, company: owner.company)
       customer2 = create(:customer, company: owner.company)
 
-      get "/api/v1/customer/#{customer1.token}", headers: { companyToken: owner.company.token }
+      get "/api/v1/customers/#{customer1.token}", headers: { companyToken: owner.company.token }
 
       expect(response).to have_http_status(200)
       expect(response.content_type).to include('application/json')
@@ -62,7 +62,7 @@ describe 'Customer API' do
       company = owner.company
       company.accepted!
 
-      get '/api/v1/customer/999', headers: { companyToken: company.token }
+      get '/api/v1/customers/999', headers: { companyToken: company.token }
 
       expect(response).to have_http_status(404)
     end
@@ -79,7 +79,7 @@ describe 'Customer API' do
       create(:customer, company: company)
       customer2 = create(:customer, company: other_company)
 
-      get "/api/v1/customer/#{customer2.token}", headers: { companyToken: company.token }
+      get "/api/v1/customers/#{customer2.token}", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(401)
     end
@@ -93,13 +93,13 @@ describe 'Customer API' do
 
       allow(Customer).to receive(:find_by).and_raise(ActiveRecord::ActiveRecordError)
 
-      get "/api/v1/customer/#{customer1.token}", headers: { companyToken: company.token }
+      get "/api/v1/customers/#{customer1.token}", headers: { companyToken: company.token }
 
       expect(response).to have_http_status(500)
     end
   end
 
-  context 'POST /api/v1/customer' do
+  context 'POST /api/v1/customers' do
     it 'should save a new customer' do
       owner = create(:user, :complete_company_owner)
 
@@ -109,7 +109,7 @@ describe 'Customer API' do
 
       allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('LI5YuUJrZuJSB6uPH2jm')
 
-      post '/api/v1/customer', params: customer_params, headers: { companyToken: owner.company.token }
+      post '/api/v1/customers', params: customer_params, headers: { companyToken: owner.company.token }
 
       expect(response).to have_http_status(201)
       expect(response.content_type).to include('application/json')
@@ -125,7 +125,7 @@ describe 'Customer API' do
       customer_params = { customer: { name: '',
                                       cpf: '41492765872' } }
 
-      post '/api/v1/customer', params: customer_params, headers: { companyToken: owner.company.token }
+      post '/api/v1/customers', params: customer_params, headers: { companyToken: owner.company.token }
 
       expect(response).to have_http_status(422)
       expect(response.content_type).to include('application/json')
@@ -141,7 +141,7 @@ describe 'Customer API' do
       customer_params = { customer: { name: 'Caio Silva',
                                       cpf: '' } }
 
-      post '/api/v1/customer', params: customer_params, headers: { companyToken: owner.company.token }
+      post '/api/v1/customers', params: customer_params, headers: { companyToken: owner.company.token }
 
       expect(response).to have_http_status(422)
       expect(response.content_type).to include('application/json')
@@ -157,7 +157,7 @@ describe 'Customer API' do
       customer_params = { customer: { name: '',
                                       cpf: '' } }
 
-      post '/api/v1/customer', params: customer_params, headers: { companyToken: owner.company.token }
+      post '/api/v1/customers', params: customer_params, headers: { companyToken: owner.company.token }
 
       expect(response).to have_http_status(422)
       expect(response.content_type).to include('application/json')
@@ -174,7 +174,7 @@ describe 'Customer API' do
       customer_params = { customer: { name: 'Caio Silva',
                                       cpf: '411.467.289.56' } }
 
-      post '/api/v1/customer', params: customer_params, headers: { companyToken: owner.company.token }
+      post '/api/v1/customers', params: customer_params, headers: { companyToken: owner.company.token }
 
       expect(response).to have_http_status(422)
       expect(response.content_type).to include('application/json')
@@ -190,7 +190,7 @@ describe 'Customer API' do
       customer_params = { customer: { name: 'Caio Silva',
                                       cpf: '411467289-56' } }
 
-      post '/api/v1/customer', params: customer_params, headers: { companyToken: owner.company.token }
+      post '/api/v1/customers', params: customer_params, headers: { companyToken: owner.company.token }
 
       expect(response).to have_http_status(422)
       expect(response.content_type).to include('application/json')
@@ -206,7 +206,7 @@ describe 'Customer API' do
       customer_params = { customer: { name: 'Caio Silva',
                                       cpf: '4334672386' } }
 
-      post '/api/v1/customer', params: customer_params, headers: { companyToken: owner.company.token }
+      post '/api/v1/customers', params: customer_params, headers: { companyToken: owner.company.token }
 
       expect(response).to have_http_status(422)
       expect(response.content_type).to include('application/json')
@@ -224,7 +224,7 @@ describe 'Customer API' do
 
       allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('LI5YuUJrZuJSB6uPH2jm')
 
-      post '/api/v1/customer', params: customer_params, headers: { companyToken: owner.company.token }
+      post '/api/v1/customers', params: customer_params, headers: { companyToken: owner.company.token }
 
       expect(response).to have_http_status(422)
       expect(response.content_type).to include('application/json')
@@ -243,7 +243,7 @@ describe 'Customer API' do
 
       allow(Customer).to receive(:new).and_raise(ActiveRecord::ActiveRecordError)
 
-      post '/api/v1/customer', params: customer_params, headers: { companyToken: company.token }
+      post '/api/v1/customers', params: customer_params, headers: { companyToken: company.token }
 
       expect(response).to have_http_status(500)
     end
