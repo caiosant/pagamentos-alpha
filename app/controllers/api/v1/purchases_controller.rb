@@ -16,11 +16,20 @@ module Api
         end
         
         @purchase.type_of = sanitized_params[:payment_setting_type]
-        @purchase.product = find_by_token(Product, sanitized_params[:product])
+        @purchase.product = find_by_token(Product, sanitized_params[:product_token])
 
+        @purchase.customer_payment_method = find_by_token(CustomerPaymentMethod, sanitized_params[:customer_payment_method_token])
+        
         if @purchase.save
           render status: :created, json: @purchase.as_json(except: %i[id company_id created_at updated_at],
-                                                           include: { company: { only: :legal_name } })
+                                                           include: {
+                                                             company: { only: :legal_name },
+                                                             product: { only: [:name, :token] }, 
+                                                             pix_setting: { only: [:token] },
+                                                             boleto_setting: { only: [:token] },
+                                                             credit_card_setting: { only: [:token] },
+                                                             customer_payment_method: { only: [:token] }
+                                                           })
         else
           render status: :unprocessable_entity, json: { message: 'Requisição inválida', errors: @purchase.errors,
                                                         request: @purchase.as_json(except: %i[id token company_id
@@ -35,7 +44,8 @@ module Api
           :product_token, 
           :payment_setting_token,
           :payment_setting_type,
-          :purchase_payment_method_token
+          :purchase_payment_method_token,
+          :customer_payment_method_token
         )
       end
     end

@@ -30,7 +30,7 @@ describe 'Transaction can be created on POST /api/v1/purchases'  do
                  customer_payment_method_token: customer_payment_method.token
                  } },
              headers: { companyToken: company.token }
-
+        
         expect(response).to have_http_status(201)
         expect(parsed_body[:purchase][:product][:name]).to eq(product.name)
         expect(parsed_body[:purchase][:product][:token]).to eq(product.token)
