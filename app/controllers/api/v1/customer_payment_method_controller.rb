@@ -15,13 +15,15 @@ module Api
       end
 
       def create
-        @payment_method = find_payment_method
-        @customer = Customer.find_by(token: customer_payment_method_params[:customer_token], company: @company)
+        sanitized_params = customer_payment_method_params
 
-        @customer_payment_method = CustomerPaymentMethod.new(
-          payment_method: @payment_method, customer: @customer, company: @company
-        )
-        @customer_payment_method.add_credit_card(credit_card_params) if @payment_method&.credit_card?
+        @customer_payment_method = CustomerPaymentMethod.new()
+        @customer_payment_method.company = @company
+        @customer_payment_method.customer = find_by_token(Customer, sanitized_params[:customer_token])
+        @customer_payment_method.type_of = sanitized_params[:type_of]
+        add_payment_setting_to_customer_payment_method(sanitized_params[:type_of])
+        
+        @customer_payment_method.add_credit_card(credit_card_params) if sanitized_params[:type_of] == 'credit_card'
 
         return render status: :created, json: success_json if @customer_payment_method.save
 
@@ -30,8 +32,27 @@ module Api
 
       private
 
+      def add_payment_setting_to_customer_payment_method(type_of)
+        case type_of
+        when 'pix'
+          setting = find_by_token(PixSetting, customer_payment_method_params[:payment_setting_token])
+          @customer_payment_method.pix_setting = setting unless setting&.disabled?
+        when 'boleto'
+          setting = find_by_token(BoletoSetting, customer_payment_method_params[:payment_setting_token])
+          @customer_payment_method.boleto_setting = setting unless setting&.disabled?
+        when 'credit_card'
+          setting = find_by_token(CreditCardSetting, customer_payment_method_params[:payment_setting_token])
+          @customer_payment_method.credit_card_setting = setting unless setting&.disabled?
+        else
+        end
+      end
+
       def customer_payment_method_params
-        params.require(:customer_payment_method).permit(:customer_token, :payment_method_token)
+        params.require(:customer_payment_method).permit(
+          :customer_token, 
+          :payment_setting_token, 
+          :type_of
+        )
       end
 
       def credit_card_params
@@ -50,9 +71,11 @@ module Api
 
       def success_json
         @customer_payment_method.as_json(
-          only: %i[token],
+          only: %i[token type_of],
           include: {
-            payment_method: { only: %i[name type_of] },
+            pix_setting: { only: %i[token type_of] },
+            boleto_setting: { only: %i[token type_of] },
+            credit_card_setting: { only: %i[token type_of] },
             customer: { only: %i[token] },
             company: { only: %i[legal_name] }
           }
@@ -64,9 +87,11 @@ module Api
           message: 'Requisição inválida', errors:  @customer_payment_method.errors,
           # TODO: passar entrada do cartão de crédito de volta?
           request: @customer_payment_method.as_json(
-            only: %i[],
+            only: %i[ type_of ],
             include: {
-              payment_method: { only: %i[name type_of] },
+              pix_setting: { only: %i[token type_of] },
+              boleto_setting: { only: %i[token type_of] },
+              credit_card_setting: { only: %i[token type_of] },
               customer: { only: %i[token] }, company: { only: %i[legal_name] }
             }
           )
