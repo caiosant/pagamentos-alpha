@@ -73,10 +73,8 @@ describe 'Customer API' do
       expect(parsed_body[:customer][:name]).to eq(customer1.name)
       expect(parsed_body[:customer][:cpf]).to eq(customer1.cpf)
       expect(parsed_body[:customer][:token]).to eq(customer1.token)
-      ###
       expect(parsed_body[:customer][:customer_payment_methods][0][:name]).to eq(customer_payment_method.name)
       expect(parsed_body[:customer][:customer_payment_methods][0][:token]).to eq(customer_payment_method.token)
-      ###
       expect(parsed_body[:customer][:company][:legal_name]).to eq(owner.company.legal_name)
       expect(parsed_body[:customer][:token]).to_not eq(customer2.token)
     end
