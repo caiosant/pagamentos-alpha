@@ -99,6 +99,20 @@ FactoryBot.create(
     company_code: '4243243'
 )
 
+FactoryBot.create(
+    :customer,
+    company: company,
+    name: 'John Smith',
+    cpf: '1234567890'
+)
+
+FactoryBot.create(
+    :customer,
+    company: company,
+    name: 'Joana da Silva',
+    cpf: '1234567891'
+)
+
 
 
 
