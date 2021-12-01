@@ -6,7 +6,10 @@ class Purchase < ApplicationRecord
 
   after_create :generate_token_attribute
 
-  def validate_product_is_not_subscription; end
+  def validate_product_is_not_subscription
+    return unless self.product.subscription?
+    self.errors.add :product, 'não crie cobrança de assinatura diretamente pela API'
+  end
 
   def self.search(params, company_object)
     @purchases = Purchase.all.where(company: company_object)
@@ -21,10 +24,10 @@ class Purchase < ApplicationRecord
       end
 
       if params.key?(:type)
-        
-        #@purchases = @purchases.where(type_of: params[:type])
+
+        # @purchases = @purchases.where(type_of: params[:type])
         @purchases = @purchases.includes(:customer_payment_method).where(
-          customer_payment_method: { type_of: params[:type]}
+          customer_payment_method: { type_of: params[:type] }
         )
 
         params.delete(:type)
@@ -37,6 +40,6 @@ class Purchase < ApplicationRecord
       end
     end
 
-    return params.empty? ? @purchases : nil
+    params.empty? ? @purchases : nil
   end
 end

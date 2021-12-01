@@ -25,25 +25,24 @@ module Api
         return render_not_authorized if @purchase.company != @company
 
         render status: :ok, json: @purchase.as_json(except: %i[id customer_payment_method_id pix_setting_id
-                                                                boleto_setting_id credit_card_setting_id product_id
-                                                                receipt_id company_id created_at updated_at],
-                                                      include: {
-                                                        company: { only: :legal_name },
-                                                        product: { only: %i[name token] },
-                                                        customer_payment_method: { only: :token }
-                                                      })
+                                                               boleto_setting_id credit_card_setting_id product_id
+                                                               receipt_id company_id created_at updated_at],
+                                                    include: {
+                                                      company: { only: :legal_name },
+                                                      product: { only: %i[name token] },
+                                                      customer_payment_method: { only: :token }
+                                                    })
       end
 
       def create
         sanitized_params = purchase_params
         @purchase = @company.purchases.new
-
         @purchase.product = find_by_token(Product, sanitized_params[:product_token])
-
+        @purchase.validate_product_is_not_subscription
         @purchase.customer_payment_method = find_by_token(CustomerPaymentMethod,
                                                           sanitized_params[:customer_payment_method_token])
 
-        if @purchase.save
+        if @purchase.errors.empty? && @purchase.save
           render status: :created, json: @purchase.as_json(except: %i[id customer_payment_method_id pix_setting_id
                                                                       boleto_setting_id credit_card_setting_id product_id
                                                                       receipt_id company_id created_at updated_at],

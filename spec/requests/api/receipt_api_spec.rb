@@ -12,7 +12,7 @@ describe 'Receipt Api' do
       product = create(:product)
       purchase = create(
         :purchase, company: company, customer_payment_method: customer_payment_method,
-        product: product
+                   product: product
       )
       receipt = create(:receipt, purchase: purchase)
 
