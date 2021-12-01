@@ -174,23 +174,17 @@ describe 'Purchase API' do
 
         expect(response).to have_http_status(200)
         expect(response.content_type).to include('application/json')
-        expect(first[:purchase][:type_of]).to eq('pix')
         expect(first[:purchase][:cost]).to eq('9.99')
         expect(first[:purchase][:paid_date]).to eq(purchase.paid_date.to_s)
         expect(first[:purchase][:paid_date]).to eq(purchase.expiration_date.to_s)
         expect(first[:purchase][:company][:legal_name]).to eq(company.legal_name)
         expect(first[:purchase][:product][:name]).to eq(product.name)
-        expect(first[:purchase][:pix_setting][:token]).to eq(purchase.pix_setting.token)
-        expect(first[:purchase][:boleto_setting]).to eq(nil)
-        expect(first[:purchase][:credit_card_setting]).to eq(nil)
         expect(first[:purchase][:customer_payment_method][:token]).to_not eq(customer_payment_method.token)
         expect(parsed_body).to_not include(purchase2.expiration_date.to_s)
         expect(parsed_body).to_not include(product2.name)
-        expect(parsed_body).to_not include(purchase2.pix_setting.token)
-        expect(parsed_body).to_not include(customer_payment_method.token)
       end
 
-      it 'with query parameter: token. And got successfully' do
+      it 'with query parameter: type. And got successfully' do
         owner = create(:user, :complete_company_owner)
         company = owner.company
         company.accepted!
@@ -209,22 +203,19 @@ describe 'Purchase API' do
           name: 'Vídeo de CS:GO - 5k'
         )
 
-        customer_payment_method = create(:customer_payment_method, :pix, company: company)
-        other_customer_payment_method = create(:customer_payment_method, :credit_card, company: company)
+        pix_customer_payment_method = create(:customer_payment_method, :pix, company: company)
+        credit_card_customer_payment_method = create(:customer_payment_method, :credit_card, company: company)
 
         purchase = create(
           :purchase,
-          customer_payment_method: other_customer_payment_method,
+          customer_payment_method: credit_card_customer_payment_method,
           product: product,
-          type_of: 'credit_card',
-          pix_setting: nil,
-          credit_card_setting: create(:credit_card_setting),
           company: company
         )
 
-        purchase2 = create(
+        purchase_pix = create(
           :purchase,
-          customer_payment_method: customer_payment_method,
+          customer_payment_method: pix_customer_payment_method,
           product: product2,
           company: company
         )
@@ -235,20 +226,15 @@ describe 'Purchase API' do
 
         expect(response).to have_http_status(200)
         expect(response.content_type).to include('application/json')
-        expect(first[:purchase][:type_of]).to eq('pix')
         expect(first[:purchase][:cost]).to eq('9.99')
-        expect(first[:purchase][:paid_date]).to eq(purchase2.paid_date.to_s)
-        expect(first[:purchase][:paid_date]).to eq(purchase2.expiration_date.to_s)
+        expect(first[:purchase][:paid_date]).to eq(purchase_pix.paid_date.to_s)
+        expect(first[:purchase][:paid_date]).to eq(purchase_pix.expiration_date.to_s)
         expect(first[:purchase][:company][:legal_name]).to eq(company.legal_name)
-        expect(first[:purchase][:product][:name]).to eq(product2.name)
-        expect(first[:purchase][:pix_setting][:token]).to eq(purchase2.pix_setting.token)
-        expect(first[:purchase][:boleto_setting]).to eq(nil)
-        expect(first[:purchase][:credit_card_setting]).to eq(nil)
-        expect(first[:purchase][:customer_payment_method][:token]).to eq(customer_payment_method.token)
-        expect(parsed_body).to_not include(purchase.expiration_date.to_s)
+        expect(first[:purchase][:product][:name]).to eq(purchase_pix.product.name)
+        expect(first[:purchase][:customer_payment_method][:token]).to eq(pix_customer_payment_method.token)
+        expect(parsed_body).to_not include(purchase_pix.expiration_date.to_s)
         expect(parsed_body).to_not include(product.name)
-        expect(parsed_body).to_not include(purchase.credit_card_setting.token)
-        expect(parsed_body).to_not include(other_customer_payment_method.token)
+        expect(parsed_body).to_not include(credit_card_customer_payment_method.token)
       end
 
       it 'with query parameter: product_token. And got successfully' do
@@ -288,24 +274,19 @@ describe 'Purchase API' do
         )
 
         get "/api/v1/purchases?product_token=#{product.token}", headers: { companyToken: company.token }
-
+        
         first = parsed_body.first
 
         expect(response).to have_http_status(200)
         expect(response.content_type).to include('application/json')
-        expect(first[:purchase][:type_of]).to eq('pix')
         expect(first[:purchase][:cost]).to eq('9.99')
         expect(first[:purchase][:paid_date]).to eq(purchase.paid_date.to_s)
         expect(first[:purchase][:paid_date]).to eq(purchase.expiration_date.to_s)
         expect(first[:purchase][:company][:legal_name]).to eq(company.legal_name)
         expect(first[:purchase][:product][:name]).to eq(product.name)
-        expect(first[:purchase][:pix_setting][:token]).to eq(purchase.pix_setting.token)
-        expect(first[:purchase][:boleto_setting]).to eq(nil)
-        expect(first[:purchase][:credit_card_setting]).to eq(nil)
         expect(first[:purchase][:customer_payment_method][:token]).to eq(other_customer_payment_method.token)
         expect(parsed_body).to_not include(purchase.expiration_date.to_s)
         expect(parsed_body).to_not include(product2.name)
-        expect(parsed_body).to_not include(purchase2.pix_setting.token)
         expect(parsed_body).to_not include(customer_payment_method.token)
       end
     end
@@ -368,19 +349,14 @@ describe 'Purchase API' do
 
         expect(response).to have_http_status(200)
         expect(response.content_type).to include('application/json')
-        expect(first[:purchase][:type_of]).to eq('pix')
         expect(first[:purchase][:cost]).to eq('9.99')
         expect(first[:purchase][:paid_date]).to eq(purchase.paid_date.to_s)
         expect(first[:purchase][:paid_date]).to eq(purchase.expiration_date.to_s)
         expect(first[:purchase][:company][:legal_name]).to eq(company.legal_name)
         expect(first[:purchase][:product][:name]).to eq(product2.name)
-        expect(first[:purchase][:pix_setting][:token]).to eq(purchase2.pix_setting.token)
-        expect(first[:purchase][:boleto_setting]).to eq(nil)
-        expect(first[:purchase][:credit_card_setting]).to eq(nil)
         expect(first[:purchase][:customer_payment_method][:token]).to eq(customer_payment_method.token)
         expect(parsed_body).to_not include(purchase.expiration_date.to_s)
         expect(parsed_body).to_not include(product.name)
-        expect(parsed_body).to_not include(purchase.pix_setting.token)
         expect(parsed_body).to_not include(other_customer_payment_method.token)
       end
     end
@@ -435,9 +411,6 @@ describe 'Purchase API' do
           :purchase,
           customer_payment_method: customer_payment_method2,
           product: product2,
-          type_of: 'credit_card',
-          pix_setting: nil,
-          credit_card_setting: create(:credit_card_setting),
           company: company
         )
 
@@ -448,7 +421,6 @@ describe 'Purchase API' do
 
         expect(response).to have_http_status(200)
         expect(response.content_type).to include('application/json')
-        expect(first[:purchase][:type_of]).to eq('pix')
         expect(first[:purchase][:cost]).to eq('9.99')
         expect(first[:purchase][:paid_date]).to eq(purchase.paid_date.to_s)
         expect(first[:purchase][:paid_date]).to eq(purchase.expiration_date.to_s)
