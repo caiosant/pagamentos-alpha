@@ -15,7 +15,8 @@ module Api
           product: subscription
         )
 
-        render status: :created, json: success_json if @customer_subscription.save
+        return render status: :created, json: success_json if @customer_subscription.save
+        render status: :unprocessable_entity, json: error_json
       end
 
       private
@@ -25,6 +26,24 @@ module Api
       end
 
       def success_json
+        @customer_subscription.as_json(
+          only: %i[token renovation_date status cost],
+          include: {
+            product: { only: %i[name type_of token] },
+            customer_payment_method: { only: %i[token] },
+            company: { only: %i[legal_name] }
+          }
+        )
+      end
+
+      def error_json
+        {
+          message: 'Requisição inválida', errors:  @customer_subscription.errors,
+          request: generate_customer_subscription_request
+        }
+      end
+
+      def generate_customer_subscription_request
         @customer_subscription.as_json(
           only: %i[token renovation_date status cost],
           include: {

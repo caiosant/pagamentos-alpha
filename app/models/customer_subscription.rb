@@ -8,6 +8,8 @@ class CustomerSubscription < ApplicationRecord
   before_validation :create_renovation_date
   after_create :generate_token_attribute
 
+  validates :cost, presence: true
+
   private
 
   def create_renovation_date
