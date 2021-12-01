@@ -26,7 +26,6 @@ describe 'Purchase API' do
       post '/api/v1/purchases',
            params: { purchase: {
              product_token: product.token,
-             payment_setting_type: 'pix',
              customer_payment_method_token: customer_payment_method.token
            } },
            headers: { companyToken: company.token }
@@ -37,7 +36,7 @@ describe 'Purchase API' do
       expect(parsed_body[:purchase][:customer_payment_method][:token]).to eq(customer_payment_method.token)
     end
 
-    xit 'but fails when product is subscription type' do
+    it 'but fails when product is subscription type' do
       owner = create(:user, :complete_company_owner)
       company = owner.company
       company.accepted!
@@ -49,20 +48,11 @@ describe 'Purchase API' do
         name: 'Vídeo de Minecraft'
       )
 
-      pix_setting = FactoryBot.create(
-        :pix_setting,
-        company: company,
-        pix_key: '90803452a',
-        bank_code: '001'
-      )
-
       customer_payment_method = create(:customer_payment_method, :pix)
 
       post '/api/v1/purchases',
            params: { purchase: {
              product_token: product.token,
-             payment_setting_token: pix_setting.token,
-             payment_setting_type: 'pix',
              customer_payment_method_token: customer_payment_method.token
            } },
            headers: { companyToken: company.token }
@@ -128,7 +118,6 @@ describe 'Purchase API' do
       expect(second[:product][:name]).to eq(product2.name)
       expect(second[:customer_payment_method][:token]).to eq(customer_payment_method.token)
     end
-  
 
     context 'with one query parameter' do
       it 'with query parameter: customer_token. And got successfully' do
@@ -266,7 +255,7 @@ describe 'Purchase API' do
           company: company
         )
 
-        purchase2 = create(
+        create(
           :purchase,
           customer_payment_method: customer_payment_method,
           product: product2,
@@ -274,7 +263,7 @@ describe 'Purchase API' do
         )
 
         get "/api/v1/purchases?product_token=#{product.token}", headers: { companyToken: company.token }
-        
+
         first = parsed_body.first
 
         expect(response).to have_http_status(200)
@@ -328,14 +317,14 @@ describe 'Purchase API' do
           company: company
         )
 
-        purchase2 = create(
+        create(
           :purchase,
           customer_payment_method: customer_payment_method,
           product: product2,
           company: company
         )
 
-        purchase3 = create(
+        create(
           :purchase,
           customer_payment_method: customer_payment_method,
           product: product3,
@@ -439,7 +428,7 @@ describe 'Purchase API' do
         company = owner.company
         company.accepted!
 
-        get "/api/v1/purchases?customer_id=1", headers: { companyToken: company.token }
+        get '/api/v1/purchases?customer_id=1', headers: { companyToken: company.token }
 
         expect(response).to have_http_status(400)
         expect(response.content_type).to include('application/json')
