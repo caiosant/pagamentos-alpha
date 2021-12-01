@@ -3,7 +3,7 @@ class Purchase < ApplicationRecord
   belongs_to :product
   belongs_to :company
   has_one :receipt
-  
+
   after_create :generate_token_attribute
 
   def validate_product_is_not_subscription; end
@@ -21,7 +21,12 @@ class Purchase < ApplicationRecord
       end
 
       if params.key?(:type)
-        @purchases = @purchases.where(type_of: params[:type])
+        
+        #@purchases = @purchases.where(type_of: params[:type])
+        @purchases = @purchases.includes(:customer_payment_method).where(
+          customer_payment_method: { type_of: params[:type]}
+        )
+
         params.delete(:type)
       end
 
@@ -30,12 +35,8 @@ class Purchase < ApplicationRecord
         @purchases = @purchases.where(product: product_filter)
         params.delete(:product_token)
       end
-
-      if params.empty?
-        @purchases
-      else
-        @purchases = nil
-      end
     end
+
+    return params.empty? ? @purchases : nil
   end
 end
