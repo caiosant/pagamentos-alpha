@@ -38,6 +38,7 @@ module Api
         sanitized_params = purchase_params
         @purchase = @company.purchases.new
         @purchase.product = find_by_token(Product, sanitized_params[:product_token])
+        @purchase.cost = sanitized_params[:cost]
         @purchase.validate_product_is_not_subscription
         @purchase.customer_payment_method = find_by_token(CustomerPaymentMethod,
                                                           sanitized_params[:customer_payment_method_token])
@@ -64,7 +65,8 @@ module Api
         params.require(:purchase).permit(
           :product_token,
           :purchase_payment_method_token,
-          :customer_payment_method_token
+          :customer_payment_method_token,
+          :cost
         )
       end
     end

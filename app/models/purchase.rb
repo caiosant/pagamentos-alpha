@@ -6,6 +6,8 @@ class Purchase < ApplicationRecord
 
   after_create :generate_token_attribute
 
+  validates :cost, presence: true
+
   def validate_product_is_not_subscription
     return unless self.product.subscription?
     self.errors.add :product, 'não crie cobrança de assinatura diretamente pela API'
