@@ -8,7 +8,7 @@ module Api
       end
 
       def show
-        @product = find_by_token(Product, params[:id])
+        @product = find_by_token!(Product, params[:id])
 
         return render_not_authorized if @product.company != @company
 
@@ -16,14 +16,14 @@ module Api
       end
 
       def enable
-        @product = find_by_token(Product, params[:id])
+        @product = find_by_token!(Product, params[:id])
         return render_not_authorized if @product.company != @company
 
         @product.enabled!
       end
 
       def disable
-        @product = find_by_token(Product, params[:id])
+        @product = find_by_token!(Product, params[:id])
         return render_not_authorized if @product.company != @company
 
         @product.disabled!
