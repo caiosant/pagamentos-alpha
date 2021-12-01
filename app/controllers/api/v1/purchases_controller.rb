@@ -13,9 +13,6 @@ module Api
                                                        include: {
                                                          company: { only: :legal_name },
                                                          product: { only: %i[name token] },
-                                                         pix_setting: { only: :token },
-                                                         boleto_setting: { only: :token },
-                                                         credit_card_setting: { only: :token },
                                                          customer_payment_method: { only: :token }
                                                        })
         end
@@ -33,9 +30,6 @@ module Api
                                                       include: {
                                                         company: { only: :legal_name },
                                                         product: { only: %i[name token] },
-                                                        pix_setting: { only: :token },
-                                                        boleto_setting: { only: :token },
-                                                        credit_card_setting: { only: :token },
                                                         customer_payment_method: { only: :token }
                                                       })
       end
@@ -44,16 +38,6 @@ module Api
         sanitized_params = purchase_params
         @purchase = @company.purchases.new
 
-        case sanitized_params[:payment_setting_type]
-        when 'pix'
-          @purchase.pix_setting = find_by_token(PixSetting, sanitized_params[:payment_setting_token])
-        when 'boleto'
-          @purchase.boleto_setting = find_by_token(BoletoSetting, sanitized_params[:payment_setting_token])
-        when 'credit_card'
-          @purchase.credit_card_setting = find_by_token(CreditCardSetting, sanitized_params[:payment_setting_token])
-        end
-
-        @purchase.type_of = sanitized_params[:payment_setting_type]
         @purchase.product = find_by_token(Product, sanitized_params[:product_token])
 
         @purchase.customer_payment_method = find_by_token(CustomerPaymentMethod,
@@ -66,9 +50,6 @@ module Api
                                                            include: {
                                                              company: { only: :legal_name },
                                                              product: { only: %i[name token] },
-                                                             pix_setting: { only: [:token] },
-                                                             boleto_setting: { only: [:token] },
-                                                             credit_card_setting: { only: [:token] },
                                                              customer_payment_method: { only: [:token] }
                                                            })
         else
@@ -83,8 +64,6 @@ module Api
       def purchase_params
         params.require(:purchase).permit(
           :product_token,
-          :payment_setting_token,
-          :payment_setting_type,
           :purchase_payment_method_token,
           :customer_payment_method_token
         )
