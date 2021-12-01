@@ -475,6 +475,20 @@ describe 'Purchase API' do
         expect(parsed_body).to_not include(customer_payment_method2.token)
       end
     end
+
+    context 'with a different query parameter' do
+      it 'parameter is customer_id' do
+        owner = create(:user, :complete_company_owner)
+        company = owner.company
+        company.accepted!
+
+        get "/api/v1/purchases?customer_id=1", headers: { companyToken: company.token }
+
+        expect(response).to have_http_status(400)
+        expect(response.content_type).to include('application/json')
+        expect(parsed_body[:message]).to eq('Parâmetro Inválido')
+      end
+    end
   end
 
   context 'GET /api/v1/purchases/:token' do
