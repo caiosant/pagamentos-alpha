@@ -47,21 +47,28 @@ describe 'Receipt Api' do
   end
 
   context 'GET /api/v1/receipt/:id' do
-    # TODO: como identificar o receipt? (token, código de autorização, etc)
-    xit 'visitor should view one receipt' do
+    it 'visitor should view one receipt' do
       receipt = create(:receipt)
+      another_receipt = create(:receipt)
 
-      get "/api/v1/receipt/#{receipt[:authorization_code]}"
+      get "/api/v1/receipts/#{receipt[:token]}"
 
       expect(response).to have_http_status(200)
       purchase = parsed_body[:receipt][:purchase]
-      expect(purchase[:expiration_date]).to eq(purchase.expiration_date)
-      expect(purchase[:paid_date]).to eq(purchase.paid_date)
-      expect(parsed_body[:receipt][:authorization_code]).to be_present
+      expect(parsed_body[:receipt][:token]).to eq(receipt.token)
+      expect(parsed_body[:receipt][:authorization_code]).not_to be_nil
+      expect(purchase[:customer_payment_method][:type_of]).to eq(
+        receipt.purchase.customer_payment_method.type_of
+      )
+      expect(purchase[:paid_date]).to eq(receipt.purchase.paid_date.to_s)
+      expect(purchase[:expiration_date]).to eq(receipt.purchase.expiration_date.to_s)
+      expect(purchase[:product][:name]).to eq(receipt.purchase.product.name)
+      expect(purchase[:product][:token]).to eq(receipt.purchase.product.token)
+      expect(purchase[:company][:legal_name]).to eq(receipt.purchase.company.legal_name)
     end
 
     xit '404 not found' do
-      get '/api/v1/receipt/uy2387rg23h'
+      get '/api/v1/receipts/uy2387rg23h'
 
       expect(response).to have_http_status(404)
       expect(parsed_body[:message]).to eq('Objeto não encontrado')
@@ -72,7 +79,7 @@ describe 'Receipt Api' do
       company = receipt.purchase.company
 
       allow(Receipt).to receive(:find_by).and_raise(ActiveRecord::ActiveRecordError)
-      get "/api/v1/receipt/#{receipt[:authorization_code]}"
+      get "/api/v1/receipts/#{receipt[:authorization_code]}"
 
       expect(response).to have_http_status(500)
       expect(parsed_body[:message]).to eq('Erro geral')

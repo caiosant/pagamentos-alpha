@@ -50,7 +50,7 @@ Rails.application.routes.draw do
       end
       resources :purchases, only: %i[index create show update]
       resources :customer_subscriptions, only: %i[create]
-      resources :receipts, only: %i[index]
+      resources :receipts, only: %i[index show]
     end
   end
 
