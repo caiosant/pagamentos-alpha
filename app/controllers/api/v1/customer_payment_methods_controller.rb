@@ -16,14 +16,15 @@ module Api
 
       def create
         sanitized_params = customer_payment_method_params
+        credit_card_flag = sanitized_params[:type_of] == 'credit_card'
 
-        @customer_payment_method = CustomerPaymentMethod.new
-        @customer_payment_method.company = @company
-        @customer_payment_method.customer = find_by_token(Customer, sanitized_params[:customer_token])
-        @customer_payment_method.type_of = sanitized_params[:type_of]
+        @customer_payment_method = CustomerPaymentMethod.new(
+          customer_payment_method_basic_params
+        )
+
         add_payment_setting(sanitized_params[:type_of])
 
-        @customer_payment_method.add_credit_card(credit_card_params) if sanitized_params[:type_of] == 'credit_card'
+        @customer_payment_method.add_credit_card(credit_card_params) if credit_card_flag
 
         return render status: :created, json: success_json if @customer_payment_method.save
 
@@ -31,6 +32,15 @@ module Api
       end
 
       private
+
+      def customer_payment_method_basic_params
+        sanitized_params = customer_payment_method_params
+        {
+          company: @company,
+          customer: find_by_token(Customer, sanitized_params[:customer_token]),
+          type_of: sanitized_params[:type_of]
+        }
+      end
 
       def add_payment_setting(type_of)
         token = customer_payment_method_params[:payment_setting_token]
