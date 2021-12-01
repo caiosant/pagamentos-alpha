@@ -39,7 +39,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :customer, only: %i[index show create]
+      resources :customers, only: %i[index show create]
       resources :pix_settings, only: %i[index show]
       resources :boleto_settings, only: %i[index show]
       resources :credit_card_settings, only: %i[index show]

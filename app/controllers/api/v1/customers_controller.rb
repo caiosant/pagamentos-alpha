@@ -1,15 +1,14 @@
 module Api
   module V1
-    class CustomerController < Api::V1::ApiController
+    class CustomersController < Api::V1::ApiController
       def index
         @customers = Customer.all.where(company: @company)
 
         render status: :ok, json: @customers.as_json(except: %i[id company_id
                                                                 created_at updated_at],
-                                                     include: { 
-                                                       company: { only: :legal_name } 
-                                                      }
-                                                    )
+                                                     include: {
+                                                       company: { only: :legal_name }
+                                                     })
       end
 
       def show
