@@ -49,6 +49,7 @@ Rails.application.routes.draw do
         post 'disable', on: :member
       end
       resources :purchases, only: %i[index create show update]
+      resources :customer_subscriptions, only: %i[create]
     end
   end
 
