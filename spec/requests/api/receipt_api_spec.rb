@@ -1,28 +1,26 @@
 require 'rails_helper'
 
-# data de vencimento da
-# cobrança, a data efetiva do pagamento e um código de autorização
 describe 'Receipt Api' do
   context 'GET /api/v1/receipts' do
-    xit 'company should view all company receipts' do
-      owner = create(:user, :complete_company_owner)
-      owner.company.accepted!
-      company = owner.company
-      customer_payment_method = create(:customer_payment_method, :pix, company: company)
-      product = create(:product)
-      purchase = create(
-        :purchase, company: company, customer_payment_method: customer_payment_method,
-        product: product
-      )
-      receipt = create(:receipt, purchase: purchase)
+    it 'company should view all company receipts' do
+      receipt = create(:receipt)
+      another_receipt = create(:receipt)
+      company = receipt.purchase.company
 
       get '/api/v1/receipts/', headers: { companyToken: company.token }
 
       expect(response).to have_http_status(200)
-      purchase = parsed_body[:receipt][:purchase]
-      expect(purchase[:expiration_date]).to eq(purchase.expiration_date)
-      expect(purchase[:paid_date]).to eq(purchase.paid_date)
-      expect(parsed_body[:receipt][:authorization_code]).to be_present
+      purchase = parsed_body.first[:receipt][:purchase]
+      expect(parsed_body.first[:receipt][:token]).to eq(receipt.token)
+      expect(parsed_body.first[:receipt][:authorization_code]).not_to be_nil
+      expect(purchase[:type_of]).to eq(receipt.purchase.type_of)
+      expect(purchase[:paid_date]).to eq(receipt.purchase.paid_date.to_s)
+      expect(purchase[:expiration_date]).to eq(receipt.purchase.expiration_date.to_s)
+      expect(purchase[:product][:name]).to eq(receipt.purchase.product.name)
+      expect(purchase[:product][:token]).to eq(receipt.purchase.product.token)
+      expect(purchase[:company][:legal_name]).to eq(receipt.purchase.company.legal_name)
+
+      expect(parsed_body.second).to be_nil
     end
 
     xit 'and receive empty response' do
@@ -31,6 +29,8 @@ describe 'Receipt Api' do
       expect(response).to have_http_status(200)
       expect(parsed_body).to be_empty
     end
+
+    xit '401 unauthorized'
 
     xit '500 server error' do
       receipt = create(:receipt)
