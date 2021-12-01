@@ -21,7 +21,7 @@ module Api
                                                                created_at updated_at],
                                                     include: {
                                                       company: { only: :legal_name },
-                                                      customer_payment_methods: { only: %i[name token] }
+                                                      customer_payment_methods: { only: %i[type_of token] }
                                                     })
       end
 
