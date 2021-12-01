@@ -8,7 +8,7 @@ describe 'CustomerPaymentMethod API' do
         owner.company.accepted!
         customer = create(:customer, company: owner.company)
         company_payment_setting = create(:pix_setting, company: owner.company)
-        
+
         allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('hPxFizxVM5p5mNpFdOsf')
 
         customer_payment_method_params = {
@@ -66,7 +66,7 @@ describe 'CustomerPaymentMethod API' do
         owner.company.accepted!
         customer = create(:customer, company: owner.company)
         company_payment_setting = create(:credit_card_setting, company: owner.company)
-        
+
         allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('hPxFizxVM5p5mNpFdOsf')
 
         customer_payment_method_params = {
@@ -165,7 +165,9 @@ describe 'CustomerPaymentMethod API' do
         expect(response).to have_http_status(422)
         expect(CustomerPaymentMethod.count).to eq(0)
         expect(parsed_body[:message]).to eq('Requisição inválida')
-        expect(parsed_body[:errors][:base].first).to eq('É obrigatório passar uma payment setting enabled, de acordo com o type_of passado!')
+        expect(parsed_body[:errors][:base].first).to eq(
+          'É obrigatório passar uma payment setting enabled, de acordo com o type_of passado!'
+        )
         expect(customer_payment_method[:customer][:token]).to eq(customer.token)
         expect(customer_payment_method[:company][:legal_name]).to eq(owner.company.legal_name)
       end
@@ -192,7 +194,9 @@ describe 'CustomerPaymentMethod API' do
         expect(response).to have_http_status(422)
         expect(CustomerPaymentMethod.count).to eq(0)
         expect(parsed_body[:message]).to eq('Requisição inválida')
-        expect(parsed_body[:errors][:base].first).to eq('É obrigatório passar uma payment setting enabled, de acordo com o type_of passado!')
+        expect(parsed_body[:errors][:base].first).to eq(
+          'É obrigatório passar uma payment setting enabled, de acordo com o type_of passado!'
+        )
         expect(customer_payment_method[:customer][:token]).to eq(customer.token)
         expect(customer_payment_method[:company][:legal_name]).to eq(owner.company.legal_name)
       end
@@ -234,7 +238,6 @@ describe 'CustomerPaymentMethod API' do
         owner.company.accepted!
         customer = create(:customer, company: owner.company)
         company_payment_setting = create(:credit_card_setting, company: owner.company)
-        
 
         customer_payment_method_params = {
           customer_payment_method: {
@@ -267,7 +270,7 @@ describe 'CustomerPaymentMethod API' do
         owner.company.accepted!
         customer = create(:customer, company: owner.company)
         company_payment_setting = create(:credit_card_setting, company: owner.company)
-        
+
         customer_payment_method_params = {
           customer_payment_method: {
             customer_token: customer.token,

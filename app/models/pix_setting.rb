@@ -1,7 +1,7 @@
 class PixSetting < ApplicationRecord
   belongs_to :company
   belongs_to :payment_method, -> { where(type_of: :pix) }, inverse_of: :pix_settings
-  has_many :customer_payment_methods
+  has_many :customer_payment_methods, dependent: :destroy
 
   enum status: { enabled: 5, disabled: 10 }
 

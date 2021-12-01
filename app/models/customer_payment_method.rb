@@ -9,7 +9,7 @@ class PaymentSettingValidator < ActiveModel::Validator
       return unless record.credit_card_setting.nil?
     end
 
-    record.errors.add :base, "É obrigatório passar uma payment setting enabled, de acordo com o type_of passado!"
+    record.errors.add :base, 'É obrigatório passar uma payment setting enabled, de acordo com o type_of passado!'
   end
 end
 
