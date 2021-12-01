@@ -57,7 +57,7 @@ pix_setting = FactoryBot.create(
     bank_code: "001"
 )
 
-FactoryBot.create(
+boleto_setting = FactoryBot.create(
     :boleto_setting,
     company: company,
     agency_number: '42424',
@@ -115,13 +115,16 @@ FactoryBot.create(
 
 FactoryBot.create(
     :customer_payment_method,
-    name: 'pix',
     customer: customer,
     company: company,
-    payment_method: pix_setting.payment_method
+    type_of: 'pix',
+    pix_setting: pix_setting
 )
 
-
-
-
-
+FactoryBot.create(
+    :customer_payment_method,
+    customer: customer,
+    company: company,
+    type_of: 'boleto',
+    boleto_setting: boleto_setting
+)

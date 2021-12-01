@@ -13,7 +13,9 @@ describe 'Receipt Api' do
       purchase = parsed_body.first[:receipt][:purchase]
       expect(parsed_body.first[:receipt][:token]).to eq(receipt.token)
       expect(parsed_body.first[:receipt][:authorization_code]).not_to be_nil
-      expect(purchase[:type_of]).to eq(receipt.purchase.type_of)
+      expect(purchase[:customer_payment_method][:type_of]).to eq(
+        receipt.purchase.customer_payment_method.type_of
+      )
       expect(purchase[:paid_date]).to eq(receipt.purchase.paid_date.to_s)
       expect(purchase[:expiration_date]).to eq(receipt.purchase.expiration_date.to_s)
       expect(purchase[:product][:name]).to eq(receipt.purchase.product.name)

@@ -9,8 +9,9 @@ class Api::V1::ReceiptsController < Api::V1::ApiController
       only: %i[token authorization_code],
       include: {
         purchase: {
-          only: %i[expiration_date paid_date type_of],
+          only: %i[expiration_date paid_date],
           include: {
+            customer_payment_method: { only: %i[type_of] },
             product: { only: %i[name token] },
             company: { only: %i[legal_name] }
           }

@@ -94,8 +94,7 @@ ActiveRecord::Schema.define(version: 2021_12_01_144400) do
   end
 
   create_table "customer_payment_methods", force: :cascade do |t|
-    t.integer "name"
-    t.integer "payment_method_id", null: false
+    t.integer "type_of"
     t.string "credit_card_name"
     t.string "credit_card_number"
     t.date "credit_card_expiration_date"
@@ -105,9 +104,14 @@ ActiveRecord::Schema.define(version: 2021_12_01_144400) do
     t.string "token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "pix_setting_id"
+    t.integer "boleto_setting_id"
+    t.integer "credit_card_setting_id"
+    t.index ["boleto_setting_id"], name: "index_customer_payment_methods_on_boleto_setting_id"
     t.index ["company_id"], name: "index_customer_payment_methods_on_company_id"
+    t.index ["credit_card_setting_id"], name: "index_customer_payment_methods_on_credit_card_setting_id"
     t.index ["customer_id"], name: "index_customer_payment_methods_on_customer_id"
-    t.index ["payment_method_id"], name: "index_customer_payment_methods_on_payment_method_id"
+    t.index ["pix_setting_id"], name: "index_customer_payment_methods_on_pix_setting_id"
   end
 
   create_table "customer_subscriptions", force: :cascade do |t|
@@ -225,9 +229,11 @@ ActiveRecord::Schema.define(version: 2021_12_01_144400) do
   add_foreign_key "boleto_settings", "payment_methods"
   add_foreign_key "credit_card_settings", "companies"
   add_foreign_key "credit_card_settings", "payment_methods"
+  add_foreign_key "customer_payment_methods", "boleto_settings"
   add_foreign_key "customer_payment_methods", "companies"
+  add_foreign_key "customer_payment_methods", "credit_card_settings"
   add_foreign_key "customer_payment_methods", "customers"
-  add_foreign_key "customer_payment_methods", "payment_methods"
+  add_foreign_key "customer_payment_methods", "pix_settings"
   add_foreign_key "customer_subscriptions", "companies"
   add_foreign_key "customer_subscriptions", "customer_payment_methods"
   add_foreign_key "customer_subscriptions", "products"
