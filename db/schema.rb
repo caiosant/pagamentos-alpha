@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_30_145910) do
+ActiveRecord::Schema.define(version: 2021_12_01_010708) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -108,6 +108,22 @@ ActiveRecord::Schema.define(version: 2021_11_30_145910) do
     t.index ["company_id"], name: "index_customer_payment_methods_on_company_id"
     t.index ["customer_id"], name: "index_customer_payment_methods_on_customer_id"
     t.index ["payment_method_id"], name: "index_customer_payment_methods_on_payment_method_id"
+  end
+
+  create_table "customer_subscriptions", force: :cascade do |t|
+    t.string "token"
+    t.integer "status", default: 0
+    t.decimal "cost"
+    t.date "renovation_date"
+    t.integer "product_id", null: false
+    t.integer "customer_payment_method_id", null: false
+    t.integer "company_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_customer_subscriptions_on_company_id"
+    t.index ["customer_payment_method_id"], name: "index_customer_subscriptions_on_customer_payment_method_id"
+    t.index ["product_id"], name: "index_customer_subscriptions_on_product_id"
+    t.index ["token"], name: "index_customer_subscriptions_on_token", unique: true
   end
 
   create_table "customers", force: :cascade do |t|
@@ -217,6 +233,9 @@ ActiveRecord::Schema.define(version: 2021_11_30_145910) do
   add_foreign_key "customer_payment_methods", "companies"
   add_foreign_key "customer_payment_methods", "customers"
   add_foreign_key "customer_payment_methods", "payment_methods"
+  add_foreign_key "customer_subscriptions", "companies"
+  add_foreign_key "customer_subscriptions", "customer_payment_methods"
+  add_foreign_key "customer_subscriptions", "products"
   add_foreign_key "customers", "companies"
   add_foreign_key "pix_settings", "companies"
   add_foreign_key "pix_settings", "payment_methods"
