@@ -33,17 +33,15 @@ module Api
       private
 
       def add_payment_setting(type_of)
-        case type_of
-        when 'pix'
-          setting = find_by_token(PixSetting, customer_payment_method_params[:payment_setting_token])
-          @customer_payment_method.pix_setting = setting unless setting&.disabled?
-        when 'boleto'
-          setting = find_by_token(BoletoSetting, customer_payment_method_params[:payment_setting_token])
-          @customer_payment_method.boleto_setting = setting unless setting&.disabled?
-        when 'credit_card'
-          setting = find_by_token(CreditCardSetting, customer_payment_method_params[:payment_setting_token])
-          @customer_payment_method.credit_card_setting = setting unless setting&.disabled?
-        end
+        token = customer_payment_method_params[:payment_setting_token]
+
+        setting_hash = { 'pix' => PixSetting, 'boleto' => BoletoSetting, 'credit_card' => CreditCardSetting }
+        send_hash = { 'pix' => 'pix_setting=', 'boleto' => 'boleto_setting=', 'credit_card' => 'credit_card_setting=' }
+
+        send_parameter_value = send_hash[type_of]
+        setting = find_by_token(setting_hash[type_of], token)
+
+        @customer_payment_method.send(send_parameter_value, setting) unless setting&.disabled?
       end
 
       def customer_payment_method_params
@@ -84,15 +82,19 @@ module Api
       def error_json
         {
           message: 'Requisição inválida', errors:  @customer_payment_method.errors,
-          request: @customer_payment_method.as_json(
-            only: %i[type_of],
-            include: {
-              pix_setting: { only: %i[token type_of] }, boleto_setting: { only: %i[token type_of] },
-              credit_card_setting: { only: %i[token type_of] },
-              customer: { only: %i[token] }, company: { only: %i[legal_name] }
-            }
-          )
+          request: generate_customer_payment_method_request
         }
+      end
+
+      def generate_customer_payment_method_request
+        @customer_payment_method.as_json(
+          only: %i[type_of],
+          include: {
+            pix_setting: { only: %i[token type_of] }, boleto_setting: { only: %i[token type_of] },
+            credit_card_setting: { only: %i[token type_of] },
+            customer: { only: %i[token] }, company: { only: %i[legal_name] }
+          }
+        )
       end
     end
   end
