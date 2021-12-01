@@ -3,6 +3,7 @@ require 'rails_helper'
 describe 'company page can be seen' do
   it 'by owner' do
     owner = create(:user, :complete_company_owner)
+    owner.skip_confirmation!
 
     login_as owner, scope: :user
     get company_path owner.company
@@ -12,7 +13,9 @@ describe 'company page can be seen' do
 
   it 'by normal user linked to the company' do
     owner = create(:user, :complete_company_owner)
+    owner.skip_confirmation!
     user = create(:user, owner: false, company: owner.company)
+    user.skip_confirmation!
 
     login_as user, scope: :user
     get company_path owner.company
@@ -22,9 +25,12 @@ describe 'company page can be seen' do
 
   it 'unless user is from another company' do
     owner = create(:user, :complete_company_owner)
+    owner.skip_confirmation!
 
     owner2 = create(:user, :complete_company_owner)
+    owner2.skip_confirmation!
     user = create(:user, owner: false, company: owner2.company)
+    user.skip_confirmation!
 
     login_as user, scope: :user
     get company_path owner.company
@@ -36,6 +42,7 @@ describe 'company page can be seen' do
 
   it 'unless visitor is not signed in' do
     owner = create(:user, :complete_company_owner)
+    owner.skip_confirmation!
 
     get company_path owner.company
 

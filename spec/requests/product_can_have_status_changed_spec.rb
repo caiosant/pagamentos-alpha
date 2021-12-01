@@ -7,6 +7,7 @@ describe 'Product can have status changed' do
     product = FactoryBot.create(:product, company: owner.company)
 
     owner2 = create(:user, :complete_company_owner)
+    owner2.skip_confirmation!
     owner2.company.accepted!
 
     login_as owner2, scope: :user

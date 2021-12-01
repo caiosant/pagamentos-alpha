@@ -5,8 +5,8 @@ class User < ApplicationRecord
 
   validates :email, private_email: true
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+  devise :database_authenticatable, :registerable, 
+         :recoverable, :rememberable, :validatable, :confirmable
 
   before_validation :check_ownership_and_company_unless_already_set
   after_validation :create_company!, if: :user_is_owner_without_company?
