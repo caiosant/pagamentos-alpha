@@ -26,7 +26,8 @@ describe 'Purchase API' do
       post '/api/v1/purchases',
            params: { purchase: {
              product_token: product.token,
-             customer_payment_method_token: customer_payment_method.token
+             customer_payment_method_token: customer_payment_method.token,
+             cost: '2.22'
            } },
            headers: { companyToken: company.token }
 
