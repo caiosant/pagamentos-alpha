@@ -1,3 +1,3 @@
 class Receipt < ApplicationRecord
-  belongs_to :purchase
+  belongs_to :purchase, optional: true
 end

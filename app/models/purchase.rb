@@ -5,7 +5,7 @@ class Purchase < ApplicationRecord
   belongs_to :credit_card_setting, optional: true
   belongs_to :product
   belongs_to :company
-  has_one :receipt, optional: true
+  has_one :receipt
 
   enum type_of: { pix: 0, boleto: 5, credit_card: 10 }
 
