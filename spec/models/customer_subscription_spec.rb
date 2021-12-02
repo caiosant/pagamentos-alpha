@@ -5,19 +5,20 @@ RSpec.describe CustomerSubscription, type: :model do
 
   context '.renew_subscriptions' do
     it 'should create purchases for subscriptions in 2021-12-01' do
+      date = Date.new(2021, 12, 01)
       customer_subscription_1 = customer_subscription_2 = another_customer_subscription = nil
       
-      travel_to Date.new(2021, 12, 01) do
+      travel_to date do
         customer_subscription_1, customer_subscription_2 = create_list(
           :customer_subscription, 2
         )
       end
 
-      travel_to Date.new(2021, 12, 02) do
+      travel_to date + 1.day do
         another_customer_subscription = create(:customer_subscription)
       end
 
-      travel_to Date.new(2022, 01, 01) do
+      travel_to date + 1.month do
         CustomerSubscription.renew_subscriptions
 
         expect(Purchase.count).to eq(2)
@@ -40,10 +41,34 @@ RSpec.describe CustomerSubscription, type: :model do
         expect(second_purchase.company.id).to eq(customer_subscription_2.company.id)
       end
     end
+    
+    it 'should not create purchase at same day subscription is created' do
+      another_customer_subscription = customer_subscription = nil
+      date = Date.new(2021, 12, 01)
 
-    it 'should only create purchases for active subscriptions'
+      travel_to date do
+        another_customer_subscription = create(:customer_subscription)
+      end
 
-    it 'should not create purchase at same day subscription is created'
+      travel_to date + 1.month do
+        customer_subscription = create(:customer_subscription)
+
+        CustomerSubscription.renew_subscriptions
+
+        expect(Purchase.count).to eq(1)
+        first_purchase = Purchase.first
+        expect(first_purchase.customer_payment_method.token).to eq(
+          another_customer_subscription.customer_payment_method.token
+        )
+        expect(first_purchase.product.token).to eq(another_customer_subscription.product.token)
+        expect(first_purchase.customer_payment_method.token).not_to eq(
+          customer_subscription.customer_payment_method.token
+        )
+        expect(first_purchase.product.token).not_to eq(customer_subscription.product.token)
+      end
+    end
+
+    it 'should not create purchases for canceled subscriptions'
     
     it 'should create purchases for subscriptions not renewed in the right day'
   end

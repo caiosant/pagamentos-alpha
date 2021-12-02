@@ -93,7 +93,7 @@ describe 'Customer subscription API' do
         errors = parsed_body[:errors]
         expect(errors[:product]).to eq(['é obrigatório(a)'])
         expect(errors[:customer_payment_method]).to eq(['é obrigatório(a)'])
-        expect(errors[:cost]).to eq(['não pode ficar em branco'])
+        expect(errors[:cost]).to eq(['não pode ficar em branco', 'não é um número'])
 
         expect(customer_subscription[:token]).to eq(nil)
         expect(customer_subscription[:cost]).to eq(nil)
