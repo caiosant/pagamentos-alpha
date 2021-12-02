@@ -118,7 +118,7 @@ ActiveRecord::Schema.define(version: 2021_12_01_144400) do
     t.string "token"
     t.integer "status", default: 0
     t.decimal "cost"
-    t.date "renovation_date"
+    t.integer "renovation_date", default: 1
     t.integer "product_id", null: false
     t.integer "customer_payment_method_id", null: false
     t.integer "company_id", null: false

@@ -4,7 +4,7 @@ class CreateCustomerSubscriptions < ActiveRecord::Migration[6.1]
       t.string :token
       t.integer :status, default: 0
       t.decimal :cost
-      t.date :renovation_date
+      t.integer :renovation_date, default: 1
       t.references :product, null: false, foreign_key: true
       t.references :customer_payment_method, null: false, foreign_key: true
       t.references :company, null: false, foreign_key: true

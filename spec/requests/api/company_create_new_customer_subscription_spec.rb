@@ -29,7 +29,7 @@ describe 'Customer subscription API' do
         expect(customer_subscription[:token]).to eq('tv4H50dkTdePTNSmMFBl')
         expect(customer_subscription[:cost]).to eq('9.99')
         expect(customer_subscription[:status]).to eq('active')
-        expect(customer_subscription[:renovation_date]).to eq('2021-11-27')
+        expect(customer_subscription[:renovation_date]).to eq(27)
         expect(customer_subscription[:product][:name]).to eq(subscription.name)
         expect(customer_subscription[:product][:type_of]).to eq('subscription')
         expect(customer_subscription[:product][:token]).to eq(subscription.token)
@@ -98,7 +98,7 @@ describe 'Customer subscription API' do
         expect(customer_subscription[:token]).to eq(nil)
         expect(customer_subscription[:cost]).to eq(nil)
         expect(customer_subscription[:status]).to eq('active')
-        expect(customer_subscription[:renovation_date]).to eq('2021-11-27')
+        expect(customer_subscription[:renovation_date]).to eq(27)
         expect(customer_subscription[:company][:legal_name]).to eq(company.legal_name)
       end
     end
@@ -128,7 +128,7 @@ describe 'Customer subscription API' do
         expect(customer_subscription[:token]).to eq('tv4H50dkTdePTNSmMFBl')
         expect(customer_subscription[:cost]).to eq('9.99')
         expect(customer_subscription[:status]).to eq('active')
-        expect(customer_subscription[:renovation_date]).to eq('2021-12-01')
+        expect(customer_subscription[:renovation_date]).to eq(01)
         expect(customer_subscription[:product][:name]).to eq(subscription.name)
         expect(customer_subscription[:product][:type_of]).to eq('subscription')
         expect(customer_subscription[:product][:token]).to eq(subscription.token)

@@ -13,7 +13,7 @@ describe 'Customer subscription API' do
 
       customer_subscriptions.each.with_index do |customer_subscription, position|
         parsed_customer_subscription = parsed_body[position][:customer_subscription]
-        expect(parsed_customer_subscription[:renovation_date]).to eq(customer_subscription.renovation_date.strftime("%F"))
+        expect(parsed_customer_subscription[:renovation_date]).to eq(customer_subscription.renovation_date)
         expect(parsed_customer_subscription[:token]).to eq(customer_subscription.token)
         expect(parsed_customer_subscription[:status]).to eq(customer_subscription.status)
         expect(parsed_customer_subscription[:cost]).to eq(customer_subscription.cost.to_s)
