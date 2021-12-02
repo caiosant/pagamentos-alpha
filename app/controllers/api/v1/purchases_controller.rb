@@ -45,7 +45,8 @@ module Api
       end
 
       def success_json
-        @purchases.as_json(except: %i[id customer_payment_method_id pix_setting_id
+        json_object = @purchases.nil? ? @purchase : @purchases
+        json_object.as_json(except: %i[id customer_payment_method_id pix_setting_id
                                       boleto_setting_id credit_card_setting_id
                                       product_id receipt_id company_id created_at
                                       updated_at],

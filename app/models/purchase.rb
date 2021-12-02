@@ -18,28 +18,27 @@ class Purchase < ApplicationRecord
 
   def self.search(params, company_object)
     @purchases = Purchase.all.where(company: company_object)
+    where_params = {}
     return @purchases if params.empty?
 
     if params.count <= 3
       if params.key?(:customer_token)
         customer = Customer.find_by(token: params[:customer_token])
-        customer_payment_method = CustomerPaymentMethod.find_by(customer: customer)
-        @purchases = @purchases.where(customer_payment_method: customer_payment_method)
+        where_params[:customer_payment_method] = CustomerPaymentMethod.find_by(customer: customer)
         params.delete(:customer_token)
       end
 
       if params.key?(:type)
-        @purchases = @purchases.includes(:customer_payment_method).where(
-          customer_payment_method: { type_of: params[:type] }
-        )
+        where_params[:customer_payment_method] = { type_of: params[:type] }
         params.delete(:type)
       end
 
       if params.key?(:product_token)
-        product_filter = Product.find_by(token: params[:product_token])
-        @purchases = @purchases.where(product: product_filter)
+        where_params[:product] = Product.find_by(token: params[:product_token])
         params.delete(:product_token)
       end
+
+      @purchases = @purchases.includes(:customer_payment_method).where(where_params)
     end
 
     params.empty? ? @purchases : nil
