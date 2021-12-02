@@ -23,4 +23,44 @@ describe 'Customer subscription API' do
       end
     end
   end
+
+  context 'GET /api/v1/customer_subscriptions/:token' do
+    it 'should get corresponding setting from requesting company' do
+      customer_subscription = create(:customer_subscription)
+      company = customer_subscription.company
+
+      get "/api/v1/customer_subscriptions/#{customer_subscription.token}", headers: { companyToken: company.token }
+
+      expect(response).to have_http_status(200)
+      parsed_customer_subscription = parsed_body[:customer_subscription]
+      expect(parsed_customer_subscription[:renovation_date]).to eq(customer_subscription.renovation_date)
+      expect(parsed_customer_subscription[:token]).to eq(customer_subscription.token)
+      expect(parsed_customer_subscription[:status]).to eq(customer_subscription.status)
+      expect(parsed_customer_subscription[:cost]).to eq(customer_subscription.cost.to_s)
+      expect(parsed_customer_subscription[:product][:name]).to eq(customer_subscription.product.name)
+      expect(parsed_customer_subscription[:product][:type_of]).to eq(customer_subscription.product.type_of)
+      expect(parsed_customer_subscription[:product][:token]).to eq(customer_subscription.product.token)
+      
+    end
+
+    it 'should return 404 if setting does not exist' do
+      customer_subscription = create(:customer_subscription)
+      company = customer_subscription.company
+
+      get '/api/v1/customer_subscriptions/999', headers: { companyToken: company.token }
+
+      expect(response).to have_http_status(404)
+    end
+
+    it 'should return 500 if database is not available' do
+      customer_subscription = create(:customer_subscription)
+      company = customer_subscription.company
+
+      allow(CustomerSubscription).to receive(:find_by).and_raise(ActiveRecord::ActiveRecordError)
+
+      get "/api/v1/customer_subscriptions/#{customer_subscription.id}", headers: { companyToken: company.token }
+
+      expect(response).to have_http_status(500)
+    end
+  end
 end
