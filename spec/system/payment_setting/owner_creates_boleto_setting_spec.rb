@@ -3,6 +3,7 @@ require 'rails_helper'
 describe 'Owner creates boleto payment setting' do
   it 'successfully' do
     owner = create(:user, :complete_company_owner)
+    owner.confirm
     company = owner.company
     company.accepted!
 
@@ -29,6 +30,7 @@ describe 'Owner creates boleto payment setting' do
 
   it 'fails on leaving everything empty' do
     owner = create(:user, :complete_company_owner)
+    owner.confirm
     company = owner.company
     company.accepted!
 

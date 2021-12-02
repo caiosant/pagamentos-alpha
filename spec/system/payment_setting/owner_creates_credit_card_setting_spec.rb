@@ -3,6 +3,7 @@ require 'rails_helper'
 describe 'Owner creates credit card payment setting' do
   it 'successfully' do
     owner = create(:user, :complete_company_owner)
+    owner.confirm
     company = owner.company
     company.accepted!
 
@@ -25,6 +26,7 @@ describe 'Owner creates credit card payment setting' do
 
   it 'fails on empty company code' do
     owner = create(:user, :complete_company_owner)
+    owner.confirm
     company = owner.company
     company.accepted!
 
