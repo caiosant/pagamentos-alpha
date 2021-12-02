@@ -2,7 +2,7 @@ class Purchase < ApplicationRecord
   belongs_to :customer_payment_method
   belongs_to :product
   belongs_to :company
-  has_one :receipt
+  has_one :receipt, dependent: :destroy
 
   after_create :generate_token_attribute
 
@@ -11,8 +11,9 @@ class Purchase < ApplicationRecord
   validates :cost, presence: true
 
   def validate_product_is_not_subscription
-    return unless self.product.subscription?
-    self.errors.add :product, 'não crie cobrança de assinatura diretamente pela API'
+    return unless product.subscription?
+
+    errors.add :product, 'não crie cobrança de assinatura diretamente pela API'
   end
 
   def self.search(params, company_object)
@@ -28,12 +29,9 @@ class Purchase < ApplicationRecord
       end
 
       if params.key?(:type)
-
-        # @purchases = @purchases.where(type_of: params[:type])
         @purchases = @purchases.includes(:customer_payment_method).where(
           customer_payment_method: { type_of: params[:type] }
         )
-
         params.delete(:type)
       end
 

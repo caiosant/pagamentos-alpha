@@ -3,4 +3,3 @@ class AddStatusToPurchase < ActiveRecord::Migration[6.1]
     add_column :purchases, :status, :integer, default: 0
   end
 end
-p

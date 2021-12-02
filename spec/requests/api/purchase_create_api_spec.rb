@@ -14,7 +14,7 @@ describe 'Purchase API' do
         name: 'Vídeo de Minecraft'
       )
 
-      pix_setting = FactoryBot.create(
+      FactoryBot.create(
         :pix_setting,
         company: company,
         pix_key: '90803452a',
@@ -196,7 +196,7 @@ describe 'Purchase API' do
         pix_customer_payment_method = create(:customer_payment_method, :pix, company: company)
         credit_card_customer_payment_method = create(:customer_payment_method, :credit_card, company: company)
 
-        purchase = create(
+        create(
           :purchase,
           customer_payment_method: credit_card_customer_payment_method,
           product: product,
@@ -332,7 +332,8 @@ describe 'Purchase API' do
           company: company
         )
 
-        get "/api/v1/purchases?customer_token=#{customer_payment_method.customer.token}&product_token=#{product2.token}",
+        get "/api/v1/purchases?customer_token=#{customer_payment_method.customer.token}&"\
+            "product_token=#{product2.token}",
             headers: { companyToken: company.token }
 
         first = parsed_body.first
@@ -371,7 +372,7 @@ describe 'Purchase API' do
           name: 'Vídeo de CS:GO - 5k'
         )
 
-        product3 = create(
+        create(
           :product,
           company: company,
           type_of: 'single',
@@ -379,8 +380,10 @@ describe 'Purchase API' do
         )
 
         customer_payment_method = create(:customer_payment_method, :pix, company: company)
-        customer_payment_method2 = create(:customer_payment_method, :credit_card, customer: customer_payment_method.customer,
-                                                                                  company: company)
+        customer_payment_method2 = create(:customer_payment_method,
+                                          :credit_card,
+                                          customer: customer_payment_method.customer,
+                                          company: company)
         other_customer_payment_method = create(:customer_payment_method, :pix, company: company)
 
         purchase = create(
@@ -390,7 +393,7 @@ describe 'Purchase API' do
           company: company
         )
 
-        purchase2 = create(
+        create(
           :purchase,
           customer_payment_method: customer_payment_method,
           product: product2,
@@ -404,7 +407,8 @@ describe 'Purchase API' do
           company: company
         )
 
-        get "/api/v1/purchases?customer_token=#{customer_payment_method.customer.token}&product_token=#{product2.token}&type=pix",
+        get "/api/v1/purchases?customer_token=#{customer_payment_method.customer.token}&"\
+            "product_token=#{product2.token}&type=pix",
             headers: { companyToken: company.token }
 
         first = parsed_body.first

@@ -1,9 +1,6 @@
 class Customer < ApplicationRecord
   belongs_to :company
-  has_many :customer_payment_methods
-
-  after_create :generate_token_attribute
-  has_many :customer_payment_methods
+  has_many :customer_payment_methods, dependent: :destroy
 
   after_create :generate_token_attribute
 

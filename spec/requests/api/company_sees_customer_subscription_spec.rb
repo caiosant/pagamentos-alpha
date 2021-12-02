@@ -9,17 +9,17 @@ describe 'Customer subscription API' do
       customer_subscriptions = create_list(:customer_subscription, 3, company: company)
       customer_subscriptions = [customer_subscription] + customer_subscriptions
 
-      get "/api/v1/customer_subscriptions", headers: { companyToken: company.token }
+      get '/api/v1/customer_subscriptions', headers: { companyToken: company.token }
 
-      customer_subscriptions.each.with_index do |customer_subscription, position|
+      customer_subscriptions.each.with_index do |customer_sub, position|
         parsed_customer_subscription = parsed_body[position][:customer_subscription]
-        expect(parsed_customer_subscription[:renovation_date]).to eq(customer_subscription.renovation_date)
-        expect(parsed_customer_subscription[:token]).to eq(customer_subscription.token)
-        expect(parsed_customer_subscription[:status]).to eq(customer_subscription.status)
-        expect(parsed_customer_subscription[:cost]).to eq(customer_subscription.cost.to_s)
-        expect(parsed_customer_subscription[:product][:name]).to eq(customer_subscription.product.name)
-        expect(parsed_customer_subscription[:product][:type_of]).to eq(customer_subscription.product.type_of)
-        expect(parsed_customer_subscription[:product][:token]).to eq(customer_subscription.product.token)
+        expect(parsed_customer_subscription[:renovation_date]).to eq(customer_sub.renovation_date)
+        expect(parsed_customer_subscription[:token]).to eq(customer_sub.token)
+        expect(parsed_customer_subscription[:status]).to eq(customer_sub.status)
+        expect(parsed_customer_subscription[:cost]).to eq(customer_sub.cost.to_s)
+        expect(parsed_customer_subscription[:product][:name]).to eq(customer_sub.product.name)
+        expect(parsed_customer_subscription[:product][:type_of]).to eq(customer_sub.product.type_of)
+        expect(parsed_customer_subscription[:product][:token]).to eq(customer_sub.product.token)
       end
     end
   end
@@ -40,7 +40,6 @@ describe 'Customer subscription API' do
       expect(parsed_customer_subscription[:product][:name]).to eq(customer_subscription.product.name)
       expect(parsed_customer_subscription[:product][:type_of]).to eq(customer_subscription.product.type_of)
       expect(parsed_customer_subscription[:product][:token]).to eq(customer_subscription.product.token)
-      
     end
 
     it 'should return 404 if setting does not exist' do

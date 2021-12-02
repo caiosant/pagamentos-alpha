@@ -15,22 +15,16 @@ module Api
       end
 
       def create
-        sanitized_params = customer_subscription_params
-
-        customer_payment_method = find_by_token(CustomerPaymentMethod,
-                                                sanitized_params[:customer_payment_method_token])
-        subscription = find_by_token(Product, sanitized_params[:subscription_token])
-
         @customer_subscription = CustomerSubscription.new(
-          cost: sanitized_params[:cost],
-          company: @company,
-          customer_payment_method: customer_payment_method,
-          product: subscription
+          customer_subscription_basic_params
         )
 
         @customer_subscription.validate_product_is_not_single
 
-        return render status: :created, json: success_json if @customer_subscription.errors.empty? && @customer_subscription.save
+        if @customer_subscription.errors.empty? && @customer_subscription.save
+          return render status: :created, json: success_json
+        end
+
         render status: :unprocessable_entity, json: error_json
       end
 
@@ -38,6 +32,20 @@ module Api
 
       def customer_subscription_params
         params.require(:customer_subscription).permit(:customer_payment_method_token, :subscription_token, :cost)
+      end
+
+      def customer_subscription_basic_params
+        sanitized_params = customer_subscription_params
+
+        customer_payment_method = find_by_token(CustomerPaymentMethod,
+                                                sanitized_params[:customer_payment_method_token])
+        subscription = find_by_token(Product, sanitized_params[:subscription_token])
+        {
+          cost: sanitized_params[:cost],
+          company: @company,
+          customer_payment_method: customer_payment_method,
+          product: subscription
+        }
       end
 
       def success_json

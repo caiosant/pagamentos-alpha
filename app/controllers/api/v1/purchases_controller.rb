@@ -7,14 +7,7 @@ module Api
         if @purchases.nil?
           render status: :bad_request, json: { message: 'Parâmetro Inválido' }
         else
-          render status: :ok, json: @purchases.as_json(except: %i[id customer_payment_method_id pix_setting_id
-                                                                  boleto_setting_id credit_card_setting_id product_id
-                                                                  receipt_id company_id created_at updated_at],
-                                                       include: {
-                                                         company: { only: :legal_name },
-                                                         product: { only: %i[name token] },
-                                                         customer_payment_method: { only: :token }
-                                                       })
+          render status: :ok, json: success_json
         end
       end
 
@@ -24,34 +17,15 @@ module Api
 
         return render_not_authorized if @purchase.company != @company
 
-        render status: :ok, json: @purchase.as_json(except: %i[id customer_payment_method_id pix_setting_id
-                                                               boleto_setting_id credit_card_setting_id product_id
-                                                               receipt_id company_id created_at updated_at],
-                                                    include: {
-                                                      company: { only: :legal_name },
-                                                      product: { only: %i[name token] },
-                                                      customer_payment_method: { only: :token }
-                                                    })
+        render status: :ok, json: success_json
       end
 
       def create
-        sanitized_params = purchase_params
         @purchase = @company.purchases.new
-        @purchase.product = find_by_token(Product, sanitized_params[:product_token])
-        @purchase.cost = sanitized_params[:cost]
-        @purchase.validate_product_is_not_subscription
-        @purchase.customer_payment_method = find_by_token(CustomerPaymentMethod,
-                                                          sanitized_params[:customer_payment_method_token])
+        add_purchase_basic_properties
 
         if @purchase.errors.empty? && @purchase.save
-          render status: :created, json: @purchase.as_json(except: %i[id customer_payment_method_id pix_setting_id
-                                                                      boleto_setting_id credit_card_setting_id product_id
-                                                                      receipt_id company_id created_at updated_at],
-                                                           include: {
-                                                             company: { only: :legal_name },
-                                                             product: { only: %i[name token] },
-                                                             customer_payment_method: { only: [:token] }
-                                                           })
+          render status: :created, json: success_json
         else
           render status: :unprocessable_entity, json: { message: 'Requisição inválida', errors: @purchase.errors,
                                                         request: @purchase.as_json(except: %i[id token company_id
@@ -68,6 +42,25 @@ module Api
           :customer_payment_method_token,
           :cost
         )
+      end
+
+      def success_json
+        @purchases.as_json(except: %i[id customer_payment_method_id pix_setting_id
+                                      boleto_setting_id credit_card_setting_id
+                                      product_id receipt_id company_id created_at
+                                      updated_at],
+                           include: { company: { only: :legal_name },
+                                      product: { only: %i[name token] },
+                                      customer_payment_method: { only: :token } })
+      end
+
+      def add_purchase_basic_properties
+        sanitized_params = purchase_params
+        @purchase.product = find_by_token(Product, sanitized_params[:product_token])
+        @purchase.cost = sanitized_params[:cost]
+        @purchase.validate_product_is_not_subscription
+        @purchase.customer_payment_method = find_by_token(CustomerPaymentMethod,
+                                                          sanitized_params[:customer_payment_method_token])
       end
     end
   end

@@ -5,11 +5,11 @@ RSpec.describe CustomerSubscription, type: :model do
 
   context '.renew_subscriptions' do
     it 'should create purchases for subscriptions in 2021-12-01' do
-      date = Date.new(2021, 12, 01)
-      customer_subscription_1 = customer_subscription_2 = another_customer_subscription = nil
-      
+      date = Date.new(2021, 12, 0o1)
+      customer_subscription1 = customer_subscription2 = another_customer_subscription = nil
+
       travel_to date do
-        customer_subscription_1, customer_subscription_2 = create_list(
+        customer_subscription1, customer_subscription2 = create_list(
           :customer_subscription, 2
         )
       end
@@ -25,26 +25,26 @@ RSpec.describe CustomerSubscription, type: :model do
         first_purchase = Purchase.first
         second_purchase = Purchase.second
         expect(first_purchase.customer_payment_method.token).to eq(
-          customer_subscription_1.customer_payment_method.token
+          customer_subscription1.customer_payment_method.token
         )
-        expect(first_purchase.product.token).to eq(customer_subscription_1.product.token)
-        expect(first_purchase.cost).to eq(customer_subscription_1.cost)
-        expect(first_purchase.expiration_date.day).to eq(customer_subscription_1.renovation_date)
-        expect(first_purchase.company.id).to eq(customer_subscription_1.company.id)
+        expect(first_purchase.product.token).to eq(customer_subscription1.product.token)
+        expect(first_purchase.cost).to eq(customer_subscription1.cost)
+        expect(first_purchase.expiration_date.day).to eq(customer_subscription1.renovation_date)
+        expect(first_purchase.company.id).to eq(customer_subscription1.company.id)
 
         expect(second_purchase.customer_payment_method.token).to eq(
-          customer_subscription_2.customer_payment_method.token
+          customer_subscription2.customer_payment_method.token
         )
-        expect(second_purchase.product.token).to eq(customer_subscription_2.product.token)
-        expect(second_purchase.cost).to eq(customer_subscription_2.cost)
-        expect(second_purchase.expiration_date.day).to eq(customer_subscription_2.renovation_date)
-        expect(second_purchase.company.id).to eq(customer_subscription_2.company.id)
+        expect(second_purchase.product.token).to eq(customer_subscription2.product.token)
+        expect(second_purchase.cost).to eq(customer_subscription2.cost)
+        expect(second_purchase.expiration_date.day).to eq(customer_subscription2.renovation_date)
+        expect(second_purchase.company.id).to eq(customer_subscription2.company.id)
       end
     end
-    
+
     it 'should not create purchase at same day subscription is created' do
       another_customer_subscription = customer_subscription = nil
-      date = Date.new(2021, 12, 01)
+      date = Date.new(2021, 12, 0o1)
 
       travel_to date do
         another_customer_subscription = create(:customer_subscription)
@@ -69,46 +69,43 @@ RSpec.describe CustomerSubscription, type: :model do
     end
 
     it 'should not create purchases for canceled subscriptions'
-    
+
     it 'should create purchases for subscriptions not renewed in the right day'
   end
 
   # PoF, PULAR PRA NÃO ATRAPALHAR O FLUXO NORMAL DOS TESTES
   context 'scheduler' do
     xit 'should automatically create purchases' do
-      customer_subscription_1 = customer_subscription_2 = nil
-      
-      travel_to Date.new(2021, 12, 01) do
-        customer_subscription_1, customer_subscription_2 = create_list(
-          :customer_subscription, 2
-        )
+      customer_subscription1 = customer_subscription2 = nil
+
+      travel_to Date.new(2021, 12, 0o1) do
+        customer_subscription1, customer_subscription2 = create_list(:customer_subscription, 2)
       end
 
-      travel_to Date.new(2022, 01, 01) do
-        # isso espera o rufus-scheduler rodar antes que o teste acabe
-        sleep 1
+      travel_to Date.new(2022, 0o1, 0o1) do
+        sleep 1         # isso espera o rufus-scheduler rodar antes que o teste acabe
 
         expect(Purchase.count).to eq(2)
         first_purchase = Purchase.first
         second_purchase = Purchase.second
         expect(first_purchase.customer_payment_method.token).to eq(
-          customer_subscription_1.customer_payment_method.token
+          customer_subscription1.customer_payment_method.token
         )
-        expect(first_purchase.product.token).to eq(customer_subscription_1.product.token)
-        expect(first_purchase.cost).to eq(customer_subscription_1.cost)
-        expect(first_purchase.expiration_date.day).to eq(customer_subscription_1.renovation_date)
-        expect(first_purchase.company.id).to eq(customer_subscription_1.company.id)
+        expect(first_purchase.product.token).to eq(customer_subscription1.product.token)
+        expect(first_purchase.cost).to eq(customer_subscription1.cost)
+        expect(first_purchase.expiration_date.day).to eq(customer_subscription1.renovation_date)
+        expect(first_purchase.company.id).to eq(customer_subscription1.company.id)
 
         expect(second_purchase.customer_payment_method.token).to eq(
-          customer_subscription_2.customer_payment_method.token
+          customer_subscription2.customer_payment_method.token
         )
-        expect(second_purchase.product.token).to eq(customer_subscription_2.product.token)
-        expect(second_purchase.cost).to eq(customer_subscription_2.cost)
-        expect(second_purchase.expiration_date.day).to eq(customer_subscription_2.renovation_date)
-        expect(second_purchase.company.id).to eq(customer_subscription_2.company.id)
+        expect(second_purchase.product.token).to eq(customer_subscription2.product.token)
+        expect(second_purchase.cost).to eq(customer_subscription2.cost)
+        expect(second_purchase.expiration_date.day).to eq(customer_subscription2.renovation_date)
+        expect(second_purchase.company.id).to eq(customer_subscription2.company.id)
       end
 
-      travel_to Date.new(2022, 02, 01) do
+      travel_to Date.new(2022, 0o2, 0o1) do
         sleep 1
         expect(Purchase.count).to eq(4)
       end

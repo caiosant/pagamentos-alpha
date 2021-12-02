@@ -42,7 +42,7 @@ class CompaniesController < ApplicationController
 
   def accept
     @company = Company.find(params[:id])
-    
+
     @company.accepted!
     redirect_to companies_path
   end

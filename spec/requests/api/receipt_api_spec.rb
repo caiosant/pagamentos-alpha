@@ -4,7 +4,7 @@ describe 'Receipt Api' do
   context 'GET /api/v1/receipts' do
     it 'company should view all company receipts' do
       receipt = create(:receipt)
-      another_receipt = create(:receipt)
+      create(:receipt)
       company = receipt.purchase.company
 
       get '/api/v1/receipts/', headers: { companyToken: company.token }
@@ -36,8 +36,7 @@ describe 'Receipt Api' do
     end
 
     it '401 unauthorized' do
-      receipt = create(:receipt)
-      company = receipt.purchase.company
+      create(:receipt)
 
       get '/api/v1/receipts/', headers: { companyToken: 'notacompanytoken' }
 
@@ -60,7 +59,7 @@ describe 'Receipt Api' do
   context 'GET /api/v1/receipt/:id' do
     it 'visitor should view one receipt' do
       receipt = create(:receipt)
-      another_receipt = create(:receipt)
+      create(:receipt)
 
       get "/api/v1/receipts/#{receipt[:token]}"
 
@@ -87,7 +86,6 @@ describe 'Receipt Api' do
 
     it '500 server error' do
       receipt = create(:receipt)
-      company = receipt.purchase.company
 
       allow(Receipt).to receive(:find_by).and_raise(ActiveRecord::ActiveRecordError)
       get "/api/v1/receipts/#{receipt[:authorization_code]}"
