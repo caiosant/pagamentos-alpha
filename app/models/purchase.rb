@@ -6,6 +6,8 @@ class Purchase < ApplicationRecord
 
   after_create :generate_token_attribute
 
+  enum status: { pending: 0, paid: 5 }
+
   validates :cost, presence: true
 
   def validate_product_is_not_subscription
