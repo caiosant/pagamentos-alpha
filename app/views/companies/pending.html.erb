@@ -1,39 +1,43 @@
 <div>
     <div>
-        <%= link_to 'Empresas Pendentes', pending_companies_path %>
+        <h3 class="m-5">Empresas Pendentes</h3>
     </div>
     <div>
-        <table>
+        <table class="m-full ml-5 mt-5 text-center rounded-lg shadow-md p-4 bg-white border">
+          <thead class="bg-gray-50 border-b">    
             <tr>
-                <td>
+                <th>
                     Owner
-                </td>
-                <td>
+                </th>
+                <th>
                     Empresa
-                </td>
-                <td>
+                </th>
+                <th>
                     Status
-                </td>
-                <td>
+                </th>
+                <th>
                     Ação
-                </td>
+                </th>
             </tr>
+          </thead>
             <% @companies.each do |company| %>
+              <tbody>
                 <tr>
-                    <td>
+                    <td  class="p-4 text-justify">
                         <%= company.users.where(owner: true).first.email %>
                     </td>
-                    <td>
+                    <td  class="p-4 text-justify">
                         <%= company.legal_name %>
                     </td>
-                    <td>
+                    <td  class="p-4 text-justify">
                         <%= Company.human_attribute_name("status.#{company.status}").capitalize %>
                     </td>
-                    <td>
+                    <td  class="p-4 text-justify">
                         <%= link_to 'Aprovar', accept_company_path(company), method: :post%>
                         <%= link_to 'Rejeitar', new_company_rejected_company_path(company)%>
                     </td>
                 </tr>
+              </tbody>
             <% end %>
         </table>
     </div>
