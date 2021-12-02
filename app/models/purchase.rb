@@ -1,9 +1,3 @@
-class Hash
-  def add_value_unless_nil(key, value)
-    merge!({ key => value }) unless value.nil?
-  end
-end
-
 class Purchase < ApplicationRecord
   belongs_to :customer_payment_method
   belongs_to :product
@@ -26,13 +20,12 @@ class Purchase < ApplicationRecord
     where_params = {}
     customer_payment_method = {}
 
-    customer = Customer.find_by(token: params[:customer_token])
-    product = Product.find_by(token: params[:product_token])
+    customer_payment_method[:customer] = Customer.find_by(token: params[:customer_token])
+    customer_payment_method[:type_of] = params[:type]
+    where_params[:product] = Product.find_by(token: params[:product_token])
 
-    customer_payment_method.add_value_unless_nil(:customer, customer)
-    customer_payment_method.add_value_unless_nil(:type_of, params[:type])
-    where_params.add_value_unless_nil(:product, product)
-
+    where_params.compact!
+    customer_payment_method.compact!
     return where_params if customer_payment_method.empty?
 
     where_params[:customer_payment_method] = customer_payment_method
