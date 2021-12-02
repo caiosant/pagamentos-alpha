@@ -1,6 +1,12 @@
 module Api
   module V1
     class CustomerSubscriptionsController < Api::V1::ApiController
+      def index
+        @customer_subscription = CustomerSubscription.where(company: @company)
+
+        render status: :ok, json: success_json
+      end
+
       def create
         sanitized_params = customer_subscription_params
 
@@ -15,7 +21,9 @@ module Api
           product: subscription
         )
 
-        return render status: :created, json: success_json if @customer_subscription.save
+        @customer_subscription.validate_product_is_not_single
+
+        return render status: :created, json: success_json if @customer_subscription.errors.empty? && @customer_subscription.save
         render status: :unprocessable_entity, json: error_json
       end
 

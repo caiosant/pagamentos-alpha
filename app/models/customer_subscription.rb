@@ -10,6 +10,11 @@ class CustomerSubscription < ApplicationRecord
 
   validates :cost, presence: true
 
+  def validate_product_is_not_single
+    return unless self.product&.single?
+    self.errors.add :product, 'sua assinatura precisa ser vinculada com um product do tipo subscription'
+  end
+
   private
 
   def create_renovation_date

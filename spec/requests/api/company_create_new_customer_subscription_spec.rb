@@ -38,7 +38,38 @@ describe 'Customer subscription API' do
       end
     end
 
-    it 'fails' do
+    it 'fails on passing single type product' do
+      customer_payment_method = create(:customer_payment_method, :pix)
+      company = customer_payment_method.company
+      single_product = create(:product, type_of: 'single', company: company)
+
+      allow(SecureRandom).to receive(:alphanumeric).with(20).and_return('tv4H50dkTdePTNSmMFBl')
+
+      travel_to Date.new(2021, 11, 27) do
+        post '/api/v1/customer_subscriptions',
+              params: {
+                customer_subscription: {
+                  customer_payment_method_token: customer_payment_method.token,
+                  subscription_token: single_product.token,
+                  cost: '32.90'
+                }
+              },
+              headers: { companyToken: company.token }
+
+
+        expect(response).to have_http_status(422)
+        customer_subscription = parsed_body[:request][:customer_subscription]
+        errors = parsed_body[:errors]
+        expect(errors[:product]).to eq(['sua assinatura precisa ser vinculada com um product do tipo subscription'])
+
+        expect(customer_subscription[:token]).to eq(nil)
+        expect(customer_subscription[:cost]).to eq('32.9')
+        expect(customer_subscription[:status]).to eq('active')
+        expect(customer_subscription[:company][:legal_name]).to eq(company.legal_name)
+      end
+    end
+
+    it 'fails on passing invalid tokens' do
       customer_payment_method = create(:customer_payment_method, :pix)
       company = customer_payment_method.company
       subscription = create(:product, type_of: 'subscription', company: company)
