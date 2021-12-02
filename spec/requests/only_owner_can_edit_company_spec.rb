@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'company can be edited' do
   it 'if user is the company owner and company is not pending' do
     owner = create(:user, :complete_company_owner)
-    owner.skip_confirmation!
+    owner.confirm
     owner.company.accepted!
 
     login_as owner, scope: :user
@@ -14,7 +14,7 @@ describe 'company can be edited' do
 
   it 'unless user is the company owner but company is pending' do
     owner = create(:user, :complete_company_owner)
-    owner.skip_confirmation!
+    owner.confirm
 
     login_as owner, scope: :user
     get edit_company_path owner.company
@@ -24,9 +24,9 @@ describe 'company can be edited' do
 
   it 'unless user is linked to the company but isnt owner' do
     owner = create(:user, owner: true)
-    owner.skip_confirmation!
+    owner.confirm
     user = create(:user, owner: false, company: owner.company)
-    user.skip_confirmation!
+    user.confirm
 
     login_as user, scope: :user
     get edit_company_path owner.company
@@ -38,12 +38,12 @@ describe 'company can be edited' do
 
   it 'unless user is from another company' do
     owner = create(:user, owner: true)
-    owner.skip_confirmation!
+    owner.confirm
 
     owner2 = create(:user, owner: true)
-    owner2.skip_confirmation!
+    owner2.confirm
     user = create(:user, owner: false, company: owner2.company)
-    user.skip_confirmation!
+    user.confirm
 
     login_as user, scope: :user
     get edit_company_path owner.company

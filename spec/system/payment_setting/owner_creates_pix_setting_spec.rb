@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Owner creates pix payment setting' do
   it 'successfully' do
     owner = create(:user, :complete_company_owner)
-    owner.skip_confirmation!
+    owner.confirm
     company = owner.company
     company.accepted!
 
@@ -28,7 +28,7 @@ describe 'Owner creates pix payment setting' do
 
   it 'fails on empty key' do
     owner = create(:user, :complete_company_owner)
-    owner.skip_confirmation!
+    owner.confirm
     company = owner.company
     company.accepted!
 

@@ -4,7 +4,7 @@ describe 'Owner sees payment settings' do
   # TODO: testar com setting que não seja de owner.company
   it 'successfully' do
     owner = create(:user, :complete_company_owner)
-    owner.skip_confirmation!
+    owner.confirm
     company = owner.company
     company.accepted!
 
@@ -44,7 +44,7 @@ describe 'Owner sees payment settings' do
 
   it 'unless company is not accepted' do
     owner = create(:user, :complete_company_owner)
-    owner.skip_confirmation!
+    owner.confirm
     company = owner.company
 
     login_as owner, scope: :user
@@ -58,7 +58,7 @@ describe 'Owner sees payment settings' do
     pix_method3.disabled!
 
     owner = create(:user, :complete_company_owner)
-    owner.skip_confirmation!
+    owner.confirm
     owner.company.accepted!
 
     login_as owner, scope: :user
@@ -81,7 +81,7 @@ describe 'Owner sees payment settings' do
     credit_card_method3.disabled!
 
     owner = create(:user, :complete_company_owner)
-    owner.skip_confirmation!
+    owner.confirm
     owner.company.accepted!
 
     login_as owner, scope: :user
@@ -103,7 +103,7 @@ describe 'Owner sees payment settings' do
     boleto_method3.disabled!
 
     owner = create(:user, :complete_company_owner)
-    owner.skip_confirmation!
+    owner.confirm
     owner.company.accepted!
 
     login_as owner, scope: :user

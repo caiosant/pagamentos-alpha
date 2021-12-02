@@ -9,7 +9,7 @@ describe 'authenticated user creates a new product' do
 
   it 'successfully as subscription' do
     owner = create(:user, :complete_company_owner)
-    owner.skip_confirmation!
+    owner.confirm
     owner.company.accepted!
 
     login_as owner, scope: :user
@@ -31,7 +31,7 @@ describe 'authenticated user creates a new product' do
 
   it 'successfully as product' do
     owner = create(:user, :complete_company_owner)
-    owner.skip_confirmation!
+    owner.confirm
     owner.company.accepted!
 
     login_as owner, scope: :user
@@ -53,7 +53,7 @@ describe 'authenticated user creates a new product' do
 
   it 'fails on empty name' do
     owner = create(:user, :complete_company_owner)
-    owner.skip_confirmation!
+    owner.confirm
     owner.company.accepted!
 
     login_as owner, scope: :user

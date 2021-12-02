@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'Authenticated User try access restrict adimin area' do
   it 'and cannot open form to create a payment_method' do
     user = create(:user)
-    user.skip_confirmation!
+    user.confirm
 
     login_as user, scope: :user
 
@@ -13,7 +13,7 @@ describe 'Authenticated User try access restrict adimin area' do
   end
   it 'and cannot create a payment_method' do
     user = create(:user)
-    user.skip_confirmation!
+    user.confirm
 
     login_as user, scope: :user
 
