@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_01_221128) do
+ActiveRecord::Schema.define(version: 2021_12_02_133350) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -52,7 +52,6 @@ ActiveRecord::Schema.define(version: 2021_12_01_221128) do
     t.string "unconfirmed_email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["confirmation_token"], name: "index_admins_on_confirmation_token", unique: true
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
@@ -115,6 +114,22 @@ ActiveRecord::Schema.define(version: 2021_12_01_221128) do
     t.index ["pix_setting_id"], name: "index_customer_payment_methods_on_pix_setting_id"
   end
 
+  create_table "customer_subscriptions", force: :cascade do |t|
+    t.string "token"
+    t.integer "status", default: 0
+    t.decimal "cost"
+    t.integer "renovation_date", default: 1
+    t.integer "product_id", null: false
+    t.integer "customer_payment_method_id", null: false
+    t.integer "company_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_customer_subscriptions_on_company_id"
+    t.index ["customer_payment_method_id"], name: "index_customer_subscriptions_on_customer_payment_method_id"
+    t.index ["product_id"], name: "index_customer_subscriptions_on_product_id"
+    t.index ["token"], name: "index_customer_subscriptions_on_token", unique: true
+  end
+
   create_table "customers", force: :cascade do |t|
     t.string "name"
     t.string "cpf"
@@ -159,6 +174,33 @@ ActiveRecord::Schema.define(version: 2021_12_01_221128) do
     t.index ["company_id"], name: "index_products_on_company_id"
   end
 
+  create_table "purchases", force: :cascade do |t|
+    t.string "token"
+    t.integer "customer_payment_method_id", null: false
+    t.integer "product_id", null: false
+    t.decimal "cost"
+    t.integer "receipt_id"
+    t.date "paid_date"
+    t.date "expiration_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "company_id", null: false
+    t.integer "status", default: 0
+    t.index ["company_id"], name: "index_purchases_on_company_id"
+    t.index ["customer_payment_method_id"], name: "index_purchases_on_customer_payment_method_id"
+    t.index ["product_id"], name: "index_purchases_on_product_id"
+    t.index ["receipt_id"], name: "index_purchases_on_receipt_id"
+  end
+
+  create_table "receipts", force: :cascade do |t|
+    t.integer "purchase_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "authorization_code"
+    t.string "token"
+    t.index ["purchase_id"], name: "index_receipts_on_purchase_id"
+  end
+
   create_table "rejected_companies", force: :cascade do |t|
     t.integer "company_id", null: false
     t.text "reason"
@@ -197,10 +239,18 @@ ActiveRecord::Schema.define(version: 2021_12_01_221128) do
   add_foreign_key "customer_payment_methods", "credit_card_settings"
   add_foreign_key "customer_payment_methods", "customers"
   add_foreign_key "customer_payment_methods", "pix_settings"
+  add_foreign_key "customer_subscriptions", "companies"
+  add_foreign_key "customer_subscriptions", "customer_payment_methods"
+  add_foreign_key "customer_subscriptions", "products"
   add_foreign_key "customers", "companies"
   add_foreign_key "pix_settings", "companies"
   add_foreign_key "pix_settings", "payment_methods"
   add_foreign_key "products", "companies"
+  add_foreign_key "purchases", "companies"
+  add_foreign_key "purchases", "customer_payment_methods"
+  add_foreign_key "purchases", "products"
+  add_foreign_key "purchases", "receipts"
+  add_foreign_key "receipts", "purchases"
   add_foreign_key "rejected_companies", "companies"
   add_foreign_key "users", "companies"
 end
