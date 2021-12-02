@@ -7,7 +7,7 @@ module Api
         if @purchases.nil?
           render status: :bad_request, json: { message: 'Parâmetro Inválido' }
         else
-          render status: :ok, json: success_json
+          render status: :ok, json: success_json1
         end
       end
 
@@ -17,7 +17,7 @@ module Api
 
         return render_not_authorized if @purchase.company != @company
 
-        render status: :ok, json: success_json
+        render status: :ok, json: success_json2
       end
 
       def create
@@ -25,7 +25,7 @@ module Api
         add_purchase_basic_properties
 
         if @purchase.errors.empty? && @purchase.save
-          render status: :created, json: success_json
+          render status: :created, json: success_json2
         else
           render status: :unprocessable_entity, json: { message: 'Requisição inválida', errors: @purchase.errors,
                                                         request: @purchase.as_json(except: %i[id token company_id
@@ -44,7 +44,7 @@ module Api
         )
       end
 
-      def success_json
+      def success_json1
         @purchases.as_json(except: %i[id customer_payment_method_id pix_setting_id
                                       boleto_setting_id credit_card_setting_id
                                       product_id receipt_id company_id created_at
@@ -52,6 +52,16 @@ module Api
                            include: { company: { only: :legal_name },
                                       product: { only: %i[name token] },
                                       customer_payment_method: { only: :token } })
+      end
+
+      def success_json2
+        @purchase.as_json(except: %i[id customer_payment_method_id pix_setting_id
+                                     boleto_setting_id credit_card_setting_id
+                                     product_id receipt_id company_id created_at
+                                     updated_at],
+                          include: { company: { only: :legal_name },
+                                     product: { only: %i[name token] },
+                                     customer_payment_method: { only: :token } })
       end
 
       def add_purchase_basic_properties
