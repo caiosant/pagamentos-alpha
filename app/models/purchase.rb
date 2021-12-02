@@ -22,11 +22,6 @@ class Purchase < ApplicationRecord
     errors.add :product, 'não crie cobrança de assinatura diretamente pela API'
   end
 
-  def add_value_unless_nil(hash, key, value)
-    hash[key] = value unless value.nil?
-    hash
-  end
-
   def self.process_where_params(params)
     where_params = {}
     customer_payment_method = {}
