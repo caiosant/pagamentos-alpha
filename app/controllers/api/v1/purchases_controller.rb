@@ -47,12 +47,12 @@ module Api
       def success_json
         json_object = @purchases.nil? ? @purchase : @purchases
         json_object.as_json(except: %i[id customer_payment_method_id pix_setting_id
-                                      boleto_setting_id credit_card_setting_id
-                                      product_id receipt_id company_id created_at
-                                      updated_at],
-                           include: { company: { only: :legal_name },
-                                      product: { only: %i[name token] },
-                                      customer_payment_method: { only: :token } })
+                                       boleto_setting_id credit_card_setting_id
+                                       product_id receipt_id company_id created_at
+                                       updated_at],
+                            include: { company: { only: :legal_name },
+                                       product: { only: %i[name token] },
+                                       customer_payment_method: { only: :token } })
       end
 
       def add_purchase_basic_properties

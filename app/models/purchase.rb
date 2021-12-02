@@ -1,3 +1,9 @@
+class Hash
+  def add_value_unless_nil(key, value)
+    merge!({ key => value }) unless value.nil?
+  end
+end
+
 class Purchase < ApplicationRecord
   belongs_to :customer_payment_method
   belongs_to :product
@@ -16,31 +22,38 @@ class Purchase < ApplicationRecord
     errors.add :product, 'não crie cobrança de assinatura diretamente pela API'
   end
 
+  def add_value_unless_nil(hash, key, value)
+    hash[key] = value unless value.nil?
+    hash
+  end
+
+  def self.process_where_params(params)
+    where_params = {}
+    customer_payment_method = {}
+
+    customer = Customer.find_by(token: params[:customer_token])
+    product = Product.find_by(token: params[:product_token])
+
+    customer_payment_method.add_value_unless_nil(:customer, customer)
+    customer_payment_method.add_value_unless_nil(:type_of, params[:type])
+    where_params.add_value_unless_nil(:product, product)
+
+    return where_params if customer_payment_method.empty?
+
+    where_params[:customer_payment_method] = customer_payment_method
+    where_params
+  end
+
   def self.search(params, company_object)
     @purchases = Purchase.all.where(company: company_object)
-    where_params = {}
     return @purchases if params.empty?
 
-    if params.count <= 3
-      if params.key?(:customer_token)
-        customer = Customer.find_by(token: params[:customer_token])
-        where_params[:customer_payment_method] = CustomerPaymentMethod.find_by(customer: customer)
-        params.delete(:customer_token)
-      end
+    valid_key_list = %w[customer_token type product_token]
+    invalid_key_list = params.keys - valid_key_list
+    return nil unless invalid_key_list.empty?
 
-      if params.key?(:type)
-        where_params[:customer_payment_method] = { type_of: params[:type] }
-        params.delete(:type)
-      end
+    where_params = process_where_params params
 
-      if params.key?(:product_token)
-        where_params[:product] = Product.find_by(token: params[:product_token])
-        params.delete(:product_token)
-      end
-
-      @purchases = @purchases.includes(:customer_payment_method).where(where_params)
-    end
-
-    params.empty? ? @purchases : nil
+    @purchases = @purchases.includes(:customer_payment_method).where(where_params)
   end
 end
