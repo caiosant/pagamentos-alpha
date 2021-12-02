@@ -1,6 +1,13 @@
 module Api
   module V1
     class CustomerSubscriptionsController < Api::V1::ApiController
+      def show
+        @customer_subscription = find_by_token(CustomerSubscription, params[:id])
+        raise ActiveRecord::RecordNotFound if @customer_subscription.nil?
+
+        render status: :ok, json: success_json
+      end
+
       def index
         @customer_subscription = CustomerSubscription.where(company: @company)
 
