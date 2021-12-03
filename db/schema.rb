@@ -125,6 +125,8 @@ ActiveRecord::Schema.define(version: 2021_12_02_231013) do
     t.integer "company_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.date "retry_date"
+    t.integer "tried_renew_times", default: 0
     t.index ["company_id"], name: "index_customer_subscriptions_on_company_id"
     t.index ["customer_payment_method_id"], name: "index_customer_subscriptions_on_customer_payment_method_id"
     t.index ["product_id"], name: "index_customer_subscriptions_on_product_id"
