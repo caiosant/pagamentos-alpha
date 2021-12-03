@@ -16,7 +16,7 @@ describe 'Owner creates credit card payment setting' do
 
     fill_in 'Código do cartão', with: '2456785847953874'
     select credit_card_method.name, from: 'Meio de pagamento'
-    click_on 'Criar Cartão de crédito'
+    click_on 'Criar configuração de pagamento'
 
     expect(current_path).to eq(company_payment_settings_path(owner.company))
     expect(page).to have_content('Pagamento configurado com sucesso')
@@ -39,7 +39,7 @@ describe 'Owner creates credit card payment setting' do
 
     fill_in 'Código do cartão', with: ''
     select credit_card_method.name, from: 'Meio de pagamento'
-    click_on 'Criar Cartão de crédito'
+    click_on 'Criar configuração de pagamento'
 
     expect(page).to have_content('não pode ficar em branco')
   end

@@ -17,7 +17,7 @@ describe 'Owner creates pix payment setting' do
     fill_in 'Chave PIX', with: '317283472634723'
     fill_in 'Código do banco', with: '001'
     select pix_method.name, from: 'Meio de pagamento'
-    click_on 'Criar Pagamento PIX'
+    click_on 'Criar configuração de pagamento'
 
     expect(current_path).to eq(company_payment_settings_path(owner.company))
     expect(page).to have_content('Pagamento configurado com sucesso')
@@ -42,7 +42,7 @@ describe 'Owner creates pix payment setting' do
     fill_in 'Chave PIX', with: ''
     fill_in 'Código do banco', with: '001'
     select pix_method.name, from: 'Meio de pagamento'
-    click_on 'Criar Pagamento PIX'
+    click_on 'Criar configuração de pagamento'
 
     expect(page).to have_content('Chave PIX não pode ficar em branco')
   end

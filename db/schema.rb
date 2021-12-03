@@ -115,6 +115,8 @@ ActiveRecord::Schema.define(version: 2021_12_03_013708) do
     t.index ["pix_setting_id"], name: "index_customer_payment_methods_on_pix_setting_id"
   end
 
+<<<<<<< HEAD
+=======
   create_table "customer_subscriptions", force: :cascade do |t|
     t.string "token"
     t.integer "status", default: 0
@@ -133,6 +135,7 @@ ActiveRecord::Schema.define(version: 2021_12_03_013708) do
     t.index ["token"], name: "index_customer_subscriptions_on_token", unique: true
   end
 
+>>>>>>> 1971946bb90174a532c9e24aca1d5a6cb7f7c531
   create_table "customers", force: :cascade do |t|
     t.string "name"
     t.string "cpf"
@@ -186,33 +189,6 @@ ActiveRecord::Schema.define(version: 2021_12_03_013708) do
     t.index ["company_id"], name: "index_products_on_company_id"
   end
 
-  create_table "purchases", force: :cascade do |t|
-    t.string "token"
-    t.integer "customer_payment_method_id", null: false
-    t.integer "product_id", null: false
-    t.decimal "cost"
-    t.integer "receipt_id"
-    t.date "paid_date"
-    t.date "expiration_date"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.integer "company_id", null: false
-    t.integer "status", default: 0
-    t.index ["company_id"], name: "index_purchases_on_company_id"
-    t.index ["customer_payment_method_id"], name: "index_purchases_on_customer_payment_method_id"
-    t.index ["product_id"], name: "index_purchases_on_product_id"
-    t.index ["receipt_id"], name: "index_purchases_on_receipt_id"
-  end
-
-  create_table "receipts", force: :cascade do |t|
-    t.integer "purchase_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "authorization_code"
-    t.string "token"
-    t.index ["purchase_id"], name: "index_receipts_on_purchase_id"
-  end
-
   create_table "rejected_companies", force: :cascade do |t|
     t.integer "company_id", null: false
     t.text "reason"
@@ -251,19 +227,11 @@ ActiveRecord::Schema.define(version: 2021_12_03_013708) do
   add_foreign_key "customer_payment_methods", "credit_card_settings"
   add_foreign_key "customer_payment_methods", "customers"
   add_foreign_key "customer_payment_methods", "pix_settings"
-  add_foreign_key "customer_subscriptions", "companies"
-  add_foreign_key "customer_subscriptions", "customer_payment_methods"
-  add_foreign_key "customer_subscriptions", "products"
   add_foreign_key "customers", "companies"
   add_foreign_key "frauds", "purchases"
   add_foreign_key "pix_settings", "companies"
   add_foreign_key "pix_settings", "payment_methods"
   add_foreign_key "products", "companies"
-  add_foreign_key "purchases", "companies"
-  add_foreign_key "purchases", "customer_payment_methods"
-  add_foreign_key "purchases", "products"
-  add_foreign_key "purchases", "receipts"
-  add_foreign_key "receipts", "purchases"
   add_foreign_key "rejected_companies", "companies"
   add_foreign_key "users", "companies"
 end
