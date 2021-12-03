@@ -3,6 +3,7 @@ class CustomerSubscription < ApplicationRecord
   belongs_to :customer_payment_method
   belongs_to :company
 
+  # TODO: mudar de pendente/cancelada para ativa quando a cobrança for paga
   enum status: { active: 0, pending: 5, canceled: 10 }
 
   validates :cost, presence: true, numericality: true
@@ -15,8 +16,10 @@ class CustomerSubscription < ApplicationRecord
     today = Time.zone.today
 
     today_subscriptions = CustomerSubscription.where(
-      'renovation_date = :day AND created_at < :last_month AND NOT status = :canceled',
-      day: today.day, last_month: (today - 28.days), canceled: statuses[:canceled]
+      '(renovation_date = :day AND created_at < :last_month AND status = :active) OR '\
+      '(retry_date = :today AND status = :pending AND tried_renew_times < 3)',
+      day: today.day, last_month: (today - 28.days), active: statuses[:active],
+      today: today, pending: statuses[:pending]
     )
 
     today_subscriptions.each do |s|
@@ -28,10 +31,13 @@ class CustomerSubscription < ApplicationRecord
   def self.retry_purchase_creation(customer_payment_method:, product:)
     customer_subscription = CustomerSubscription.find_by(customer_payment_method: customer_payment_method,
                                                           product: product)
-    if customer_subscription.tried_renew_times <= 2
+    if customer_subscription.tried_renew_times < 2
       customer_subscription.retry_date = Time.zone.today + 2.days
-      customer_subscription.tried_renew_times+=1
+      customer_subscription.tried_renew_times += 1
       customer_subscription.status = 'pending'
+    else
+      customer_subscription.tried_renew_times += 1
+      customer_subscription.status = 'canceled'
     end
 
     customer_subscription.save!
