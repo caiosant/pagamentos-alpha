@@ -32,6 +32,14 @@ rails server
 ```
 Acesse a aplicação pelo navegador: digitando http://localhost:3000/ na barra de endereço.
 
+#### Usuários cadastrados pelo seeds.rb
+Todos os usuários a seguir tem como senha 123456789:
+| Email               | Tipo de conta | 
+| --------------------| ------------- |
+| admin@pagapaga.com.br  | Administrador |
+| owner@gamestream.com| Usuário(dono) |
+| staff@gamestream.com| Usuário(funcionário) |
+
 ## ⚙️ Executando os testes
 
 Para executar os testes execute no terminal:
