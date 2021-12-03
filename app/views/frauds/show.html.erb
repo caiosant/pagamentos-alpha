@@ -3,23 +3,29 @@
         Empresa: <%= @purchase.company.legal_name %>
     </div>
     <div>
-        Cliente: <%= @purchase.customer.name %>
+        Cliente: <%= @purchase.customer_payment_method.customer.name %>
     </div>
     <div>
-        Valor: <%= @purchase.cost %>
+        Valor: <%= number_to_currency @purchase.cost %>
     </div>
     <div>
-        Data da Compra: <%= @purchase.created_at%>
+        Data da Compra: <%= I18n.l(@purchase.created_at.to_date) %>
     </div>
     <div>
-        Status: <%= @purchase.status %>
+        Status: <%= t @purchase.status %>
     </div>
     <div>
         Avaliação:
         <div>
-            Título: <%= @purchase.fraud.title %>
-            Descrição: <%= @purchase.fraud.description %>
-            Arquivo de Avaliação: 
+            <div>
+                Título: <%= @purchase.fraud.title %>
+            </div>
+            <div>
+                Descrição: <%= @purchase.fraud.description %>
+            </div>
+            <div>
+                Arquivo de Avaliação: 
+            </div>
         </div>
     </div>
 </div>

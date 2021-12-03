@@ -14,6 +14,9 @@
                 <th>
                     Data da Compra
                 </th>
+                <th>
+                    Ação
+                </th>
             </tr>
         </thead>
         <% @purchases.each do |purchase| %>
@@ -26,10 +29,13 @@
                     <%= purchase.customer_payment_method.customer.name %>
                 </td>
                 <td  class="p-4 text-justify">
-                    <%= purchase.cost %>
+                    <%= number_to_currency purchase.cost %>
                 </td>
                 <td  class="p-4 text-justify">
-                    <%= link_to 'Aprovaaaar', pending_purchase_path(purchase), method: :post%>
+                    <%= I18n.l(purchase.created_at.to_date) %>
+                </td>
+                <td  class="p-4 text-justify">
+                    <%= link_to 'Aprovar', pending_purchase_path(purchase), method: :post%>
                     <%= link_to 'Rejeitar', new_purchase_fraud_path(purchase)%>
                 </td>
             </tr>

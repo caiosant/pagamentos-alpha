@@ -5,4 +5,5 @@ class Fraud < ApplicationRecord
 
   validates :title, presence: true, length: { minimum: 5 }
   validates :description, length: { minimum: 15 }
+  validates :purchase_id, uniqueness: { message: 'já avaliada' }
 end

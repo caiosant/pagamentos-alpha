@@ -29,10 +29,13 @@
                     <%= purchase.customer_payment_method.customer.name %>
                 </td>
                 <td  class="p-4 text-justify">
-                    <%= purchase.cost %>
+                    <%= number_to_currency purchase.cost %>
                 </td>
                 <td  class="p-4 text-justify">
-                    <%= link_to 'Acessar Avaliação', purchase_fraud_path(purchase.fraud.id), method: :post%>
+                    <%= I18n.l(purchase.created_at.to_date) %>
+                </td>
+                <td  class="p-4 text-justify">
+                    <%= link_to 'Acessar Avaliação', purchase_fraud_path(purchase, purchase.fraud)%>
                 </td>
             </tr>
         <% end %>

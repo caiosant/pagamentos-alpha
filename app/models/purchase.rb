@@ -6,6 +6,7 @@ class Purchase < ApplicationRecord
   has_one :fraud, dependent: :destroy
 
   after_create :generate_token_attribute
+  after_create :automatic_fraud
 
   enum status: { fraud_pending: 0, pending: 5, rejected: 7, paid: 10 }
 
@@ -44,5 +45,50 @@ class Purchase < ApplicationRecord
     where_params = process_where_params params
 
     @purchases = @purchases.includes(:customer_payment_method).where(where_params)
+  end
+
+  def automatic_fraud
+    
+    if last_seven_days? && both_rejected?
+      self.rejected!
+    end
+  end
+
+  def both_rejected?
+    if last_purchase != false && penultimate_purchase != false
+      last_purchase.status== 'rejected' && penultimate_purchase.status == 'rejected'
+    else
+      false
+    end
+  end
+
+  def last_seven_days?
+    if last_purchase != false && penultimate_purchase != false
+      (last_purchase.created_at.to_date - penultimate_purchase.created_at.to_date).to_i < 7
+    else
+      false
+    end
+  end
+
+  def last_purchase
+    customer = customer_payment_method.customer
+    purchases = Purchase.all.where(customer_payment_method: customer.customer_payment_methods)
+
+    if purchases.length >=2
+      last_purchase = purchases[purchases.length-2]
+    else
+      false
+    end
+  end
+
+  def penultimate_purchase
+    customer = customer_payment_method.customer
+    purchases = Purchase.all.where(customer_payment_method: customer.customer_payment_methods)
+
+    if purchases.length >= 3
+      penultimate_purchase = purchases[purchases.length-3]
+    else
+      false
+    end
   end
 end

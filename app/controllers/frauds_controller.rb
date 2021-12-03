@@ -6,7 +6,7 @@ class FraudsController < ApplicationController
   end
 
   def show
-    @purchase = Purchase.find(params[:id])
+    @purchase = Purchase.find(params[:purchase_id])
   end
 
   def new
@@ -22,7 +22,7 @@ class FraudsController < ApplicationController
 
     if @fraud.save
       @purchase.rejected!
-      purchases_path
+      redirect_to purchases_path
     else
       render :new
     end
