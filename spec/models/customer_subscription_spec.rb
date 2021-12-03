@@ -95,14 +95,14 @@ RSpec.describe CustomerSubscription, type: :model do
     end
 
     it 'should create purchases for pending subscriptions at retry date' do
-      date = Date.new(2021, 12, 01)
+      date = Date.new(2021, 12, 0o1)
       next_renovation = date + 1.month
       customer_subscription = nil
 
       travel_to date do
         customer_subscription = create(
           :customer_subscription, retry_date: next_renovation + 2.days,
-          tried_renew_times: 1, status: 'pending'
+                                  tried_renew_times: 1, status: 'pending'
         )
       end
 
@@ -125,7 +125,7 @@ RSpec.describe CustomerSubscription, type: :model do
   # esse metodo seria chamado pela cobrança (Purchase), quando a cobrança fosse recusada
   context '.retry_purchase_creation' do
     it 'should set retry_date to 2 days later' do
-      date = Date.new(2021, 12, 01)
+      date = Date.new(2021, 12, 0o1)
       customer_subscription = nil
 
       travel_to date do
@@ -146,14 +146,14 @@ RSpec.describe CustomerSubscription, type: :model do
     end
 
     it 'should set retry_date to 4 days later' do
-      date = Date.new(2021, 12, 01)
+      date = Date.new(2021, 12, 0o1)
       next_renovation = date + 1.month
       customer_subscription = nil
 
       travel_to date do
         customer_subscription = create(
           :customer_subscription, retry_date: next_renovation + 2.days,
-          tried_renew_times: 1, status: 'pending'
+                                  tried_renew_times: 1, status: 'pending'
         )
       end
 
@@ -171,14 +171,14 @@ RSpec.describe CustomerSubscription, type: :model do
     end
 
     it 'should cancel subscription after 5 days' do
-      date = Date.new(2021, 12, 01)
+      date = Date.new(2021, 12, 0o1)
       next_renovation = date + 1.month
       customer_subscription = nil
 
       travel_to date do
         customer_subscription = create(
           :customer_subscription, retry_date: next_renovation + 4.days,
-          tried_renew_times: 2, status: 'pending'
+                                  tried_renew_times: 2, status: 'pending'
         )
       end
 
