@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_01_221128) do
+ActiveRecord::Schema.define(version: 2021_12_03_013708) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -115,6 +115,27 @@ ActiveRecord::Schema.define(version: 2021_12_01_221128) do
     t.index ["pix_setting_id"], name: "index_customer_payment_methods_on_pix_setting_id"
   end
 
+<<<<<<< HEAD
+=======
+  create_table "customer_subscriptions", force: :cascade do |t|
+    t.string "token"
+    t.integer "status", default: 0
+    t.decimal "cost"
+    t.integer "renovation_date", default: 1
+    t.integer "product_id", null: false
+    t.integer "customer_payment_method_id", null: false
+    t.integer "company_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.date "retry_date"
+    t.integer "tried_renew_times", default: 0
+    t.index ["company_id"], name: "index_customer_subscriptions_on_company_id"
+    t.index ["customer_payment_method_id"], name: "index_customer_subscriptions_on_customer_payment_method_id"
+    t.index ["product_id"], name: "index_customer_subscriptions_on_product_id"
+    t.index ["token"], name: "index_customer_subscriptions_on_token", unique: true
+  end
+
+>>>>>>> 1971946bb90174a532c9e24aca1d5a6cb7f7c531
   create_table "customers", force: :cascade do |t|
     t.string "name"
     t.string "cpf"
