@@ -1,7 +1,7 @@
 <% if admin_signed_in? && @purchase.status == 'fraud_pending' %>
     <div>
         <div>
-            <%= form_with(model: @fraud) do |f| %>
+            <%= form_with(model: @fraud, url: purchase_frauds_path(@purchase, @fraud)) do |f| %>
                 <div>
                     <%= f.label :title %>
                     <% @fraud.errors.full_messages_for(:title).each do |message| %>

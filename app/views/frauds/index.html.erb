@@ -32,7 +32,7 @@
                     <%= purchase.cost %>
                 </td>
                 <td  class="p-4 text-justify">
-                    <%= link_to 'Acessar Avaliação', purchase_fraud_path(purchase.fraud), method: :post%>
+                    <%= link_to 'Acessar Avaliação', purchase_fraud_path(purchase.fraud.id), method: :post%>
                 </td>
             </tr>
         <% end %>

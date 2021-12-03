@@ -1,5 +1,8 @@
 class Fraud < ApplicationRecord
-  belongs_to :purchases
+  belongs_to :purchase
 
   has_one_attached :file
+
+  validates :title, presence: true, length: { minimum: 5 }
+  validates :description, length: { minimum: 15 }
 end

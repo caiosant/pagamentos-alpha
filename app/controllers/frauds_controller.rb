@@ -16,7 +16,9 @@ class FraudsController < ApplicationController
 
   def create
     @purchase = Purchase.find(params[:purchase_id])
-    @fraud = @purchase.fraud.new(fraud_params)
+    @fraud = Fraud.new(fraud_params)
+
+    @fraud.purchase_id = @purchase.id
 
     if @fraud.save
       @purchase.rejected!
@@ -29,6 +31,6 @@ class FraudsController < ApplicationController
   private
 
   def fraud_params
-    params.require(:fraud).permit(:title, :description)
+    params.require(:fraud).permit(:title, :description, :file)
   end
 end

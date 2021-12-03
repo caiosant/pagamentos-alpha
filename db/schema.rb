@@ -143,11 +143,11 @@ ActiveRecord::Schema.define(version: 2021_12_02_231013) do
 
   create_table "frauds", force: :cascade do |t|
     t.string "title"
-    t.text "desciption"
-    t.integer "purchases_id", null: false
+    t.text "description"
+    t.integer "purchase_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["purchases_id"], name: "index_frauds_on_purchases_id", unique: true
+    t.index ["purchase_id"], name: "index_frauds_on_purchase_id", unique: true
   end
 
   create_table "payment_methods", force: :cascade do |t|
@@ -253,7 +253,7 @@ ActiveRecord::Schema.define(version: 2021_12_02_231013) do
   add_foreign_key "customer_subscriptions", "customer_payment_methods"
   add_foreign_key "customer_subscriptions", "products"
   add_foreign_key "customers", "companies"
-  add_foreign_key "frauds", "purchases", column: "purchases_id"
+  add_foreign_key "frauds", "purchases"
   add_foreign_key "pix_settings", "companies"
   add_foreign_key "pix_settings", "payment_methods"
   add_foreign_key "products", "companies"
