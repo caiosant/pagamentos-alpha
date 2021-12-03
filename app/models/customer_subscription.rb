@@ -15,14 +15,26 @@ class CustomerSubscription < ApplicationRecord
     today = Time.zone.today
 
     today_subscriptions = CustomerSubscription.where(
-      'renovation_date = :day AND created_at < :last_month',
-      day: today.day, last_month: (today - 28.days)
+      'renovation_date = :day AND created_at < :last_month AND NOT status = :canceled',
+      day: today.day, last_month: (today - 28.days), canceled: statuses[:canceled]
     )
 
     today_subscriptions.each do |s|
       Purchase.create(company: s.company, customer_payment_method: s.customer_payment_method,
                       product: s.product, cost: s.cost, expiration_date: today)
     end
+  end
+
+  def self.retry_purchase_creation(customer_payment_method:, product:)
+    customer_subscription = CustomerSubscription.find_by(customer_payment_method: customer_payment_method,
+                                                          product: product)
+    if customer_subscription.tried_renew_times <= 2
+      customer_subscription.retry_date = Time.zone.today + 2.days
+      customer_subscription.tried_renew_times+=1
+      customer_subscription.status = 'pending'
+    end
+
+    customer_subscription.save!
   end
 
   def validate_product_is_not_single

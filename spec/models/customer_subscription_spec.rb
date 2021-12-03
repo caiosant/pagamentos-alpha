@@ -68,9 +68,94 @@ RSpec.describe CustomerSubscription, type: :model do
       end
     end
 
-    it 'should not create purchases for canceled subscriptions'
+    it 'should not create purchases for canceled subscriptions' do
+      customer_subscription = another_customer_subscription = nil
+      date = Date.new(2021, 12, 0o1)
+
+      travel_to date do
+        customer_subscription = create(:customer_subscription)
+        customer_subscription.canceled!
+        another_customer_subscription = create(:customer_subscription)
+      end
+
+      travel_to date + 1.month do
+        CustomerSubscription.renew_subscriptions
+
+        expect(Purchase.count).to eq(1)
+        first_purchase = Purchase.first
+        expect(first_purchase.customer_payment_method.token).to eq(
+          another_customer_subscription.customer_payment_method.token
+        )
+        expect(first_purchase.product.token).to eq(another_customer_subscription.product.token)
+        expect(first_purchase.customer_payment_method.token).not_to eq(
+          customer_subscription.customer_payment_method.token
+        )
+        expect(first_purchase.product.token).not_to eq(customer_subscription.product.token)
+      end
+    end
+
+    it 'should create purchases for pending subscriptions at retry date'
 
     it 'should create purchases for subscriptions not renewed in the right day'
+  end
+
+  context '.retry_purchase_creation' do
+    it 'should set retry_date to 2 days later' do
+      date = Date.new(2021, 12, 01)
+      customer_subscription = nil
+
+      travel_to date do
+        customer_subscription = create(:customer_subscription)
+      end
+
+      travel_to date + 1.month do
+        CustomerSubscription.renew_subscriptions
+
+        CustomerSubscription.retry_purchase_creation(
+          customer_payment_method: customer_subscription.customer_payment_method,
+          product: customer_subscription.product
+        )
+
+        customer_subscription.reload
+        expect(customer_subscription.retry_date).to eq(2.days.from_now)
+        expect(customer_subscription.tried_renew_times).to eq(1)
+        expect(customer_subscription.status).to eq('pending')
+      end
+    end
+
+    it 'should set retry_date to 4 days later' do
+      date = Date.new(2021, 12, 01)
+      next_renovation = date + 1.month
+      customer_subscription = nil
+
+      travel_to date do
+        customer_subscription = create(:customer_subscription)
+      end
+
+      travel_to next_renovation do
+        CustomerSubscription.renew_subscriptions
+        CustomerSubscription.retry_purchase_creation(
+          customer_payment_method: customer_subscription.customer_payment_method,
+          product: customer_subscription.product
+        )
+      end
+
+      travel_to next_renovation + 2.days do
+        CustomerSubscription.renew_subscriptions
+
+        CustomerSubscription.retry_purchase_creation(
+          customer_payment_method: customer_subscription.customer_payment_method,
+          product: customer_subscription.product
+        )
+
+        customer_subscription.reload
+        expect(customer_subscription.retry_date).to eq(next_renovation + 4.days)
+        expect(customer_subscription.tried_renew_times).to eq(2)
+        expect(customer_subscription.status).to eq('pending')
+      end
+    end
+
+    it 'should cancel subscription after 5 days'
   end
 
   # PoF, PULAR PRA NÃO ATRAPALHAR O FLUXO NORMAL DOS TESTES
