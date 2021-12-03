@@ -1,8 +1,20 @@
-owner = FactoryBot.create(:user, :complete_company_owner)
+owner = FactoryBot.create(
+    :user, :complete_company_owner, 
+    email: 'owner@gamestream.com'
+)
+owner.confirm
 gamestream = owner.company
 gamestream.accepted!
 gamestream.token = 'rVAfNGdvfh6va61nDv11'
 
+user = FactoryBot.create(
+    :user, 
+    email: 'staff@gamestream.com',
+    company: gamestream
+)
+user.confirm
+admin = FactoryBot.create(:admin, email:'admin@pagapaga.com.br')
+admin.confirm
 
 FactoryBot.create(
     :product,

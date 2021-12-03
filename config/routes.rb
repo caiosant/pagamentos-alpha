@@ -22,6 +22,14 @@ Rails.application.routes.draw do
     resources :rejected_companies, only: %i[new create]
   end
 
+  resources :purchases, only: %i[index] do
+    post 'pending', on: :member
+
+    resources :frauds, only: %i[show new create]
+  end
+
+  resources :frauds, only: %i[index]
+
   resources :pix_settings, only: %i[new create] do
     post 'enable', on: :member
     post 'disable', on: :member
