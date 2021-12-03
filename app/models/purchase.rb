@@ -48,15 +48,12 @@ class Purchase < ApplicationRecord
   end
 
   def automatic_fraud
-    
-    if last_seven_days? && both_rejected?
-      self.rejected!
-    end
+    rejected! if last_seven_days? && both_rejected?
   end
 
   def both_rejected?
     if last_purchase != false && penultimate_purchase != false
-      last_purchase.status== 'rejected' && penultimate_purchase.status == 'rejected'
+      last_purchase.status == 'rejected' && penultimate_purchase.status == 'rejected'
     else
       false
     end
@@ -74,8 +71,8 @@ class Purchase < ApplicationRecord
     customer = customer_payment_method.customer
     purchases = Purchase.all.where(customer_payment_method: customer.customer_payment_methods)
 
-    if purchases.length >=2
-      last_purchase = purchases[purchases.length-2]
+    if purchases.length >= 2
+      _last_purchase = purchases[purchases.length - 2]
     else
       false
     end
@@ -86,7 +83,7 @@ class Purchase < ApplicationRecord
     purchases = Purchase.all.where(customer_payment_method: customer.customer_payment_methods)
 
     if purchases.length >= 3
-      penultimate_purchase = purchases[purchases.length-3]
+      _penultimate_purchase = purchases[purchases.length - 3]
     else
       false
     end
