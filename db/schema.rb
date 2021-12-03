@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_02_133350) do
+ActiveRecord::Schema.define(version: 2021_12_02_231013) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 2021_12_02_133350) do
     t.string "unconfirmed_email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["confirmation_token"], name: "index_admins_on_confirmation_token", unique: true
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
@@ -138,6 +139,15 @@ ActiveRecord::Schema.define(version: 2021_12_02_133350) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_customers_on_company_id"
+  end
+
+  create_table "frauds", force: :cascade do |t|
+    t.string "title"
+    t.text "desciption"
+    t.integer "purchases_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["purchases_id"], name: "index_frauds_on_purchases_id", unique: true
   end
 
   create_table "payment_methods", force: :cascade do |t|
@@ -243,6 +253,7 @@ ActiveRecord::Schema.define(version: 2021_12_02_133350) do
   add_foreign_key "customer_subscriptions", "customer_payment_methods"
   add_foreign_key "customer_subscriptions", "products"
   add_foreign_key "customers", "companies"
+  add_foreign_key "frauds", "purchases", column: "purchases_id"
   add_foreign_key "pix_settings", "companies"
   add_foreign_key "pix_settings", "payment_methods"
   add_foreign_key "products", "companies"

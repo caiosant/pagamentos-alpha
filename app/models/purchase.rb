@@ -3,10 +3,11 @@ class Purchase < ApplicationRecord
   belongs_to :product
   belongs_to :company
   has_one :receipt, dependent: :destroy
+  has_one :fraud, dependent: :destroy
 
   after_create :generate_token_attribute
 
-  enum status: { pending: 0, paid: 5 }
+  enum status: { fraud_pending: 0, pending: 5, rejected: 7, paid: 10 }
 
   validates :cost, presence: true
 

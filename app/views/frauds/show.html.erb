@@ -1,0 +1,25 @@
+<div>
+    <div>
+        Empresa: <%= @purchase.company.legal_name %>
+    </div>
+    <div>
+        Cliente: <%= @purchase.customer.name %>
+    </div>
+    <div>
+        Valor: <%= @purchase.cost %>
+    </div>
+    <div>
+        Data da Compra: <%= @purchase.created_at%>
+    </div>
+    <div>
+        Status: <%= @purchase.status %>
+    </div>
+    <div>
+        Avaliação:
+        <div>
+            Título: <%= @purchase.fraud.title %>
+            Descrição: <%= @purchase.fraud.description %>
+            Arquivo de Avaliação: 
+        </div>
+    </div>
+</div>
