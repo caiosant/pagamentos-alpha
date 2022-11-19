@@ -54,6 +54,12 @@ Esse é o projeto final da etapa 2 da turma 7 do programa [Treinadev](https://tr
 Links com detalhes sobre o projeto:
 * [Diagrama de interações entre os models](https://docs.google.com/drawings/d/1JThfhFGx6O8p3lijoboJbZBGjQjlOXToAzejdqna3zs)
 
+Time de desenvolvimento:
+* [Caio Sant'Ana da Silva](https://github.com/caiosant)
+* [Hikari Luz](https://github.com/Hikari-desuyoo)
+* [Alessandro Silva](https://github.com/alleSilva)
+* [Jefferson Denilson](https://github.com/jeffersondenilson)
+
 ## 🛠️ Construído com
 
 * [Ruby on Rails](https://rubyonrails.org/) - O framework web usado
